@@ -1,14 +1,13 @@
 # ttnhabbridge
 Bridge between the-things-network and the habitat network, to receive amateur balloons using LoRaWAN
 
-== Development environment ==
-I develop this on Windows 7.
+# Development environment
+I develop this on Windows 7, in Eclipse, using subversion.
 
 Steps to install everything:
-* check out this archive, e.g. using tortoisegit
 * download a Java JDK and put it in tools/jdk
 * download Eclipse (I use Mars) and put in in the tools/eclipse directory (for example)
-* install the egit plugin in eclipse, using this update site: http://download.eclipse.org/egit/updates/
+* install the eclipse SVN plugin, using this update site: https://dl.bintray.com/subclipse/releases/subclipse/4.2.x/
 
 Steps to prepare the Eclipse environment:
 * open a command line to the checked out project
@@ -16,6 +15,7 @@ Steps to prepare the Eclipse environment:
 * go to directory workspace/gradle
 * type 'gradlew eclipse' and watch dependencies being downloaded from the internet
 * start Eclipse, using the 'workspace' directory as workspace
+* under perspective 'SVN repository exploring' add the URL of this project
 * import all sub-projects into the workspace
 
 Steps to create a release:

@@ -1,0 +1,26 @@
+version = '0.1'
+
+allprojects { group = 'nl.sikken.bertrik' }
+
+// Define all library dependencies in one file for clarity
+apply from:'dependencies.gradle'
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "eclipse"
+    
+    targetCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    repositories {
+        mavenCentral()
+    }
+
+    // Standard libraries added to all projects
+    dependencies {
+        testCompile libraries.junit
+
+        compile libraries.slf4j
+    }
+
+}

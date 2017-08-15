@@ -5,19 +5,19 @@ package nl.sikken.bertrik;
  */
 public final class TtnHabBridge {
 
-	/**
-	 * @param arguments application arguments (none taken)
-	 */
-	public static void main(String arguments) {
-		final TtnHabBridge app = new TtnHabBridge();
-		app.run();
-	}
+    /**
+     * @param arguments application arguments (none taken)
+     */
+    public static void main(String arguments) {
+        final TtnHabBridge app = new TtnHabBridge();
+        app.run();
+    }
 
-	/**
-	 * Runs the "main loop".
-	 */
-	private void run() {
-		
-	}
-	
+    /**
+     * Runs the "main loop".
+     */
+    private void run() {
+
+    }
+
 }

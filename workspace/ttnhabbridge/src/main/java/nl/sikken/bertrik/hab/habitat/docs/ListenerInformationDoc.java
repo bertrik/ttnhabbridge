@@ -10,24 +10,24 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public final class ListenerInformationDoc extends ListenerDoc {
 
-	private final String callSign;
+    private final String callSign;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param date the date
-	 * @param callSign the listener call sign
-	 */
-	public ListenerInformationDoc(Date date, String callSign) {
-		super("listener_information", date);
-		this.callSign = callSign;
-	}
+    /**
+     * Constructor.
+     * 
+     * @param date the date
+     * @param callSign the listener call sign
+     */
+    public ListenerInformationDoc(Date date, String callSign) {
+        super("listener_information", date);
+        this.callSign = callSign;
+    }
 
-	@Override
-	protected JsonNode createDataNode() {
-		final ObjectNode node = factory().objectNode();
-		node.set("callsign", factory().textNode(callSign));
-		return node;
-	}
-	
+    @Override
+    protected JsonNode createDataNode() {
+        final ObjectNode node = factory().objectNode();
+        node.set("callsign", factory().textNode(callSign));
+        return node;
+    }
+
 }

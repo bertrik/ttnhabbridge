@@ -5,8 +5,8 @@ package nl.sikken.bertrik.hab.habitat;
  */
 public interface IHabReceiver {
 
-	public String getCallsign();
-	
-	public Location getLocation();
-	
+    public String getCallsign();
+
+    public Location getLocation();
+
 }

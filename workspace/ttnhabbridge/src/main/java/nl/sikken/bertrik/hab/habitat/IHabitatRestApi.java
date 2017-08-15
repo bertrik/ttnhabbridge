@@ -17,9 +17,9 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public interface IHabitatRestApi {
-	
-	@Path("/_update/add_listener/{doc_id}")
-	@PUT
-	public String updateListener(@PathParam("doc_id") String docId, String json);
+
+    @Path("/_update/add_listener/{doc_id}")
+    @PUT
+    public String updateListener(@PathParam("doc_id") String docId, String json);
 
 }

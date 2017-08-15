@@ -13,31 +13,31 @@ import nl.sikken.bertrik.hab.habitat.Location;
  */
 public final class ListenerTelemetryDocTest {
 
-	/**
-	 * Verifies basic formatting.
-	 */
-	@Test
-	public void testFormat() {
-		final Date date = new Date();
-		final IHabReceiver receiver = createHabReceiver("BERTRIK", new Location(1.23, 4.56, 7.8));
-		final ListenerTelemetryDoc doc = new ListenerTelemetryDoc(date, receiver);
-		final String json = doc.format();
+    /**
+     * Verifies basic formatting.
+     */
+    @Test
+    public void testFormat() {
+        final Date date = new Date();
+        final IHabReceiver receiver = createHabReceiver("BERTRIK", new Location(1.23, 4.56, 7.8));
+        final ListenerTelemetryDoc doc = new ListenerTelemetryDoc(date, receiver);
+        final String json = doc.format();
 
-		Assert.assertNotNull(json);
-	}
+        Assert.assertNotNull(json);
+    }
 
-	private IHabReceiver createHabReceiver(String callSign, Location location) {
-		return new IHabReceiver() {
-			@Override
-			public Location getLocation() {
-				return location;
-			}
+    private IHabReceiver createHabReceiver(String callSign, Location location) {
+        return new IHabReceiver() {
+            @Override
+            public Location getLocation() {
+                return location;
+            }
 
-			@Override
-			public String getCallsign() {
-				return callSign;
-			}
-		};
-	}
+            @Override
+            public String getCallsign() {
+                return callSign;
+            }
+        };
+    }
 
 }

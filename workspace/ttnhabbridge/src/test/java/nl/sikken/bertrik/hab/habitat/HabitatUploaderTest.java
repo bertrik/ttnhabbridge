@@ -58,7 +58,7 @@ public final class HabitatUploaderTest {
 	}
 
 	@Test
-	@Ignore("this is not a junit test")
+    @Ignore("this is not a junit test")
 	public void testActualHappyFlow() {
 		final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org/habitat", 3000);
 		final HabitatUploader uploader = new HabitatUploader(restClient);

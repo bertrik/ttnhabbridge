@@ -9,8 +9,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * @author bertrik
- *
+ * Abstract listener doc, base class for specific listener docs.
  */
 public abstract class ListenerDoc {
 

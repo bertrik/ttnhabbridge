@@ -1,6 +1,6 @@
 package nl.sikken.bertrik.hab;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +16,7 @@ public final class Sentence {
 	
 	private final String callSign;
 	private final int id;
-	private final int time;
+	private final Date time;
 	private final double latitude;
 	private final double longitude;
 	private final double altitude;
@@ -35,7 +35,7 @@ public final class Sentence {
 	 * @param longitude the longitude (degrees)
 	 * @param altitude the altitude (meter)
 	 */
-	public Sentence(String callSign, int id, int time, double latitude, double longitude, double altitude) {
+	public Sentence(String callSign, int id, Date time, double latitude, double longitude, double altitude) {
 		this.callSign = callSign;
 		this.id = id;
 		this.time = time;
@@ -53,16 +53,18 @@ public final class Sentence {
 		extras.add(value);
 	}
 	
-	public String format() throws UnsupportedEncodingException {
+	/**
+	 * @return a sentence formatted according to the basic UKHAS convention
+	 */
+	public String format() {
 		// format time
 		final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss");
 		fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-		final Date date = new Date(1000L * time);
-		final String time = fmt.format(date);
+		final String timeString = fmt.format(time);
 		
 		// format basic string
 		final StringBuilder sb = new StringBuilder();
-		sb.append(String.format(Locale.US, "%s,%d,%s,%.6f,%.6f,%.1f", callSign, id, time, latitude, longitude, altitude));
+		sb.append(String.format(Locale.US, "%s,%d,%s,%.6f,%.6f,%.1f", callSign, id, timeString, latitude, longitude, altitude));
 		for (String s : extras) {
 			sb.append(",");
 			sb.append(s);
@@ -70,7 +72,7 @@ public final class Sentence {
 		final String basic = sb.toString();
 
 		// append header, checksum, etc
-		final byte[] bytes = basic.getBytes("US-ASCII");
+		final byte[] bytes = basic.getBytes(StandardCharsets.US_ASCII);
 		final int crcValue = crc16.calculate(bytes, 0xFFFF);
 		final String formatted = String.format("$$%s*%04X\n", basic, crcValue);
 		return formatted;

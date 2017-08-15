@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
+
 /**
  * Habitat uploader.
  */
@@ -93,10 +95,11 @@ public final class HabitatUploader {
 			LOG.info("Uploading for {}: {}", receiver.getCallsign(), sentence.trim());
 
 			// create Json
-			final String json = createJson(receiver, bytes, date, date);
+			final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(date, receiver.getCallsign(), bytes);
+			final String json = doc.format();
 			
 			// submit it to our processing thread
-			uploadTelemetry(docId, json);
+			executor.submit(() -> uploadTelemetry(docId, json));
 		}
 	}
 	
@@ -148,7 +151,7 @@ public final class HabitatUploader {
 	}
 	
 	/**
-	 * Creates the document id.
+	 * Creates the document id from the raw payload telemetry sentence.
 	 * 
 	 * @param bytes the raw sentence
 	 * @return the document id
@@ -157,6 +160,19 @@ public final class HabitatUploader {
 		final byte[] base64 = base64Encoder.encode(bytes);
 		final byte[] hash = sha256.digest(base64);
 		return DatatypeConverter.printHexBinary(hash).toLowerCase();
+	}
+	
+	public String createListenerInformation(String callSign, Date dateCreated, Date dateUploaded) {
+		final JsonNodeFactory factory = new JsonNodeFactory(false);
+		final ObjectNode topNode = factory.objectNode();
+		topNode.set("type", factory.textNode("listener_information"));
+		topNode.set("time_created", factory.textNode(dateFormat.format(dateCreated)));
+		topNode.set("time_uploaded", factory.textNode(dateFormat.format(dateUploaded)));
+		final ObjectNode callSignNode = factory.objectNode();
+		callSignNode.set("callsign", factory.textNode(callSign));
+		topNode.set("data", callSignNode);
+
+		return topNode.toString();
 	}
 	
 	/**

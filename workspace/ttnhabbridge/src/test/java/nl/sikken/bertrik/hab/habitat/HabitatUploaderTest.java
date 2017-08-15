@@ -3,6 +3,7 @@ package nl.sikken.bertrik.hab.habitat;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -56,4 +57,20 @@ public final class HabitatUploaderTest {
 		return receiver;
 	}
 
+	@Test
+	@Ignore("this is not a junit test")
+	public void testActualHappyFlow() {
+		final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org/habitat", 3000);
+		final HabitatUploader uploader = new HabitatUploader(restClient);
+		uploader.start();
+		try {
+			final Date date = new Date();
+			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
+			final IHabReceiver receiver = createReceiver("BERTRIK", new Location(52.0182307, 4.695772, 4));
+			uploader.upload(sentence.format(), Arrays.asList(receiver), date);
+		} finally {
+			uploader.stop();
+		}
+	}
+	
 }

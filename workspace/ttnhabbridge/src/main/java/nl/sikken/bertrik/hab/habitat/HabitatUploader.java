@@ -67,9 +67,8 @@ public final class HabitatUploader {
 	
 	/**
 	 * Stops the uploader process. 
-	 * @throws InterruptedException in case of a termination problem 
 	 */
-	public void stop() throws InterruptedException {
+	public void stop() {
 		LOG.info("Stopping habitat uploader");
 		executor.shutdown();
 		LOG.info("Stopped habitat uploader");

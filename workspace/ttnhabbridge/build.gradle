@@ -23,3 +23,21 @@ startScripts {
         unixScriptFile.text    = unixScriptFile.text.replace('$APP_HOME/lib/cfg', '$APP_HOME/cfg')
     }
 }
+
+// fix scripts executable bit and line endings
+import org.apache.tools.ant.filters.FixCrLfFilter
+
+distributions {
+    main {
+        contents {
+            filesMatching("**/*.sh") {
+                mode = 0755
+                filter(FixCrLfFilter,
+                    eol: FixCrLfFilter.CrLf.newInstance('lf'),
+                    tab: FixCrLfFilter.AddAsisRemove.newInstance('asis'),
+                    eof: FixCrLfFilter.AddAsisRemove.newInstance('remove'),
+                    fixlast: true)
+            }
+        } 
+    }
+}

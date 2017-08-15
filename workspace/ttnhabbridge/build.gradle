@@ -9,7 +9,6 @@ dependencies {
     compile libraries.jackson
     
     testCompile libraries.jetty
-    testCompile libraries.mockito
 }
 
 //Add configuration folder to classpath:

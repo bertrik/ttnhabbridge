@@ -1,8 +1,8 @@
 # ttnhabbridge
-Bridge between the-things-network and the habitat network, to receive amateur balloons using LoRaWAN
+Bridge between the-things-network and the habitat network, to receive telemetry from amateur balloons using LoRaWAN
 
 # Development environment
-I develop this on Windows 7, in Eclipse, using subversion.
+I develop this on Windows 7, in Java 8 in Eclipse, using subversion.
 
 Steps to install everything:
 * download a Java JDK and put it in tools/jdk
@@ -21,4 +21,11 @@ Steps to prepare the Eclipse environment:
 Steps to create a release:
 * edit the version number in @@@TODO
 * using gradle: type 'gradlew distTar' or 'gradlew distZip'
-* the .tar or .zip file can be found under build/distributions
+* the .tar (for Linux) or .zip (for Windows) file can be found under build/distributions
+
+# Deployment
+Steps to deploy the application:
+* unzip the .zip or .tar file
+* cd into the application directory
+* start the .bat or .sh file
+* TODO: install a systemd service file

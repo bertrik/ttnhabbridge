@@ -7,8 +7,8 @@ dependencies {
     
     compile libraries.jersey_client
     compile libraries.jackson
-    compile libraries.jetty
     
+    testCompile libraries.jetty
     testCompile libraries.mockito
 }
 

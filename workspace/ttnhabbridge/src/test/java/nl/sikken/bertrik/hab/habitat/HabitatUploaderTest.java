@@ -31,7 +31,7 @@ public final class HabitatUploaderTest {
 		// test it
 		uploader.start();
 		try {
-			final IHabReceiver receiver = createReceiver();
+			final IHabReceiver receiver = createReceiver("BERTRIK", new Location(52.0182307, 4.695772, 4));
 			final Date date = new Date();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
 			uploader.upload(sentence.format(), Arrays.asList(receiver), date);
@@ -42,15 +42,15 @@ public final class HabitatUploaderTest {
 		}
 	}
 
-	private IHabReceiver createReceiver() {
+	private IHabReceiver createReceiver(String callSign, Location location) {
 		final IHabReceiver receiver = new IHabReceiver() {
 			@Override
 			public Location getLocation() {
-				return new Location(52.0182307, 4.695772, 4);
+				return location;
 			}
 			@Override
 			public String getCallsign() {
-				return "BERTRIK";
+				return callSign;
 			}
 		};
 		return receiver;

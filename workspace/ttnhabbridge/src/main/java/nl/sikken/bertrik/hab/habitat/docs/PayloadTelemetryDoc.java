@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public final class PayloadTelemetryDoc {
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
     private final String callSign;
     private final byte[] rawBytes;

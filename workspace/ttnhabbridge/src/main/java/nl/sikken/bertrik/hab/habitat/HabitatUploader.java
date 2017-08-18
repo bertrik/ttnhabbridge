@@ -83,7 +83,7 @@ public final class HabitatUploader {
      * @param receivers list of receivers that got this sentence
      * @param date the current date
      */
-    public void upload(String sentence, List<IHabReceiver> receivers, Date date) {
+    public void upload(String sentence, List<String> receivers, Date date) {
         // encode sentence as raw bytes
         final byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
 
@@ -91,11 +91,11 @@ public final class HabitatUploader {
         final String docId = createDocId(bytes);
         LOG.info("docid = {}", docId);
 
-        for (IHabReceiver receiver : receivers) {
-            LOG.info("Uploading for {}: {}", receiver.getCallsign(), sentence.trim());
+        for (String receiver : receivers) {
+            LOG.info("Uploading for {}: {}", receiver, sentence.trim());
 
             // create Json
-            final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(date, receiver.getCallsign(), bytes);
+            final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(date, receiver, bytes);
             final String json = doc.format();
 
             // submit it to our processing thread
@@ -128,7 +128,7 @@ public final class HabitatUploader {
      * @param dateUploaded the upload date
      * @return a new JSON encoded string
      */
-    public String createJson(IHabReceiver receiver, byte[] bytes, Date dateCreated, Date dateUploaded) {
+    public String createJson(HabReceiver receiver, byte[] bytes, Date dateCreated, Date dateUploaded) {
         final JsonNodeFactory factory = new JsonNodeFactory(false);
         final ObjectNode topNode = factory.objectNode();
 

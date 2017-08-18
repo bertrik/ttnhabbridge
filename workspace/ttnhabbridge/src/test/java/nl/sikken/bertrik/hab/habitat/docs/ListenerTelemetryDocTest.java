@@ -5,7 +5,7 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
-import nl.sikken.bertrik.hab.habitat.IHabReceiver;
+import nl.sikken.bertrik.hab.habitat.HabReceiver;
 import nl.sikken.bertrik.hab.habitat.Location;
 
 /**
@@ -19,25 +19,11 @@ public final class ListenerTelemetryDocTest {
     @Test
     public void testFormat() {
         final Date date = new Date();
-        final IHabReceiver receiver = createHabReceiver("BERTRIK", new Location(1.23, 4.56, 7.8));
+        final HabReceiver receiver = new HabReceiver("BERTRIK", new Location(1.23, 4.56, 7.8));
         final ListenerTelemetryDoc doc = new ListenerTelemetryDoc(date, receiver);
         final String json = doc.format();
 
         Assert.assertNotNull(json);
-    }
-
-    private IHabReceiver createHabReceiver(String callSign, Location location) {
-        return new IHabReceiver() {
-            @Override
-            public Location getLocation() {
-                return location;
-            }
-
-            @Override
-            public String getCallsign() {
-                return callSign;
-            }
-        };
     }
 
 }

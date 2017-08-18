@@ -5,14 +5,14 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import nl.sikken.bertrik.hab.habitat.IHabReceiver;
+import nl.sikken.bertrik.hab.habitat.HabReceiver;
 
 /**
  * Listener telemetry doc.
  */
 public final class ListenerTelemetryDoc extends ListenerDoc {
 
-    private final IHabReceiver receiver;
+    private final HabReceiver receiver;
 
     /**
      * Constructor.
@@ -20,7 +20,7 @@ public final class ListenerTelemetryDoc extends ListenerDoc {
      * @param date the date
      * @param receiver the receiver info
      */
-    public ListenerTelemetryDoc(Date date, IHabReceiver receiver) {
+    public ListenerTelemetryDoc(Date date, HabReceiver receiver) {
         super("listener_telemetry", date);
         this.receiver = receiver;
     }

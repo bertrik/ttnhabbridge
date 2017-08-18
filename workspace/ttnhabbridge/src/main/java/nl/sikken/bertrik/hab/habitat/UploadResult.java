@@ -3,8 +3,7 @@ package nl.sikken.bertrik.hab.habitat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * @author bertrik
- *
+ * UploadResult object for uploaded documents.
  */
 public final class UploadResult {
     
@@ -31,6 +30,11 @@ public final class UploadResult {
 
     public String getRev() {
         return rev;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("ok=%s,id=%s,rev=%s", ok, id, rev);
     }
     
 }

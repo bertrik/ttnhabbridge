@@ -3,8 +3,6 @@ package nl.sikken.bertrik.hab.habitat;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.Date;
@@ -22,9 +20,6 @@ import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
 
 /**
@@ -37,7 +32,6 @@ public final class HabitatUploader {
     private final Logger LOG = LoggerFactory.getLogger(HabitatUploader.class);
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Encoder base64Encoder = Base64.getEncoder();
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
     private final IHabitatRestApi restClient;
 
@@ -120,59 +114,15 @@ public final class HabitatUploader {
     }
 
     /**
-     * Creates the JSON payload.
-     * 
-     * @param receiver the radio receiver properties
-     * @param bytes the raw sentence
-     * @param dateCreated the creation date
-     * @param dateUploaded the upload date
-     * @return a new JSON encoded string
-     */
-    public String createJson(HabReceiver receiver, byte[] bytes, Date dateCreated, Date dateUploaded) {
-        final JsonNodeFactory factory = new JsonNodeFactory(false);
-        final ObjectNode topNode = factory.objectNode();
-
-        // create data node
-        final ObjectNode dataNode = factory.objectNode();
-        dataNode.set("_raw", factory.binaryNode(bytes));
-
-        // create receivers node
-        final ObjectNode receiversNode = factory.objectNode();
-        final ObjectNode receiverNode = factory.objectNode();
-        receiverNode.set("time_created", factory.textNode(dateFormat.format(dateCreated)));
-        receiverNode.set("time_uploaded", factory.textNode(dateFormat.format(dateUploaded)));
-        receiversNode.set(receiver.getCallsign(), receiverNode);
-
-        // put it together in the top node
-        topNode.set("data", dataNode);
-        topNode.set("receivers", receiversNode);
-
-        return topNode.toString();
-    }
-
-    /**
      * Creates the document id from the raw payload telemetry sentence.
      * 
      * @param bytes the raw sentence
      * @return the document id
      */
-    public String createDocId(byte[] bytes) {
+    private String createDocId(byte[] bytes) {
         final byte[] base64 = base64Encoder.encode(bytes);
         final byte[] hash = sha256.digest(base64);
         return DatatypeConverter.printHexBinary(hash).toLowerCase();
-    }
-
-    public String createListenerInformation(String callSign, Date dateCreated, Date dateUploaded) {
-        final JsonNodeFactory factory = new JsonNodeFactory(false);
-        final ObjectNode topNode = factory.objectNode();
-        topNode.set("type", factory.textNode("listener_information"));
-        topNode.set("time_created", factory.textNode(dateFormat.format(dateCreated)));
-        topNode.set("time_uploaded", factory.textNode(dateFormat.format(dateUploaded)));
-        final ObjectNode callSignNode = factory.objectNode();
-        callSignNode.set("callsign", factory.textNode(callSign));
-        topNode.set("data", callSignNode);
-
-        return topNode.toString();
     }
 
     /**

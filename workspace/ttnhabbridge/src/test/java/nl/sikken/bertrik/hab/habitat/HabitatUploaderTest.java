@@ -72,7 +72,7 @@ public final class HabitatUploaderTest {
 	public void testListenerUpload() {
 	    // get two uuids
 	    final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
-	    final UuidsList list = restClient.getUuids(3);
+	    final UuidsList list = restClient.getUuids(2);
 	    final List<String> uuids = list.getUuids();
 	    LOG.info("list = {},{}", uuids.get(0), uuids.get(1));
 	    
@@ -81,13 +81,15 @@ public final class HabitatUploaderTest {
 	    
 	    // upload payload listener info
 	    final ListenerInformationDoc info = new ListenerInformationDoc(date, callSign);
-	    restClient.uploadDocument(uuids.get(0), info.format());
+	    final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
+	    LOG.info("Result from uploading listener info: {}", infoResult);
 	    
 	    // upload payload telemetry
 	    final Location location = new Location(52.0182307, 4.695772, 15);
 	    final HabReceiver receiver = new HabReceiver(callSign, location);
 	    final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(date, receiver);
-	    restClient.uploadDocument(uuids.get(1), telem.format());
+	    final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
+        LOG.info("Result from uploading listener telemetry: {}", telemResult);
 	}
 	
 }

@@ -2,24 +2,17 @@ package nl.sikken.bertrik.hab.habitat;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import nl.sikken.bertrik.hab.Sentence;
-import nl.sikken.bertrik.hab.habitat.docs.ListenerInformationDoc;
-import nl.sikken.bertrik.hab.habitat.docs.ListenerTelemetryDoc;
 
 /**
  * Unit tests for HabitatUploader.
  */
 public final class HabitatUploaderTest {
     
-    private final Logger LOG = LoggerFactory.getLogger(HabitatUploaderTest.class);
-	
 	/**
 	 * Happy flow scenario.
 	 * 
@@ -40,7 +33,7 @@ public final class HabitatUploaderTest {
 			final String receiver = "BERTRIK";
 			final Date date = new Date();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
-			uploader.upload(sentence.format(), Arrays.asList(receiver), date);
+			uploader.uploadPayloadTelemetry(sentence.format(), Arrays.asList(receiver), date);
 			
 			Mockito.verify(restClient, Mockito.timeout(3000)).updateListener(Mockito.anyString(), Mockito.anyString());
 		} finally {
@@ -50,7 +43,7 @@ public final class HabitatUploaderTest {
 
 	@Test
 //    @Ignore("this is not a junit test")
-	public void testActualHappyFlow() throws InterruptedException {
+	public void testActualPayloadUpload() throws InterruptedException {
 		final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
 		final HabitatUploader uploader = new HabitatUploader(restClient);
 		uploader.start();
@@ -58,7 +51,7 @@ public final class HabitatUploaderTest {
 			final Date date = new Date();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
 			final String receiver = "BERTRIK";
-			uploader.upload(sentence.format(), Arrays.asList(receiver), date);
+			uploader.uploadPayloadTelemetry(sentence.format(), Arrays.asList(receiver), date);
 			Thread.sleep(3000);
 		} finally {
 			uploader.stop();
@@ -67,29 +60,20 @@ public final class HabitatUploaderTest {
 	
 	/**
 	 * Verifies upload of listener information and telemetry.
+	 * @throws InterruptedException 
 	 */
 	@Test
-	public void testListenerUpload() {
-	    // get two uuids
+	public void testActualListenerUpload() throws InterruptedException {
 	    final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
-	    final UuidsList list = restClient.getUuids(2);
-	    final List<String> uuids = list.getUuids();
-	    LOG.info("list = {},{}", uuids.get(0), uuids.get(1));
-	    
-	    final Date date = new Date();
-	    final String callSign = "BERTRIK";
-	    
-	    // upload payload listener info
-	    final ListenerInformationDoc info = new ListenerInformationDoc(date, callSign);
-	    final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
-	    LOG.info("Result from uploading listener info: {}", infoResult);
-	    
-	    // upload payload telemetry
-	    final Location location = new Location(52.0182307, 4.695772, 15);
-	    final HabReceiver receiver = new HabReceiver(callSign, location);
-	    final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(date, receiver);
-	    final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
-        LOG.info("Result from uploading listener telemetry: {}", telemResult);
+	    final HabitatUploader uploader = new HabitatUploader(restClient);
+	    try {
+            final Date date = new Date();
+            final HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0182307, 4.695772, 15));
+	        uploader.uploadListenerData(receiver, date);
+	        Thread.sleep(3000);
+	    } finally {
+	        uploader.stop();
+	    }
 	}
 	
 }

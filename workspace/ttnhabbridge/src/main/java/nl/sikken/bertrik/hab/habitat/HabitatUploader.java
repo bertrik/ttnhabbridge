@@ -14,12 +14,15 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.ws.WebServiceException;
 
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.sikken.bertrik.hab.habitat.docs.ListenerInformationDoc;
+import nl.sikken.bertrik.hab.habitat.docs.ListenerTelemetryDoc;
 import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
 
 /**
@@ -71,13 +74,13 @@ public final class HabitatUploader {
     }
 
     /**
-     * Uploads a new sentence to the HAB network (non-blocking).
+     * Schedules a new sentence to be sent to the HAB network.
      * 
      * @param sentence the ASCII sentence
      * @param receivers list of receivers that got this sentence
      * @param date the current date
      */
-    public void upload(String sentence, List<String> receivers, Date date) {
+    public void uploadPayloadTelemetry(String sentence, List<String> receivers, Date date) {
         // encode sentence as raw bytes
         final byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
 
@@ -138,5 +141,42 @@ public final class HabitatUploader {
                 .property(ClientProperties.READ_TIMEOUT, timeout).target(url);
         return WebResourceFactory.newResource(IHabitatRestApi.class, target);
     }
-
+    
+    /**
+     * Schedules new listener data to be sent to habitat.
+     * 
+     * @param receiver the receiver data
+     * @param date the current date
+     */
+    public void uploadListenerData(HabReceiver receiver, Date date) {
+        executor.submit(() -> uploadListener(receiver, date));
+    }
+    
+    /**
+     * Uploads listener data (information and telemetry)
+     * 
+     * @param receiver the receiver/listener
+     * @param date the current date
+     */
+    private void uploadListener(HabReceiver receiver, Date date) {
+        try {
+            // get two uuids
+            final UuidsList list = restClient.getUuids(2);
+            final List<String> uuids = list.getUuids();
+            LOG.info("list = {},{}", uuids.get(0), uuids.get(1));
+            
+            // upload payload listener info
+            final ListenerInformationDoc info = new ListenerInformationDoc(date, receiver.getCallsign());
+            final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
+            LOG.info("Result from uploading listener info: {}", infoResult);
+            
+            // upload payload telemetry
+            final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(date, receiver);
+            final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
+            LOG.info("Result from uploading listener telemetry: {}", telemResult);
+        } catch (WebServiceException e) {
+            LOG.warn("Caught WebServiceException: {}", e.getMessage());
+        }
+    }
+    
 }

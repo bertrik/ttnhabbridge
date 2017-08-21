@@ -24,16 +24,16 @@ public final class SodaqOnePayload {
     /**
      * Constructor.
      * 
-     * @param timeStamp
-     * @param battVoltage
-     * @param boardTemp
-     * @param latitude
-     * @param longitude
-     * @param altitude
-     * @param sog
-     * @param cog
-     * @param numSats
-     * @param ttf
+     * @param timeStamp the time stamp (UTC seconds)
+     * @param battVoltage the battery voltage (unknown encoding)
+     * @param boardTemp the board temperature (degrees celcius)
+     * @param latitude the latitude (units of 1E-7)
+     * @param longitude the longitude (units of 1E-7)
+     * @param altitude the altitude (unit?)
+     * @param sog the speed over ground (unit?)
+     * @param cog the course over ground (unit?)
+     * @param numSats number of satellites used in fix
+     * @param ttf the time to fix
      */
     public SodaqOnePayload(long timeStamp, double battVoltage, int boardTemp, double latitude, double longitude, double altitude,
             double sog, int cog, int numSats, int ttf) {
@@ -114,7 +114,7 @@ public final class SodaqOnePayload {
     
     @Override
     public String toString() {
-        return String.format(Locale.US, "ts=%d,batt=%.2f,lat=%f,lon=%f,alt=%f",
+        return String.format(Locale.US, "ts=%d,batt=%.2f,lat=%f,lon=%f,alt=%.0f",
                 timeStamp, battVoltage, latitude, longitude, altitude);
     }
     

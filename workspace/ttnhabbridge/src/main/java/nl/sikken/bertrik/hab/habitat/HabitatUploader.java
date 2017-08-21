@@ -14,7 +14,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.ws.WebServiceException;
 
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
@@ -90,7 +89,6 @@ public final class HabitatUploader {
 
         // determine docId
         final String docId = createDocId(bytes);
-        LOG.info("docid = {}", docId);
 
         for (HabReceiver receiver : receivers) {
             LOG.info("Uploading for {}: {}", receiver, sentence.trim());
@@ -111,10 +109,10 @@ public final class HabitatUploader {
      * @param json the JSON payload
      */
     private void uploadTelemetry(String docId, String json) {
-        LOG.info("Sending for {}: {}", docId, json);
+        LOG.info("Sending payload telemetry doc {}: {}", docId, json);
         try {
             final String response = restClient.updateListener(docId, json);
-            LOG.info("Response for {}: {}", docId, response);
+            LOG.info("Response for payload telemetry doc {}: {}", docId, response);
         } catch (WebApplicationException e) {
             LOG.warn("Caught exception: {}", e.getMessage());
         }
@@ -163,22 +161,26 @@ public final class HabitatUploader {
      * @param date the current date
      */
     private void uploadListener(HabReceiver receiver, Date date) {
+        LOG.info("Upload listener data for {}", receiver);
         try {
             // get two uuids
+            LOG.info("Getting UUIDs for listener data upload...");
             final UuidsList list = restClient.getUuids(2);
             final List<String> uuids = list.getUuids();
-            LOG.info("list = {},{}", uuids.get(0), uuids.get(1));
+            LOG.info("Got {} UUIDs", uuids.size());
             
             // upload payload listener info
+            LOG.info("Sending listener info using UUID {}...", uuids.get(0));
             final ListenerInformationDoc info = new ListenerInformationDoc(date, receiver.getCallsign());
             final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
             LOG.info("Result from uploading listener info: {}", infoResult);
             
             // upload payload telemetry
+            LOG.info("Sending listener telemetry using UUID {}...", uuids.get(1));
             final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(date, receiver);
             final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
             LOG.info("Result from uploading listener telemetry: {}", telemResult);
-        } catch (WebServiceException e) {
+        } catch (Exception e) {
             LOG.warn("Caught WebServiceException: {}", e.getMessage());
         }
     }

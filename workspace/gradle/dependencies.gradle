@@ -26,6 +26,8 @@ libraries.jersey_client = [
     'org.glassfish.jersey.ext:jersey-proxy-client:2.23.2',
 ]
 
+libraries.mqtt_client = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:+' 
+
 // test libraries
 libraries.junit = 'junit:junit:4.12'
 libraries.mockito = 'org.mockito:mockito-all:1.10.19'

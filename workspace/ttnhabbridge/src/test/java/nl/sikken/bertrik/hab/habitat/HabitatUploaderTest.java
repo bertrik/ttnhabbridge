@@ -30,7 +30,7 @@ public final class HabitatUploaderTest {
 		// test it
 		uploader.start();
 		try {
-			final String receiver = "BERTRIK";
+			final HabReceiver receiver = new HabReceiver("BERTRIK", null);
 			final Date date = new Date();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
 			uploader.uploadPayloadTelemetry(sentence.format(), Arrays.asList(receiver), date);
@@ -50,7 +50,7 @@ public final class HabitatUploaderTest {
 		try {
 			final Date date = new Date();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
-			final String receiver = "BERTRIK";
+			final HabReceiver receiver = new HabReceiver("BERTRIK", null);
 			uploader.uploadPayloadTelemetry(sentence.format(), Arrays.asList(receiver), date);
 			Thread.sleep(3000);
 		} finally {

@@ -7,6 +7,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Listener information doc.
+ * 
+ * @see http://habitat.habhub.org/jse/#schemas/listener_information.json
+ * 
+ * @note the document above does NOT describe all fields that are present in practice!
+ * There are also fields like "radio", "antenna", "location", "name"
  */
 public final class ListenerInformationDoc extends ListenerDoc {
 
@@ -27,6 +32,7 @@ public final class ListenerInformationDoc extends ListenerDoc {
     protected JsonNode createDataNode() {
         final ObjectNode node = factory().objectNode();
         node.set("callsign", factory().textNode(callSign));
+        node.set("radio", factory().textNode("TheThingsNetwork"));
         return node;
     }
 

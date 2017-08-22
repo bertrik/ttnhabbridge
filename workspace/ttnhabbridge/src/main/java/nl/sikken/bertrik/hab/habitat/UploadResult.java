@@ -16,6 +16,24 @@ public final class UploadResult {
     @JsonProperty("rev")
     private String rev;
     
+    private UploadResult() {
+        // jackson constructor
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param ok whether upload was ok
+     * @param id the doc id
+     * @param rev the doc rev
+     */
+    public UploadResult(boolean ok, String id, String rev) {
+        this();
+        this.ok = ok;
+        this.id = id;
+        this.rev = rev;
+    }
+    
     public boolean isOk() {
         return ok;
     }

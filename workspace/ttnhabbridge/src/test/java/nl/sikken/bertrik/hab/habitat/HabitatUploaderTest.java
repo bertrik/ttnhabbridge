@@ -15,15 +15,15 @@ import nl.sikken.bertrik.hab.Sentence;
 public final class HabitatUploaderTest {
     
 	/**
-	 * Happy flow scenario.
-	 * 
-	 * Verifies that a request to upload results in an actual upload.
+	 * Happy flow scenario for payload upload.
 	 */
 	@Test
-	public void testMockedHappyFlow() {
+	public void testUploadPayload() {
 		// create a mocked rest client
 		final IHabitatRestApi restClient = Mockito.mock(IHabitatRestApi.class);
 		Mockito.when(restClient.updateListener(Mockito.anyString(), Mockito.anyString())).thenReturn("OK");
+		Mockito.when(restClient.getUuids(Mockito.anyInt())).thenReturn(new UuidsList(Arrays.asList("uuid1", "uuid2")));
+		
 		final HabitatUploader uploader = new HabitatUploader(restClient);
 		
 		// verify upload using the uploader
@@ -32,12 +32,38 @@ public final class HabitatUploaderTest {
 			final HabReceiver receiver = new HabReceiver("BERTRIK", null);
 			final Date date = new Date();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
+
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), date);
-			
 			Mockito.verify(restClient, Mockito.timeout(3000)).updateListener(Mockito.anyString(), Mockito.anyString());
 		} finally {
 			uploader.stop();
 		}
+	}
+	
+	/**
+	 * Happy flow scenario for listener upload.
+	 */
+	@Test
+	public void testUploadListener() {
+        // create a mocked rest client
+        final IHabitatRestApi restClient = Mockito.mock(IHabitatRestApi.class);
+        Mockito.when(restClient.getUuids(Mockito.anyInt())).thenReturn(new UuidsList(Arrays.asList("uuid1", "uuid2")));
+        Mockito.when(restClient.uploadDocument(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(new UploadResult(true, "id", "rev"));
+        
+        final HabitatUploader uploader = new HabitatUploader(restClient);
+        
+        // verify upload using the uploader
+        uploader.start();
+        try {
+            final HabReceiver receiver = new HabReceiver("BERTRIK", null);
+            final Date date = new Date();
+            
+            uploader.scheduleListenerDataUpload(receiver, date);
+            Mockito.verify(restClient, Mockito.timeout(3000)).uploadDocument(Mockito.anyString(), Mockito.anyString());
+        } finally {
+            uploader.stop();
+        }
 	}
 
 	/**

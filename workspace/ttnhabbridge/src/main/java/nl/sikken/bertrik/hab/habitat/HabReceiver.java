@@ -27,4 +27,9 @@ public final class HabReceiver {
         return location;
     }
 
+    @Override
+    public String toString() {
+        return callSign;
+    }
+    
 }

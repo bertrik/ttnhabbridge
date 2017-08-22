@@ -137,7 +137,7 @@ public final class TtnHabBridge {
             final List<HabReceiver> receivers = new ArrayList<>();
             for (MqttGateway gw : data.getMetaData().getMqttGateways()) {
                 final HabReceiver receiver = 
-                        new HabReceiver(gw.getGatewayId(), new Location(gw.getLatitude(), gw.getLongitude(), gw.getAltitude()));
+                        new HabReceiver(gw.getId(), new Location(gw.getLatitude(), gw.getLongitude(), gw.getAltitude()));
                 receivers.add(receiver);
             }
     

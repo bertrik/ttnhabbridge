@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class MqttGateway {
 
     @JsonProperty("gtw_id")
-    private String gatewayId;
+    private String id;
     
     @JsonProperty("gtw_trusted")
     private boolean trusted;
@@ -27,8 +27,8 @@ public final class MqttGateway {
     @JsonProperty("altitude")
     private double altitude;
 
-    public String getGatewayId() {
-        return gatewayId;
+    public String getId() {
+        return id;
     }
 
     public boolean isTrusted() {

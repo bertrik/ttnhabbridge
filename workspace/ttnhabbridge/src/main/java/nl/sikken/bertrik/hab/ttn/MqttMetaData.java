@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class MqttMetaData {
 
+    @JsonProperty("time")
     private String time;
     
     @JsonProperty("gateways")

@@ -30,10 +30,6 @@ public final class MqttData {
     @JsonProperty("metadata")
     private MqttMetaData metaData;
 
-    private MqttData() {
-        // jackson constructor
-    }
-
     public String getAppId() {
         return appId;
     }

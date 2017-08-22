@@ -1,4 +1,5 @@
 apply plugin: "application"
+apply plugin: "pmd"
 
 mainClassName = 'nl.sikken.bertrik.TtnHabBridge'
 

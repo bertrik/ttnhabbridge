@@ -1,7 +1,0 @@
-includeFlat 'example-jar'
-includeFlat 'example-techno-jax'
-includeFlat 'example-techno-webstart'
-includeFlat 'example-techno-style'
-
-// Here we set the overall project name. All other projects are seen as 'sub project' of this root project.
-rootProject.name = 'example'

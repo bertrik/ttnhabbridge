@@ -12,9 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.sikken.bertrik.hab.SodaqOnePayload;
 
 /**
- * Unit tests for MqttData.
+ * Unit tests for TTN messages.
  */
-public final class MqttDataTest {
+public final class TtnMessageTest {
 
     private static final String DATA = "{\"app_id\":\"ttnmapper\",\"dev_id\":\"mapper2\","
             + "\"hardware_serial\":\"0004A30B001ADBC5\",\"port\":1,\"counter\":4,"
@@ -35,7 +35,7 @@ public final class MqttDataTest {
     @Test
     public void testDecode() throws JsonParseException, JsonMappingException, IOException {
         final ObjectMapper mapper = new ObjectMapper();
-        final MqttData mqttData = mapper.readValue(DATA, MqttData.class);
+        final TtnMessage mqttData = mapper.readValue(DATA, TtnMessage.class);
         final byte[] raw = mqttData.getPayload();
 
         // check gateway field

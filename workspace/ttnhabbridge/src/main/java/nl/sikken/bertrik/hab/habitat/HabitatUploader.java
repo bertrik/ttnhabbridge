@@ -29,24 +29,30 @@ import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
  * 
  * Exchanges data with the habitat system.
  * All actions run on a single thread for simplicity.
- * 
  */
 public final class HabitatUploader {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(HabitatUploader.class);
 
-    private static MessageDigest sha256;
-
-    private final Logger LOG = LoggerFactory.getLogger(HabitatUploader.class);
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Encoder base64Encoder = Base64.getEncoder();
+    private final MessageDigest sha256;
 
     private final IHabitatRestApi restClient;
 
-    static {
-        try {
-            sha256 = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("No SHA-256 hash found");
-        }
+    /**
+     * Creates an actual REST client. Can be used in the constructor.
+     * 
+     * @param url the URL to connect to
+     * @param timeout the connect and read timeout (ms)
+     * @return a new REST client
+     */
+    public static IHabitatRestApi newRestClient(String url, int timeout) {
+        // create the REST client
+        LOG.info("Creating new habitat REST client with timeout {} for {}", timeout, url);
+        final WebTarget target = ClientBuilder.newClient().property(ClientProperties.CONNECT_TIMEOUT, timeout)
+                .property(ClientProperties.READ_TIMEOUT, timeout).target(url);
+        return WebResourceFactory.newResource(IHabitatRestApi.class, target);
     }
 
     /**
@@ -55,6 +61,12 @@ public final class HabitatUploader {
      * @param restClient the REST client used for uploading
      */
     public HabitatUploader(IHabitatRestApi restClient) {
+        try {
+            this.sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            // this is fatal
+            throw new IllegalStateException("No SHA-256 hash found");
+        }
         this.restClient = restClient;
     }
 
@@ -83,7 +95,7 @@ public final class HabitatUploader {
      * @param receivers list of receivers that got this sentence
      * @param date the current date
      */
-    public void uploadPayloadTelemetry(String sentence, List<HabReceiver> receivers, Date date) {
+    public void schedulePayloadTelemetryUpload(String sentence, List<HabReceiver> receivers, Date date) {
         // encode sentence as raw bytes
         final byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
 
@@ -131,26 +143,12 @@ public final class HabitatUploader {
     }
 
     /**
-     * Creates an actual REST client. Can be used in the constructor.
-     * 
-     * @param url the URL to connect to
-     * @param timeout the connect and read timeout (ms)
-     * @return a new REST client
-     */
-    public static IHabitatRestApi newRestClient(String url, int timeout) {
-        // create the REST client
-        final WebTarget target = ClientBuilder.newClient().property(ClientProperties.CONNECT_TIMEOUT, timeout)
-                .property(ClientProperties.READ_TIMEOUT, timeout).target(url);
-        return WebResourceFactory.newResource(IHabitatRestApi.class, target);
-    }
-    
-    /**
      * Schedules new listener data to be sent to habitat.
      * 
      * @param receiver the receiver data
      * @param date the current date
      */
-    public void uploadListenerData(HabReceiver receiver, Date date) {
+    public void scheduleListenerDataUpload(HabReceiver receiver, Date date) {
         executor.submit(() -> uploadListener(receiver, date));
     }
     

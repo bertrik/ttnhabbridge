@@ -25,11 +25,16 @@ import nl.sikken.bertrik.hab.habitat.HabReceiver;
 import nl.sikken.bertrik.hab.habitat.HabitatUploader;
 import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
 import nl.sikken.bertrik.hab.habitat.Location;
-import nl.sikken.bertrik.hab.ttn.MqttData;
-import nl.sikken.bertrik.hab.ttn.MqttGateway;
+import nl.sikken.bertrik.hab.ttn.TtnMessage;
+import nl.sikken.bertrik.hab.ttn.TtnMessageGateway;
 
 /**
  * Bridge between the-things-network and the habhub network.
+ * 
+ * Possible improvements:
+ * - put the MQTT functionality in its own module
+ * - add uncaught exception handler
+ * - add example systemd startup scripts
  */
 public final class TtnHabBridge {
 
@@ -111,6 +116,8 @@ public final class TtnHabBridge {
             }
         });
         mqttClient.subscribe(config.getMqttTopic());
+        
+        LOG.info("Started TTN-HAB bridge application");
     }
     
     private void handleMessageArrived(String topic, String message) {
@@ -118,7 +125,7 @@ public final class TtnHabBridge {
 
         try {
             // try to decode the payload
-            final MqttData data = mapper.readValue(message, MqttData.class);
+            final TtnMessage data = mapper.readValue(message, TtnMessage.class);
             
             final SodaqOnePayload sodaq = SodaqOnePayload.parse(data.getPayload());
             LOG.info("Got SODAQ message: {}", sodaq);
@@ -135,7 +142,7 @@ public final class TtnHabBridge {
     
             // create listeners
             final List<HabReceiver> receivers = new ArrayList<>();
-            for (MqttGateway gw : data.getMetaData().getMqttGateways()) {
+            for (TtnMessageGateway gw : data.getMetaData().getMqttGateways()) {
                 final HabReceiver receiver = 
                         new HabReceiver(gw.getId(), new Location(gw.getLatitude(), gw.getLongitude(), gw.getAltitude()));
                 receivers.add(receiver);
@@ -143,11 +150,11 @@ public final class TtnHabBridge {
     
             // send listener data
             for (HabReceiver receiver : receivers) {
-                uploader.uploadListenerData(receiver, now);
+                uploader.scheduleListenerDataUpload(receiver, now);
             }
             
             // send payload telemetry data
-            uploader.uploadPayloadTelemetry(line, receivers, now);
+            uploader.schedulePayloadTelemetryUpload(line, receivers, now);
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), message);
         } catch (BufferUnderflowException e) {
@@ -165,7 +172,7 @@ public final class TtnHabBridge {
             mqttClient.close();
         } catch (MqttException e) {
             // what can we do about this?
-            LOG.warn("Error closing MQTT client...");
+            LOG.warn("Error closing MQTT client: {}", e.getMessage());
         }
         uploader.stop();
     }
@@ -175,7 +182,7 @@ public final class TtnHabBridge {
         try {
             config.load(file);
         } catch (IOException e) {
-            LOG.info("Failed to load config, attempt to write defaults...");
+            LOG.info("Failed to load config {}, writing defaults", file.getAbsoluteFile());
             config.save(file);
         }
         return config;

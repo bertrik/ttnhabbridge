@@ -9,8 +9,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * @author bertrik
- *
+ * Representation of a HAB telemetry sentence.
  */
 public final class Sentence {
 
@@ -21,7 +20,7 @@ public final class Sentence {
     private final double longitude;
     private final double altitude;
 
-    private final CcittCrc16 crc16 = new CcittCrc16();
+    private final CrcCcitt16 crc16 = new CrcCcitt16();
 
     private final List<String> extras = new ArrayList<>();
 
@@ -54,6 +53,8 @@ public final class Sentence {
     }
 
     /**
+     * Formats the sentence into an ASCII string.
+     * 
      * @return a sentence formatted according to the basic UKHAS convention
      */
     public String format() {

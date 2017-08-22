@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Representation of a message received from the TTN MQTT stream.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class MqttData {
+public final class TtnMessage {
 
     @JsonProperty("app_id")
     private String appId;
@@ -28,7 +28,7 @@ public final class MqttData {
     private byte[] payload;
 
     @JsonProperty("metadata")
-    private MqttMetaData metaData;
+    private TtnMessageMetaData metaData;
 
     public String getAppId() {
         return appId;
@@ -54,7 +54,7 @@ public final class MqttData {
         return payload;
     }
 
-    public MqttMetaData getMetaData() {
+    public TtnMessageMetaData getMetaData() {
         return metaData;
     }
 

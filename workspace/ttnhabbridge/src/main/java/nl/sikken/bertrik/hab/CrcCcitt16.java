@@ -1,9 +1,9 @@
 package nl.sikken.bertrik.hab;
 
 /**
- * @author bertrik
+ * CRC16-CCITT implementation.
  */
-public final class CcittCrc16 {
+public final class CrcCcitt16 {
 
     private static int[] crc_table = { 
             0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7, 0x8108, 0x9129,

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Representation of a gateway in the metadata of the TTN MQTT JSON format.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class MqttGateway {
+public final class TtnMessageGateway {
 
     @JsonProperty("gtw_id")
     private String id;

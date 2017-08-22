@@ -20,7 +20,7 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
         HABITAT_URL("habitat.url", "http://habitat.habhub.org", "URL of the habitat server"),
         HABITAT_TIMEOUT("habitat.timeout", "3000", "Timeout in milliseconds"),
 
-        MQTT_SERVER_URL("mqtt.serverurl", "eu.thethings.network", "URL to MQTT server"),
+        MQTT_SERVER_URL("mqtt.serverurl", "tcp://eu.thethings.network", "URL of the TTN MQTT server"),
         MQTT_CLIENT_ID("mqtt.clientid", "ttnhabbridge", "MQTT client id"),
         MQTT_USER_NAME("mqtt.username", "ttnmapper", "TTN application name used as MQTT user name"), 
         MQTT_USER_PASS("mqtt.password", "ttn-account-v2.Xc8BFRKeBK5nUhc9ikDcR-sbelgSMdHKnOQKMAiwpgI", "TTN application password"),
@@ -41,7 +41,9 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
     private final Map<EConfigItem, String> props = new HashMap<>();
     
     /**
-     * Create a configuration setting with defaults.
+     * Constructor.
+     * 
+     * Configures all settings to their default value.
      */
     public TtnHabBridgeConfig() {
         for (EConfigItem e : EConfigItem.values()) {

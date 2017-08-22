@@ -16,10 +16,6 @@ public final class UploadResult {
     @JsonProperty("rev")
     private String rev;
     
-    private UploadResult() {
-        // jackson constructor
-    }
-
     public boolean isOk() {
         return ok;
     }

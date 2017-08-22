@@ -6,10 +6,11 @@ import java.nio.ByteOrder;
 import java.util.Locale;
 
 /**
- * Encoding/decoding according to "SODAQ" format.
+ * Decoding according to "SODAQ" format, as used in (for example):
+ * https://github.com/SodaqMoja/SodaqOne-UniversalTracker
  */
 public final class SodaqOnePayload {
-    
+
     private final long timeStamp;
     private final double battVoltage;
     private final int boardTemp;
@@ -35,8 +36,8 @@ public final class SodaqOnePayload {
      * @param numSats number of satellites used in fix
      * @param ttf the time to fix
      */
-    public SodaqOnePayload(long timeStamp, double battVoltage, int boardTemp, double latitude, double longitude, double altitude,
-            double sog, int cog, int numSats, int ttf) {
+    public SodaqOnePayload(long timeStamp, double battVoltage, int boardTemp, double latitude, double longitude,
+            double altitude, double sog, int cog, int numSats, int ttf) {
         this.timeStamp = timeStamp;
         this.battVoltage = battVoltage;
         this.boardTemp = boardTemp;
@@ -58,8 +59,8 @@ public final class SodaqOnePayload {
      */
     public static SodaqOnePayload parse(byte[] raw) throws BufferUnderflowException {
         final ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
-        final long timeStamp = (bb.getInt() & 0xFFFFFFFFL);
-        final double battVoltage = 3.0 + (bb.get() * 1.5 / 256);
+        final long time = (bb.getInt() & 0xFFFFFFFFL);
+        final double voltage = 3.0 + (bb.get() * 1.5 / 256);
         final int boardTemp = bb.get();
         final double latitude = bb.getInt() / 1e7;
         final double longitude = bb.getInt() / 1e7;
@@ -69,7 +70,7 @@ public final class SodaqOnePayload {
         final int numSats = bb.get();
         final int ttf = bb.get();
 
-        return new SodaqOnePayload(timeStamp, battVoltage, boardTemp, latitude, longitude, altitude, sog, cog, numSats, ttf);
+        return new SodaqOnePayload(time, voltage, boardTemp, latitude, longitude, altitude, sog, cog, numSats, ttf);
     }
 
     public long getTimeStamp() {
@@ -111,11 +112,11 @@ public final class SodaqOnePayload {
     public int getTtf() {
         return ttf;
     }
-    
+
     @Override
     public String toString() {
-        return String.format(Locale.US, "ts=%d,batt=%.2f,lat=%f,lon=%f,alt=%.0f",
-                timeStamp, battVoltage, latitude, longitude, altitude);
+        return String.format(Locale.US, "ts=%d,batt=%.2f,temp=%d,lat=%f,lon=%f,alt=%.0f", timeStamp, battVoltage,
+                boardTemp, latitude, longitude, altitude);
     }
-    
+
 }

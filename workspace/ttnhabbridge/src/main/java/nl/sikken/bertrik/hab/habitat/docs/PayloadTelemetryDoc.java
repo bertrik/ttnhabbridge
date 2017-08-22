@@ -8,17 +8,18 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * @author bertrik
- *
+ * Payload telemetry document.
+ * 
+ * SEE http://habitat.habhub.org/jse/#schemas/payload_telemetry.json
  */
 public final class PayloadTelemetryDoc {
 
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
-    private final String callSign;
-    private final byte[] rawBytes;
     private final Date dateCreated;
     private final Date dateUploaded;
+    private final String callSign;
+    private final byte[] rawBytes;
 
     /**
      * Constructor.
@@ -28,10 +29,10 @@ public final class PayloadTelemetryDoc {
      * @param rawBytes the raw telemetry string as bytes
      */
     public PayloadTelemetryDoc(Date date, String callSign, byte[] rawBytes) {
-        this.callSign = callSign;
-        this.rawBytes = rawBytes;
         this.dateCreated = date;
         this.dateUploaded = date;
+        this.callSign = callSign;
+        this.rawBytes = rawBytes;
     }
 
     /**

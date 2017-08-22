@@ -9,19 +9,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Representation of meta-data part of MQTT message.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class MqttMetaData {
+public final class TtnMessageMetaData {
 
     @JsonProperty("time")
     private String time;
     
     @JsonProperty("gateways")
-    private List<MqttGateway> gateways;
+    private List<TtnMessageGateway> gateways;
     
     public String getTime() {
         return time;
     }
     
-    public List<MqttGateway> getMqttGateways() {
+    public List<TtnMessageGateway> getMqttGateways() {
         return gateways;
     }
 

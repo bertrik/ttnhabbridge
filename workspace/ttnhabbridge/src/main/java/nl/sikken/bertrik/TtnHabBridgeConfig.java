@@ -2,8 +2,11 @@ package nl.sikken.bertrik;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -77,7 +80,7 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
      * @throws IOException in case of a file problem
      */
     public void save(File file) throws IOException {
-        try (FileWriter writer = new FileWriter(file)) {
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.US_ASCII)) {
             for (EConfigItem e : EConfigItem.values()) {
                 // comment line
                 writer.append("# " + e.comment + "\n");
@@ -89,7 +92,7 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
     
     @Override
     public int getHabitatTimeout() {
-        return Integer.valueOf(props.get(EConfigItem.HABITAT_TIMEOUT));
+        return Integer.parseInt(props.get(EConfigItem.HABITAT_TIMEOUT));
     }
 
     @Override

@@ -59,7 +59,7 @@ public final class SodaqOnePayload {
      */
     public static SodaqOnePayload parse(byte[] raw) throws BufferUnderflowException {
         final ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
-        final long time = (bb.getInt() & 0xFFFFFFFFL);
+        final long time = bb.getInt() & 0xFFFFFFFFL;
         final double voltage = 3.0 + (bb.get() * 1.5 / 256);
         final int boardTemp = bb.get();
         final double latitude = bb.getInt() / 1e7;

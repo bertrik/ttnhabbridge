@@ -10,7 +10,7 @@ import nl.sikken.bertrik.hab.habitat.HabReceiver;
 /**
  * Listener telemetry doc.
  * 
- * @see http://habitat.habhub.org/jse/#schemas/listener_telemetry.json
+ * SEE http://habitat.habhub.org/jse/#schemas/listener_telemetry.json
  */
 public final class ListenerTelemetryDoc extends ListenerDoc {
 

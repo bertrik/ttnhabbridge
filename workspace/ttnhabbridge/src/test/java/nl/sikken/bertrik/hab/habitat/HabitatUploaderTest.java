@@ -3,6 +3,7 @@ package nl.sikken.bertrik.hab.habitat;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -42,7 +43,7 @@ public final class HabitatUploaderTest {
 	}
 
 	@Test
-//    @Ignore("this is not a junit test")
+    @Ignore("this is not a junit test")
 	public void testActualPayloadUpload() throws InterruptedException {
 		final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
 		final HabitatUploader uploader = new HabitatUploader(restClient);
@@ -63,6 +64,7 @@ public final class HabitatUploaderTest {
 	 * @throws InterruptedException 
 	 */
 	@Test
+    @Ignore("this is not a junit test")
 	public void testActualListenerUpload() throws InterruptedException {
 	    final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
 	    final HabitatUploader uploader = new HabitatUploader(restClient);

@@ -1,5 +1,7 @@
 package nl.sikken.bertrik.hab.habitat;
 
+import java.util.Locale;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -48,7 +50,7 @@ public final class UploadResult {
     
     @Override
     public String toString() {
-        return String.format("ok=%s,id=%s,rev=%s", ok, id, rev);
+        return String.format(Locale.US, "ok=%s,id=%s,rev=%s", ok, id, rev);
     }
     
 }

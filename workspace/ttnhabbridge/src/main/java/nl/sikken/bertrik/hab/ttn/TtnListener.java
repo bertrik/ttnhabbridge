@@ -50,7 +50,7 @@ public final class TtnListener {
     /**
      * Starts this module.
      * 
-     * @throws MqttException 
+     * @throws MqttException in case something went wrong with MQTT 
      */
     public void start() throws MqttException {
         LOG.info("Starting TTN listener");

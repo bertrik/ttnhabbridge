@@ -24,7 +24,7 @@ public final class ListenerInformationDoc extends ListenerDoc {
      * Constructor.
      * 
      * @param date the date
-     * @param callSign the listener call sign
+     * @param receiver the HAB receiver
      */
     public ListenerInformationDoc(Date date, HabReceiver receiver) {
         super("listener_information", date);

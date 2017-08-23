@@ -68,7 +68,7 @@ public final class Sentence {
         sb.append(String.format(Locale.US, "%s,%d,%s,%.6f,%.6f,%.1f", callSign, id, timeString, latitude, longitude,
                 altitude));
         for (String s : extras) {
-            sb.append(",");
+            sb.append(',');
             sb.append(s);
         }
         final String basic = sb.toString();

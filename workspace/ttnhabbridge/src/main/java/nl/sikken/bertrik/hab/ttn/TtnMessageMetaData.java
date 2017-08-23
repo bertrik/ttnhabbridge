@@ -26,7 +26,7 @@ public final class TtnMessageMetaData {
      * Constructor.
      * 
      * @param time the time
-     * @param gws list of gateways
+     * @param gateways list of gateways
      */
     public TtnMessageMetaData(String time, List<TtnMessageGateway> gateways) {
         this();

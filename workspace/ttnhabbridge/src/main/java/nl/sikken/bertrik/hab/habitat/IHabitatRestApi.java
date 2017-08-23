@@ -22,14 +22,14 @@ public interface IHabitatRestApi {
 
     @Path("/habitat/_design/payload_telemetry/_update/add_listener/{doc_id}")
     @PUT
-    public String updateListener(@PathParam("doc_id") String docId, String json);
+    String updateListener(@PathParam("doc_id") String docId, String json);
 
     @Path("/_uuids")
     @GET
-    public UuidsList getUuids(@QueryParam("count") int count);
+    UuidsList getUuids(@QueryParam("count") int count);
     
     @Path("/habitat/{doc_id}")
     @PUT
-    public UploadResult uploadDocument(@PathParam("doc_id") String docId, String document);
+    UploadResult uploadDocument(@PathParam("doc_id") String docId, String document);
 
 }

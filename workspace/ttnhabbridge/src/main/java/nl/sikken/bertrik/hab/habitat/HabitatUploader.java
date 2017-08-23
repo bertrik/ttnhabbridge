@@ -168,16 +168,16 @@ public final class HabitatUploader {
             LOG.info("Got {} UUIDs", uuids.size());
             
             // upload payload listener info
-            LOG.info("Sending listener info using UUID {}...", uuids.get(0));
+            LOG.info("Upload listener info using UUID {}...", uuids.get(0));
             final ListenerInformationDoc info = new ListenerInformationDoc(date, receiver);
             final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
-            LOG.info("Result from uploading listener info: {}", infoResult);
+            LOG.info("Result listener info: {}", infoResult);
             
             // upload payload telemetry
-            LOG.info("Sending listener telemetry using UUID {}...", uuids.get(1));
+            LOG.info("Upload listener telemetry using UUID {}...", uuids.get(1));
             final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(date, receiver);
             final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
-            LOG.info("Result from uploading listener telemetry: {}", telemResult);
+            LOG.info("Result listener telemetry: {}", telemResult);
         } catch (Exception e) {
             LOG.warn("Caught WebServiceException: {}", e.getMessage());
         }

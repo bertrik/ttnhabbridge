@@ -36,7 +36,8 @@ public final class HabitatUploaderTest {
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
 
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), date);
-			Mockito.verify(restClient, Mockito.timeout(3000)).updateListener(Mockito.anyString(), Mockito.anyString());
+            Mockito.verify(restClient, Mockito.timeout(3000).times(1)).updateListener(Mockito.anyString(),
+                    Mockito.anyString());
 		} finally {
 			uploader.stop();
 		}
@@ -62,7 +63,10 @@ public final class HabitatUploaderTest {
             final Date date = new Date();
             
             uploader.scheduleListenerDataUpload(receiver, date);
-            Mockito.verify(restClient, Mockito.timeout(3000)).uploadDocument(Mockito.anyString(), Mockito.anyString());
+            
+            // expect two documents
+            Mockito.verify(restClient, Mockito.timeout(3000).times(2)).uploadDocument(Mockito.anyString(),
+                    Mockito.anyString());
         } finally {
             uploader.stop();
         }

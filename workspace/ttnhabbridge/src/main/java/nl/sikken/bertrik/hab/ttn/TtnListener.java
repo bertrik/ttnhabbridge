@@ -15,8 +15,10 @@ import org.slf4j.LoggerFactory;
  */
 public final class TtnListener {
     
-    private static Logger LOG = LoggerFactory.getLogger(TtnListener.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TtnListener.class);
     private static final long DISCONNECT_TIMEOUT_MS = 3000;
+    
+    private static final String TOPIC = "+/devices/+/up";
     
     private final String clientId;
     private final IMessageReceived callback;
@@ -41,7 +43,7 @@ public final class TtnListener {
         this.clientId = UUID.randomUUID().toString();
         this.appId = appId;
         this.appKey = appKey;
-        this.topic = appId + "/devices/+/up";
+        this.topic = TOPIC;
     }
     
     /**

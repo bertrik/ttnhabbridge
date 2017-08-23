@@ -14,6 +14,8 @@ import nl.sikken.bertrik.hab.Sentence;
  */
 public final class HabitatUploaderTest {
     
+    private static final Location LOCATION = new Location(52.0162, 4.4735, 5);
+    
 	/**
 	 * Happy flow scenario for payload upload.
 	 */
@@ -29,7 +31,7 @@ public final class HabitatUploaderTest {
 		// verify upload using the uploader
 		uploader.start();
 		try {
-			final HabReceiver receiver = new HabReceiver("BERTRIK", null);
+			final HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
 			final Date date = new Date();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
 
@@ -56,7 +58,7 @@ public final class HabitatUploaderTest {
         // verify upload using the uploader
         uploader.start();
         try {
-            final HabReceiver receiver = new HabReceiver("BERTRIK", null);
+            final HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
             final Date date = new Date();
             
             uploader.scheduleListenerDataUpload(receiver, date);

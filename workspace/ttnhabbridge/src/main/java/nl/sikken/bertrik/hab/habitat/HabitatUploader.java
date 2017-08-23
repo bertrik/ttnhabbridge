@@ -169,7 +169,7 @@ public final class HabitatUploader {
             
             // upload payload listener info
             LOG.info("Sending listener info using UUID {}...", uuids.get(0));
-            final ListenerInformationDoc info = new ListenerInformationDoc(date, receiver.getCallsign());
+            final ListenerInformationDoc info = new ListenerInformationDoc(date, receiver);
             final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
             LOG.info("Result from uploading listener info: {}", infoResult);
             

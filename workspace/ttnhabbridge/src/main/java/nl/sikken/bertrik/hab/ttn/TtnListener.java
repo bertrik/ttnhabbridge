@@ -1,12 +1,12 @@
 package nl.sikken.bertrik.hab.ttn;
 
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ public final class TtnListener {
     public TtnListener(IMessageReceived receiveCallback, String url, String appId, String appKey) {
         this.callback = receiveCallback;
         this.url = url;
-        this.clientId = UUID.randomUUID().toString();
+        this.clientId = MqttClient.generateClientId();
         this.appId = appId;
         this.appKey = appKey;
         this.topic = TOPIC;
@@ -56,7 +56,7 @@ public final class TtnListener {
         
         // connect
         LOG.info("Connecting as user '{}' to MQTT server {}", appId, url);
-        this.mqttClient = new MqttClient(url, clientId);
+        this.mqttClient = new MqttClient(url, clientId, new MemoryPersistence());
         final MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(appId);
         options.setPassword(appKey.toCharArray());

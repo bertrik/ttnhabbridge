@@ -3,6 +3,7 @@ package nl.sikken.bertrik;
 import java.io.File;
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -89,23 +90,21 @@ public final class TtnHabBridge {
      * @param message the message contents
      */
     private void handleTTNMessage(String topic, String message) {
-        final Date now = new Date();
-
         try {
             // try to decode the payload
             final TtnMessage data = mapper.readValue(message, TtnMessage.class);
+            final Instant time = data.getMetaData().getTime();
 
             final SodaqOnePayload sodaq = SodaqOnePayload.parse(data.getPayload());
             LOG.info("Got SODAQ message: {}", sodaq);
 
+            // construct a sentence
             final String callSign = data.getDevId();
             final int id = data.getCounter();
             final double latitude = sodaq.getLatitude();
             final double longitude = sodaq.getLongitude();
             final double altitude = sodaq.getAltitude();
-
-            // get the payload coordinates and construct a sentence
-            final Sentence sentence = new Sentence(callSign, id, now, latitude, longitude, altitude);
+            final Sentence sentence = new Sentence(callSign, id, Date.from(time), latitude, longitude, altitude);
             final String line = sentence.format();
 
             // create listeners
@@ -117,6 +116,7 @@ public final class TtnHabBridge {
             }
 
             // send listener data
+            final Date now = new Date();
             for (HabReceiver receiver : receivers) {
                 habUploader.scheduleListenerDataUpload(receiver, now);
             }

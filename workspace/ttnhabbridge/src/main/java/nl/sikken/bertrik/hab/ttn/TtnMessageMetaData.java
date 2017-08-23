@@ -1,5 +1,6 @@
 package nl.sikken.bertrik.hab.ttn;
 
+import java.time.Instant;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,8 +18,24 @@ public final class TtnMessageMetaData {
     @JsonProperty("gateways")
     private List<TtnMessageGateway> gateways;
     
-    public String getTime() {
-        return time;
+    private TtnMessageMetaData() {
+        // empty jackson constructor
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param time the time
+     * @param gws list of gateways
+     */
+    public TtnMessageMetaData(String time, List<TtnMessageGateway> gateways) {
+        this();
+        this.time = time;
+        this.gateways = gateways;
+    }
+
+    public Instant getTime() {
+        return Instant.parse(time);
     }
     
     public List<TtnMessageGateway> getMqttGateways() {

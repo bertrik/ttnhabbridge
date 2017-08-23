@@ -11,7 +11,7 @@ public interface ITtnHabBridgeConfig {
     String getMqttServerUrl();
     String getMqttClientId();
     String getMqttUserName();
-    char[] getMqttPassword();
+    String getMqttPassword();
     String getMqttTopic();
 
 }

@@ -111,8 +111,8 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
     }
 
     @Override
-    public char[] getMqttPassword() {
-        return props.get(EConfigItem.MQTT_USER_PASS).toCharArray();
+    public String getMqttPassword() {
+        return props.get(EConfigItem.MQTT_USER_PASS);
     }
 
     @Override

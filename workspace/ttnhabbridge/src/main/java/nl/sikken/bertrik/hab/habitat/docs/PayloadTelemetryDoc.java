@@ -3,6 +3,7 @@ package nl.sikken.bertrik.hab.habitat.docs;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public final class PayloadTelemetryDoc {
 
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
 
     private final Date dateCreated;
     private final Date dateUploaded;

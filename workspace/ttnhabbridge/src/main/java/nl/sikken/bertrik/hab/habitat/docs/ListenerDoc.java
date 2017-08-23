@@ -3,6 +3,7 @@ package nl.sikken.bertrik.hab.habitat.docs;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public abstract class ListenerDoc {
 
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
     private final JsonNodeFactory factory = new JsonNodeFactory(false);
 
     private final Date date;

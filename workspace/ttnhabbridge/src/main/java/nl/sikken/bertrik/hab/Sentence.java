@@ -59,7 +59,7 @@ public final class Sentence {
      */
     public String format() {
         // format time
-        final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss");
+        final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss", Locale.US);
         fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
         final String timeString = fmt.format(time);
 

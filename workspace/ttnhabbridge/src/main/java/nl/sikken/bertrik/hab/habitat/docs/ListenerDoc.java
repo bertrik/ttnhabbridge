@@ -16,16 +16,15 @@ public abstract class ListenerDoc {
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
     private final JsonNodeFactory factory = new JsonNodeFactory(false);
 
-    private final String type;
     private final Date date;
+    private final String type;
 
     /**
      * Constructor.
-     * 
+     * @param date the creation/upload date
      * @param type the document type
-     * @param date the date
      */
-    protected ListenerDoc(String type, Date date) {
+    protected ListenerDoc(Date date, String type) {
         this.type = type;
         this.date = date;
     }

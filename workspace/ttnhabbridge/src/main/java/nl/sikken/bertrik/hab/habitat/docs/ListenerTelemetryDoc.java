@@ -19,11 +19,11 @@ public final class ListenerTelemetryDoc extends ListenerDoc {
     /**
      * Constructor.
      * 
-     * @param date the date
+     * @param date the creation/upload date
      * @param receiver the receiver info
      */
     public ListenerTelemetryDoc(Date date, HabReceiver receiver) {
-        super("listener_telemetry", date);
+        super(date, "listener_telemetry");
         this.receiver = receiver;
     }
 

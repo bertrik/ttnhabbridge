@@ -24,7 +24,7 @@ public final class PayloadTelemetryDoc {
     /**
      * Constructor.
      * 
-     * @param date the date
+     * @param date the creation/upload date
      * @param callSign the receiver call sign
      * @param rawBytes the raw telemetry string as bytes
      */

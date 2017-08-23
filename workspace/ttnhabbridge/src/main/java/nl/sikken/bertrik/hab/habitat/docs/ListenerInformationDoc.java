@@ -23,11 +23,11 @@ public final class ListenerInformationDoc extends ListenerDoc {
     /**
      * Constructor.
      * 
-     * @param date the date
+     * @param date the creation/upload date
      * @param receiver the HAB receiver
      */
     public ListenerInformationDoc(Date date, HabReceiver receiver) {
-        super("listener_information", date);
+        super(date, "listener_information");
         this.receiver = receiver;
     }
 

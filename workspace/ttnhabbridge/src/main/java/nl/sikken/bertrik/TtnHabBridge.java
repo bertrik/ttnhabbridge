@@ -59,8 +59,8 @@ public final class TtnHabBridge {
      * @param config the application configuration
      */
     private TtnHabBridge(ITtnHabBridgeConfig config) {
-        this.ttnListener = new TtnListener(this::handleTTNMessage, config.getMqttServerUrl(), config.getMqttUserName(),
-                config.getMqttPassword(), config.getMqttTopic());
+        this.ttnListener = new TtnListener(this::handleTTNMessage, 
+                                           config.getTtnMqttUrl(), config.getTtnAppId(), config.getTtnAppKey());
         final IHabitatRestApi restApi = 
                 HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
         this.habUploader = new HabitatUploader(restApi);

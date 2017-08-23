@@ -3,8 +3,6 @@ package nl.sikken.bertrik.hab.ttn;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -23,8 +21,8 @@ public final class TtnListener {
     private final String clientId;
     private final IMessageReceived callback;
     private final String url;
-    private final String userName;
-    private final String password;
+    private final String appId;
+    private final String appKey;
     private final String topic;
 
     private MqttClient mqttClient;
@@ -34,17 +32,16 @@ public final class TtnListener {
      * 
      * @param receiveCallback the interface for indicating a received message.
      * @param url the URL of the MQTT server
-     * @param userName the user name
-     * @param password the password
-     * @param topic the MQTT topic
+     * @param appId the user name
+     * @param appKey the password
      */
-    public TtnListener(IMessageReceived receiveCallback, String url, String userName, String password, String topic) {
+    public TtnListener(IMessageReceived receiveCallback, String url, String appId, String appKey) {
         this.callback = receiveCallback;
         this.url = url;
         this.clientId = UUID.randomUUID().toString();
-        this.userName = userName;
-        this.password = password;
-        this.topic = topic;
+        this.appId = appId;
+        this.appKey = appKey;
+        this.topic = appId + "/devices/+/up";
     }
     
     /**
@@ -56,37 +53,33 @@ public final class TtnListener {
         LOG.info("Starting TTN listener");
         
         // connect
-        LOG.info("Connecting as user '{}' to MQTT server {}", userName, url);
+        LOG.info("Connecting as user '{}' to MQTT server {}", appId, url);
         this.mqttClient = new MqttClient(url, clientId);
         final MqttConnectOptions options = new MqttConnectOptions();
-        options.setUserName(userName);
-        options.setPassword(password.toCharArray());
+        options.setUserName(appId);
+        options.setPassword(appKey.toCharArray());
         options.setAutomaticReconnect(true);
         mqttClient.connect(options);
         
         // subscribe
         LOG.info("Subscribing to topic '{}'", topic);
-        mqttClient.setCallback(new MqttCallback() {
-            @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                final String message = new String(mqttMessage.getPayload(), StandardCharsets.US_ASCII);
-                LOG.info("Message arrived on topic {}: {}", topic, message);
-                callback.messageReceived(topic, message);
-            }
-            
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-                // we don't care
-            }
-            
-            @Override
-            public void connectionLost(Throwable cause) {
-                LOG.info("connectionLost: {}", cause.getMessage());
-            }
-        });
-        mqttClient.subscribe(topic);
+        mqttClient.subscribe(topic, this::messageArrived);
 
         LOG.info("Started TTN listener");
+    }
+    
+    /**
+     * Handles an incoming message.
+     * 
+     * @param topic the topic
+     * @param mqttMessage the message
+     * @throws Exception who knows?
+     */
+    private void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+        final String message = new String(mqttMessage.getPayload(), StandardCharsets.US_ASCII);
+        LOG.info("Message arrived on topic '{}': {}", topic, message);
+        // forward it to our user
+        callback.messageReceived(topic, message);
     }
     
     /**
@@ -96,10 +89,16 @@ public final class TtnListener {
         LOG.info("Stopping TTN listener");
         try {
             mqttClient.disconnect(DISCONNECT_TIMEOUT_MS);
-            mqttClient.close();
         } catch (MqttException e) {
             // don't care, just log
-            LOG.warn("Caught exception while shutting down", e.getMessage());
+            LOG.warn("Caught exception on disconnect: {}", e.getMessage());
+        } finally {
+            try {
+                mqttClient.close();
+            } catch (MqttException e) {
+                // don't care, just log
+                LOG.warn("Caught exception on close: {}", e.getMessage());
+            }
         }
         LOG.info("Stopped TTN listener");
     }

@@ -23,11 +23,9 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
         HABITAT_URL("habitat.url", "http://habitat.habhub.org", "URL of the habitat server"),
         HABITAT_TIMEOUT("habitat.timeout", "3000", "Timeout in milliseconds"),
 
-        MQTT_SERVER_URL("mqtt.serverurl", "tcp://eu.thethings.network", "URL of the TTN MQTT server"),
-        MQTT_CLIENT_ID("mqtt.clientid", "ttnhabbridge", "MQTT client id"),
-        MQTT_USER_NAME("mqtt.username", "ttnmapper", "TTN application name used as MQTT user name"), 
-        MQTT_USER_PASS("mqtt.password", "ttn-account-v2.Xc8BFRKeBK5nUhc9ikDcR-sbelgSMdHKnOQKMAiwpgI", "TTN application password"),
-        MQTT_TOPIC("mqtt.topic", "ttnmapper/devices/+/up", "MQTT topic to subscribe to")
+        TTN_MQTT_URL("ttn.mqtt.url", "tcp://eu.thethings.network", "URL of the TTN MQTT server"),
+        TTN_APP_ID("ttn.app.id", "habhub", "TTN Application Id (e.g. habhub, ttnmapper, etc.)"),
+        TTN_APP_KEY("ttn.app.key", "ttn-account-v2.Sh49WL90oQz-ZuxoDrS6yKuACL_jtAA0agdDfO_eVj4", "TTN Application key")
         ;
         
         private String key;
@@ -101,28 +99,18 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
     }
 
     @Override
-    public String getMqttClientId() {
-        return props.get(EConfigItem.MQTT_CLIENT_ID);
+    public String getTtnMqttUrl() {
+        return props.get(EConfigItem.TTN_MQTT_URL);
     }
 
-    @Override
-    public String getMqttUserName() {
-        return props.get(EConfigItem.MQTT_USER_NAME);
-    }
-
-    @Override
-    public String getMqttPassword() {
-        return props.get(EConfigItem.MQTT_USER_PASS);
-    }
-
-    @Override
-    public String getMqttServerUrl() {
-        return props.get(EConfigItem.MQTT_SERVER_URL);
+    @Override 
+    public String getTtnAppId() {
+        return props.get(EConfigItem.TTN_APP_ID);
     }
     
     @Override 
-    public String getMqttTopic() {
-        return props.get(EConfigItem.MQTT_TOPIC);
+    public String getTtnAppKey() {
+        return props.get(EConfigItem.TTN_APP_KEY);
     }
-
+    
 }

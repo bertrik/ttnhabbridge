@@ -3,6 +3,7 @@ package nl.sikken.bertrik;
 import java.io.File;
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -26,6 +27,19 @@ public final class TtnHabBridgeConfigTest {
         final File file = new File(tempFolder.getRoot(), "test.properties");
         config.save(file);
         config.load(file);
+    }
+    
+    /**
+     * Verifies that every getter returns a valid value.
+     */
+    @Test
+    public void testAllProps() {
+        final TtnHabBridgeConfig config = new TtnHabBridgeConfig();
+        Assert.assertNotNull(config.getHabitatUrl());
+        Assert.assertNotNull(config.getHabitatTimeout());
+        Assert.assertNotNull(config.getTtnMqttUrl());
+        Assert.assertNotNull(config.getTtnAppId());
+        Assert.assertNotNull(config.getTtnAppKey());
     }
 
 }

@@ -1,6 +1,9 @@
 # ttnhabbridge
 Bridge between the-things-network and the habitat network, to receive telemetry from amateur balloons using LoRaWAN
 
+See https://revspace.nl/TTNHABBridge for a more detailed description of this project.
+See https://travis-ci.org/bertrik/ttnhabbridge for the Travis CI status
+
 # Development environment
 I develop this on Windows 7, in Java 8 in Eclipse, using subversion.
 

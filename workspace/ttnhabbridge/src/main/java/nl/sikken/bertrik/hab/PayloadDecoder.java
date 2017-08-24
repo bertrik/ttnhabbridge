@@ -44,7 +44,7 @@ public final class PayloadDecoder {
             final Sentence sentence = new Sentence(callSign, id, Date.from(time), latitude, longitude, altitude);
             final JsonNode tempNode = fields.get("temp");
             final JsonNode vccNode = fields.get("vcc");
-            if ((tempNode != null) && (vccNode != null)) {
+            if (tempNode != null && vccNode != null) {
                 sentence.addField(String.format(Locale.US, "%.1f", tempNode.doubleValue()));
                 sentence.addField(String.format(Locale.US, "%.3f", vccNode.doubleValue()));
             }

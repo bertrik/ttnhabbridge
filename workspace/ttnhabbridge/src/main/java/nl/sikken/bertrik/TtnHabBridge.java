@@ -3,7 +3,6 @@ package nl.sikken.bertrik;
 import java.io.File;
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import nl.sikken.bertrik.hab.PayloadDecoder;
 import nl.sikken.bertrik.hab.Sentence;
-import nl.sikken.bertrik.hab.SodaqOnePayload;
 import nl.sikken.bertrik.hab.habitat.HabReceiver;
 import nl.sikken.bertrik.hab.habitat.HabitatUploader;
 import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
@@ -37,6 +36,7 @@ public final class TtnHabBridge {
 
     private final TtnListener ttnListener;
     private final HabitatUploader habUploader;
+    private final PayloadDecoder decoder;
     private final ObjectMapper mapper;
 
     /**
@@ -66,6 +66,7 @@ public final class TtnHabBridge {
                 HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
         this.habUploader = new HabitatUploader(restApi);
         this.mapper = new ObjectMapper();
+        this.decoder = new PayloadDecoder();
     }
 
     /**
@@ -87,29 +88,18 @@ public final class TtnHabBridge {
      * Handles an incoming TTN message
      * 
      * @param topic the topic on which the message was received
-     * @param message the message contents
+     * @param textMessage the message contents
      */
-    private void handleTTNMessage(String topic, String message) {
+    private void handleTTNMessage(String topic, String textMessage) {
         try {
-            // try to decode the payload
-            final TtnMessage data = mapper.readValue(message, TtnMessage.class);
-            final Instant time = data.getMetaData().getTime();
-
-            final SodaqOnePayload sodaq = SodaqOnePayload.parse(data.getPayload());
-            LOG.info("Got SODAQ message: {}", sodaq);
-
-            // construct a sentence
-            final String callSign = data.getDevId();
-            final int id = data.getCounter();
-            final double latitude = sodaq.getLatitude();
-            final double longitude = sodaq.getLongitude();
-            final double altitude = sodaq.getAltitude();
-            final Sentence sentence = new Sentence(callSign, id, Date.from(time), latitude, longitude, altitude);
+            // decode from JSON
+            final TtnMessage message = mapper.readValue(textMessage, TtnMessage.class);
+            final Sentence sentence = decoder.decode(message);
             final String line = sentence.format();
-
+            
             // create listeners
             final List<HabReceiver> receivers = new ArrayList<>();
-            for (TtnMessageGateway gw : data.getMetaData().getMqttGateways()) {
+            for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
                 final HabReceiver receiver = new HabReceiver(gw.getId(),
                         new Location(gw.getLatitude(), gw.getLongitude(), gw.getAltitude()));
                 receivers.add(receiver);
@@ -124,7 +114,7 @@ public final class TtnHabBridge {
             // send payload telemetry data
             habUploader.schedulePayloadTelemetryUpload(line, receivers, now);
         } catch (IOException e) {
-            LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), message);
+            LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         } catch (BufferUnderflowException e) {
             LOG.warn("Sodaq payload exception: {}", e.getMessage());
         }

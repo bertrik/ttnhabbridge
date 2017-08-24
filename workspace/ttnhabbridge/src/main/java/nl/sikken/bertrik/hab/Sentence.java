@@ -80,4 +80,9 @@ public final class Sentence {
         return formatted;
     }
 
+    @Override
+    public String toString() {
+        return format();
+    }
+    
 }

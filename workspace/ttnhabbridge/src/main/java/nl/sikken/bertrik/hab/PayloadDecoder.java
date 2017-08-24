@@ -34,7 +34,7 @@ public final class PayloadDecoder {
         // decide between two supported specific formats
         final ObjectNode fields = message.getPayloadFields();
         if (fields != null) {
-            // $$<callsign>,<id>,<time>,<lat>,<lon>,<alt>*<CRC>
+            // $$<callsign>,<id>,<time>,<lat>,<lon>,<alt>,<temperature>,<battery_voltage>*<CRC>
             LOG.info("Decoding 'tftelkamp' message...");
 
             // TTN payload
@@ -50,7 +50,7 @@ public final class PayloadDecoder {
             }
             return sentence;
         } else {
-            // $$<callsign>,<id>,<time>,<lat>,<lon>,<alt>,<temperature>,<battery_voltage>*<CRC>
+            // $$<callsign>,<id>,<time>,<lat>,<lon>,<alt>*<CRC>
             LOG.info("Decoding 'sodaqone' message...");
             
             // SODAQ payload

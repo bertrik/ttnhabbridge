@@ -44,7 +44,8 @@ public final class PayloadDecoderTest {
         final PayloadDecoder decoder = new PayloadDecoder();
         final Sentence sentence = decoder.decode(message);
 
-        Assert.assertEquals("$$devtrack,1707,19:02:46,51.564211,4.368230,660.0*2BD9", sentence.format().trim());
+        Assert.assertEquals("$$devtrack,1707,19:02:46,51.564211,4.368230,660.0,1.1,3.148*B35B",
+                sentence.format().trim());
     }
 
     /**

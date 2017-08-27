@@ -19,13 +19,13 @@ public final class TtnMessageGateway {
     private String time;
     
     @JsonProperty("latitude")
-    private double latitude;
+    private Double latitude;
     
     @JsonProperty("longitude")
-    private double longitude;
+    private Double longitude;
     
     @JsonProperty("altitude")
-    private double altitude;
+    private Double altitude;
 
     public String getId() {
         return id;
@@ -39,15 +39,15 @@ public final class TtnMessageGateway {
         return time;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public double getAltitude() {
+    public Double getAltitude() {
         return altitude;
     }
     

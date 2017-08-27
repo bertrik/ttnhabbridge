@@ -100,9 +100,14 @@ public final class TtnHabBridge {
             // create listeners
             final List<HabReceiver> receivers = new ArrayList<>();
             for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
-                final HabReceiver receiver = new HabReceiver(gw.getId(),
-                        new Location(gw.getLatitude(), gw.getLongitude(), gw.getAltitude()));
-                receivers.add(receiver);
+            	final Double latitude = gw.getLatitude();
+            	final Double longitude = gw.getLongitude();
+            	final Double altitude = gw.getAltitude();
+            	if ((latitude != null) && (longitude != null) && (altitude != null)) {
+	                final HabReceiver receiver = new HabReceiver(gw.getId(),
+	                        new Location(gw.getLatitude(), gw.getLongitude(), gw.getAltitude()));
+	                receivers.add(receiver);
+            	}
             }
 
             // send listener data

@@ -13,12 +13,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import nl.sikken.bertrik.hab.ExpiringCache;
 import nl.sikken.bertrik.hab.PayloadDecoder;
 import nl.sikken.bertrik.hab.Sentence;
 import nl.sikken.bertrik.hab.habitat.HabReceiver;
 import nl.sikken.bertrik.hab.habitat.HabitatUploader;
 import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
-import nl.sikken.bertrik.hab.habitat.Location;
 import nl.sikken.bertrik.hab.ttn.TtnListener;
 import nl.sikken.bertrik.hab.ttn.TtnMessage;
 import nl.sikken.bertrik.hab.ttn.TtnMessageGateway;
@@ -38,6 +38,7 @@ public final class TtnHabBridge {
     private final HabitatUploader habUploader;
     private final PayloadDecoder decoder;
     private final ObjectMapper mapper;
+    private final ExpiringCache gwCache;
 
     /**
      * Main application entry point.
@@ -67,6 +68,7 @@ public final class TtnHabBridge {
         this.habUploader = new HabitatUploader(restApi);
         this.mapper = new ObjectMapper();
         this.decoder = new PayloadDecoder();
+        this.gwCache = new ExpiringCache(600);
     }
 
     /**
@@ -98,20 +100,16 @@ public final class TtnHabBridge {
             final String line = sentence.format();
             
             // create listeners
+            final Date now = new Date();
             final List<HabReceiver> receivers = new ArrayList<>();
             for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
-            	final Double latitude = gw.getLatitude();
-            	final Double longitude = gw.getLongitude();
-            	final Double altitude = gw.getAltitude();
-            	if ((latitude != null) && (longitude != null) && (altitude != null)) {
-	                final HabReceiver receiver = new HabReceiver(gw.getId(),
-	                        new Location(gw.getLatitude(), gw.getLongitude(), gw.getAltitude()));
-	                receivers.add(receiver);
-            	}
+                if (gw.hasLocation() && gwCache.add(gw.getId(), now)) {
+                    final HabReceiver receiver = new HabReceiver(gw.getId(), gw.getLocation());
+                    receivers.add(receiver);
+                }
             }
 
             // send listener data
-            final Date now = new Date();
             for (HabReceiver receiver : receivers) {
                 habUploader.scheduleListenerDataUpload(receiver, now);
             }
@@ -134,6 +132,7 @@ public final class TtnHabBridge {
         LOG.info("Stopping TTN HAB bridge application");
         ttnListener.stop();
         habUploader.stop();
+        LOG.info("Stopped TTN HAB bridge application");
     }
 
     private static ITtnHabBridgeConfig readConfig(File file) throws IOException {

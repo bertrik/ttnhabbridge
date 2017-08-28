@@ -92,10 +92,12 @@ public final class HabitatUploader {
      * Schedules a new sentence to be sent to the HAB network.
      * 
      * @param sentence the ASCII sentence
-     * @param receivers list of receivers that got this sentence
+     * @param receivers list of listener that received this sentence
      * @param date the current date
      */
     public void schedulePayloadTelemetryUpload(String sentence, List<HabReceiver> receivers, Date date) {
+        LOG.info("Uploading for {} receivers: {}", receivers.size(), sentence.trim());
+
         // encode sentence as raw bytes
         final byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
 
@@ -103,24 +105,22 @@ public final class HabitatUploader {
         final String docId = createDocId(bytes);
 
         for (HabReceiver receiver : receivers) {
-            LOG.info("Uploading for {}: {}", receiver, sentence.trim());
-
             // create Json
             final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(date, receiver.getCallsign(), bytes);
             final String json = doc.format();
 
             // submit it to our processing thread
-            executor.submit(() -> uploadTelemetry(docId, json));
+            executor.submit(() -> uploadPayloadTelemetry(docId, json));
         }
     }
 
     /**
-     * Performs the actual upload as a REST-like call towards habitat.
+     * Performs the actual payload telemetry upload as a REST-like call towards habitat.
      * 
      * @param docId the document id
      * @param json the JSON payload
      */
-    private void uploadTelemetry(String docId, String json) {
+    private void uploadPayloadTelemetry(String docId, String json) {
         LOG.info("Upload payload telemetry doc {}: {}", docId, json);
         try {
             final String response = restClient.updateListener(docId, json);

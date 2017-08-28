@@ -13,6 +13,12 @@ dependencies {
     testCompile libraries.jetty
 }
 
+pmd {
+      ruleSets = [
+        'java-basic',
+      ]
+}
+
 //Add configuration folder to classpath:
 startScripts {
     classpath += files('../cfg')

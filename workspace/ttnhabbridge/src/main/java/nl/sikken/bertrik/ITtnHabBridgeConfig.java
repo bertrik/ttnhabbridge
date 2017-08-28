@@ -11,5 +11,6 @@ public interface ITtnHabBridgeConfig {
     String getTtnMqttUrl();
     String getTtnAppId();
     String getTtnAppKey();
+    int getTtnGwCacheExpiry();
 
 }

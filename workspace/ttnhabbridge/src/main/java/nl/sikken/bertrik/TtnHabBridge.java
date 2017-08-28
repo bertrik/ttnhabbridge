@@ -69,7 +69,7 @@ public final class TtnHabBridge {
         this.habUploader = new HabitatUploader(restApi);
         this.mapper = new ObjectMapper();
         this.decoder = new PayloadDecoder();
-        this.gwCache = new ExpiringCache(600);
+        this.gwCache = new ExpiringCache(config.getTtnGwCacheExpiry());
     }
 
     /**

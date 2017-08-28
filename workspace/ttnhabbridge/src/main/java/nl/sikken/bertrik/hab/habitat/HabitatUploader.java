@@ -121,10 +121,10 @@ public final class HabitatUploader {
      * @param json the JSON payload
      */
     private void uploadTelemetry(String docId, String json) {
-        LOG.info("Sending payload telemetry doc {}: {}", docId, json);
+        LOG.info("Upload payload telemetry doc {}: {}", docId, json);
         try {
             final String response = restClient.updateListener(docId, json);
-            LOG.info("Response for payload telemetry doc {}: {}", docId, response);
+            LOG.info("Result payload telemetry doc {}: {}", docId, response);
         } catch (WebApplicationException e) {
             LOG.warn("Caught exception: {}", e.getMessage());
         }

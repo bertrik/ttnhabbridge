@@ -19,6 +19,7 @@ import nl.sikken.bertrik.hab.Sentence;
 import nl.sikken.bertrik.hab.habitat.HabReceiver;
 import nl.sikken.bertrik.hab.habitat.HabitatUploader;
 import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
+import nl.sikken.bertrik.hab.habitat.Location;
 import nl.sikken.bertrik.hab.ttn.TtnListener;
 import nl.sikken.bertrik.hab.ttn.TtnMessage;
 import nl.sikken.bertrik.hab.ttn.TtnMessageGateway;
@@ -99,19 +100,19 @@ public final class TtnHabBridge {
             final Sentence sentence = decoder.decode(message);
             final String line = sentence.format();
             
-            // create listeners
+            // collect list of listeners 
             final Date now = new Date();
             final List<HabReceiver> receivers = new ArrayList<>();
             for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
-                if (gw.hasLocation() && gwCache.add(gw.getId(), now)) {
-                    final HabReceiver receiver = new HabReceiver(gw.getId(), gw.getLocation());
-                    receivers.add(receiver);
-                }
-            }
+                final String gwName = gw.getId();
+                final Location gwLocation = gw.getLocation();
+                final HabReceiver receiver = new HabReceiver(gwName, gwLocation);
+                receivers.add(receiver);
 
-            // send listener data
-            for (HabReceiver receiver : receivers) {
-                habUploader.scheduleListenerDataUpload(receiver, now);
+                // send listener data only if it has a valid location and hasn't been sent recently
+                if (gwLocation.isValid() && gwCache.add(gwName, now)) {
+                    habUploader.scheduleListenerDataUpload(receiver, now);
+                }
             }
 
             // send payload telemetry data

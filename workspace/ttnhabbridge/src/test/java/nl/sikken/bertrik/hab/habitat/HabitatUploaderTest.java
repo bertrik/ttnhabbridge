@@ -14,7 +14,7 @@ import nl.sikken.bertrik.hab.Sentence;
  */
 public final class HabitatUploaderTest {
     
-    private static final Location LOCATION = new Location(52.0162, 4.4735, 5);
+    private static final Location LOCATION = new Location(52.0162, 4.4735, 5.0);
     
 	/**
 	 * Happy flow scenario for payload upload.
@@ -106,7 +106,7 @@ public final class HabitatUploaderTest {
 	    final HabitatUploader uploader = new HabitatUploader(restClient);
 	    try {
             final Date date = new Date();
-            final HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0182307, 4.695772, 15));
+            final HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0182307, 4.695772, 15.0));
 	        uploader.scheduleListenerDataUpload(receiver, date);
 	        Thread.sleep(3000);
 	    } finally {

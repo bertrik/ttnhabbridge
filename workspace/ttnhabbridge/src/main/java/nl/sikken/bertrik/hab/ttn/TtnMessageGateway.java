@@ -79,11 +79,6 @@ public final class TtnMessageGateway {
     }
     
     @JsonIgnore
-    public boolean hasLocation() {
-        return latitude != null && longitude != null && altitude != null;
-    }
-    
-    @JsonIgnore
     public Location getLocation() {
         return new Location(latitude, longitude, altitude);
     }

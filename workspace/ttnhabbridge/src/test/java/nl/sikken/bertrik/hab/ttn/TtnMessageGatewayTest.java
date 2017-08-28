@@ -34,7 +34,7 @@ public final class TtnMessageGatewayTest {
     @Test
     public void testLocation() {
         final TtnMessageGateway gw = new TtnMessageGateway("id", true, "time", 0.0, 1.1, 2.2);
-        Assert.assertTrue(gw.hasLocation());
+        Assert.assertTrue(gw.getLocation().isValid());
 
         final Location location = gw.getLocation();
         Assert.assertNotNull(location);
@@ -47,10 +47,10 @@ public final class TtnMessageGatewayTest {
     @Test
     public void testNoLocation() {
         final TtnMessageGateway gw1 = new TtnMessageGateway("id", true, "time", null, null, null);
-        Assert.assertFalse(gw1.hasLocation());
+        Assert.assertFalse(gw1.getLocation().isValid());
 
         final TtnMessageGateway gw2 = new TtnMessageGateway("id", true, "time", null, 1.1, 2.2);
-        Assert.assertFalse(gw2.hasLocation());
+        Assert.assertFalse(gw2.getLocation().isValid());
     }
 
 }

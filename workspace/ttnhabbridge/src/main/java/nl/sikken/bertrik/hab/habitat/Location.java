@@ -5,9 +5,9 @@ package nl.sikken.bertrik.hab.habitat;
  */
 public final class Location {
 
-    private final double lat;
-    private final double lon;
-    private final double alt;
+    private final Double lat;
+    private final Double lon;
+    private final Double alt;
 
     /**
      * Constructor.
@@ -16,22 +16,29 @@ public final class Location {
      * @param lon longitude (degrees)
      * @param alt altitude (meter)
      */
-    public Location(double lat, double lon, double alt) {
+    public Location(Double lat, Double lon, Double alt) {
         this.lat = lat;
         this.lon = lon;
         this.alt = alt;
     }
 
-    public double getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public double getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public double getAlt() {
+    public Double getAlt() {
         return alt;
+    }
+
+    /**
+     * @return true if this is a fully valid location
+     */
+    public boolean isValid() {
+        return lat != null && lon != null && alt != null;
     }
 
 }

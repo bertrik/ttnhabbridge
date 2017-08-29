@@ -1,5 +1,4 @@
 apply plugin: "application"
-apply plugin: "pmd"
 
 mainClassName = 'nl.sikken.bertrik.TtnHabBridge'
 
@@ -11,12 +10,6 @@ dependencies {
     compile libraries.mqtt_client
     
     testCompile libraries.jetty
-}
-
-pmd {
-      ruleSets = [
-        'java-basic',
-      ]
 }
 
 //Add configuration folder to classpath:

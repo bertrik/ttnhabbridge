@@ -10,10 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Interface definition for payload telemetry
- * 
- * Publish this on "/habitat" for example.
- *
+ * Interface definition for payload telemetry and listener telemetry towards Habitat.
  */
 @Path("")
 @Produces(MediaType.APPLICATION_JSON)

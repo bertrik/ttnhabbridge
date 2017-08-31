@@ -28,7 +28,8 @@ import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
  * Habitat uploader.
  * 
  * Exchanges data with the habitat system.
- * All actions run on a single thread for simplicity.
+ * Call to ScheduleXXX methods are non-blocking.
+ * All actions run on a single background thread for simplicity.
  */
 public final class HabitatUploader {
     
@@ -182,7 +183,7 @@ public final class HabitatUploader {
             } else {
                 LOG.warn("Did not receive UUIDs for upload");
             }
-        } catch (Exception e) {
+        } catch (WebApplicationException e) {
             LOG.warn("Caught WebServiceException: {}", e.getMessage());
         }
     }

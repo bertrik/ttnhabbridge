@@ -60,7 +60,7 @@ public final class PayloadDecoder {
             final double latitude = sodaq.getLatitude();
             final double longitude = sodaq.getLongitude();
             final double altitude = sodaq.getAltitude();
-            final Date time = new Date(sodaq.getTimeStamp());
+            final Date time = new Date(1000L * sodaq.getTimeStamp());
             return new Sentence(callSign, id, time, latitude, longitude, altitude);
         }        
     }

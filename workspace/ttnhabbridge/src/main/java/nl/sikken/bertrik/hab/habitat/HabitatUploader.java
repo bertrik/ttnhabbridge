@@ -165,19 +165,23 @@ public final class HabitatUploader {
             LOG.info("Getting UUIDs for listener data upload...");
             final UuidsList list = restClient.getUuids(2);
             final List<String> uuids = list.getUuids();
-            LOG.info("Got {} UUIDs", uuids.size());
-            
-            // upload payload listener info
-            LOG.info("Upload listener info using UUID {}...", uuids.get(0));
-            final ListenerInformationDoc info = new ListenerInformationDoc(date, receiver);
-            final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
-            LOG.info("Result listener info: {}", infoResult);
-            
-            // upload payload telemetry
-            LOG.info("Upload listener telemetry using UUID {}...", uuids.get(1));
-            final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(date, receiver);
-            final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
-            LOG.info("Result listener telemetry: {}", telemResult);
+            if ((uuids != null) && (uuids.size() >= 2)) {
+                LOG.info("Got {} UUIDs", uuids.size());
+
+                // upload payload listener info
+                LOG.info("Upload listener info using UUID {}...", uuids.get(0));
+                final ListenerInformationDoc info = new ListenerInformationDoc(date, receiver);
+                final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
+                LOG.info("Result listener info: {}", infoResult);
+                
+                // upload payload telemetry
+                LOG.info("Upload listener telemetry using UUID {}...", uuids.get(1));
+                final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(date, receiver);
+                final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
+                LOG.info("Result listener telemetry: {}", telemResult);
+            } else {
+                LOG.warn("Did not receive UUIDs for upload");
+            }
         } catch (Exception e) {
             LOG.warn("Caught WebServiceException: {}", e.getMessage());
         }

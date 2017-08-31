@@ -5,11 +5,9 @@ mainClassName = 'nl.sikken.bertrik.TtnHabBridge'
 dependencies {
     compile libraries.slf4jlog4j
     
-    compile libraries.jersey_client
-    compile libraries.jackson
     compile libraries.mqtt_client
-    
-    testCompile libraries.jetty
+    compile libraries.jackson
+    compile libraries.jersey_client
 }
 
 //Add configuration folder to classpath:

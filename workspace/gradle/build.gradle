@@ -20,6 +20,7 @@ subprojects {
     dependencies {
         testCompile libraries.junit
 	    testCompile libraries.mockito
+	    testCompile libraries.slf4jlog4j
 
         compile libraries.slf4j
     }

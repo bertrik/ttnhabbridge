@@ -1,4 +1,5 @@
 apply plugin: "application"
+apply plugin: 'pmd'
 
 mainClassName = 'nl.sikken.bertrik.TtnHabBridge'
 
@@ -8,6 +9,12 @@ dependencies {
     compile libraries.mqtt_client
     compile libraries.jackson
     compile libraries.jersey_client
+}
+
+pmd {
+    //toolVersion = "5.2.1"
+    ruleSetFiles = files("pmd-ruleset.xml")
+    ruleSets = []
 }
 
 //Add configuration folder to classpath:

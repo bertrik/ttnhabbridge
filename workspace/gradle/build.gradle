@@ -8,12 +8,17 @@ apply from:'dependencies.gradle'
 subprojects {
     apply plugin: "java"
     apply plugin: "eclipse"
+    apply plugin: "pmd"
     
     targetCompatibility = 1.8
     targetCompatibility = 1.8
 
     repositories {
         mavenCentral()
+    }
+
+    pmd {
+        toolVersion = "5.8.1"
     }
 
     // Standard libraries added to all projects

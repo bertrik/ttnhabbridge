@@ -29,7 +29,6 @@ public final class PayloadDecoder {
         // common fields
         final String callSign = message.getDevId();
         final int id = message.getCounter();
-        final Instant time = message.getMetaData().getTime();
         
         // decide between two supported specific formats
         final ObjectNode fields = message.getPayloadFields();
@@ -38,6 +37,7 @@ public final class PayloadDecoder {
             LOG.info("Decoding 'tftelkamp' message...");
 
             // TTN payload
+            final Instant time = message.getMetaData().getTime();
             final double latitude = fields.get("lat").doubleValue();
             final double longitude = fields.get("lon").doubleValue();
             final double altitude = fields.get("gpsalt").doubleValue();
@@ -60,7 +60,8 @@ public final class PayloadDecoder {
             final double latitude = sodaq.getLatitude();
             final double longitude = sodaq.getLongitude();
             final double altitude = sodaq.getAltitude();
-            return new Sentence(callSign, id, Date.from(time), latitude, longitude, altitude);
+            final Date time = new Date(sodaq.getTimeStamp());
+            return new Sentence(callSign, id, time, latitude, longitude, altitude);
         }        
     }
     

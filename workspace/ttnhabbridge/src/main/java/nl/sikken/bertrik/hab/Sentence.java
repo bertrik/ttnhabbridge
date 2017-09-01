@@ -76,8 +76,7 @@ public final class Sentence {
         // append header, checksum, etc
         final byte[] bytes = basic.getBytes(StandardCharsets.US_ASCII);
         final int crcValue = crc16.calculate(bytes, 0xFFFF);
-        final String formatted = String.format(Locale.US, "$$%s*%04X\n", basic, crcValue);
-        return formatted;
+        return String.format(Locale.US, "$$%s*%04X\n", basic, crcValue);
     }
 
     @Override

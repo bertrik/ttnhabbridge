@@ -29,9 +29,9 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
         TTN_GW_CACHE_EXPIRY("ttn.gwcache.expiry", "600", "Gateway cache expiration time (seconds)"),
         ;
         
-        private String key;
-        private String def;
-        private String comment;
+        String key;
+        String def;
+        String comment;
 
         EConfigItem(String key, String def, String comment) {
             this.key = key;

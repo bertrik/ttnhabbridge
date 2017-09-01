@@ -32,7 +32,20 @@ public final class PayloadDecoder {
         
         // decide between two supported specific formats
         final ObjectNode fields = message.getPayloadFields();
-        if (fields != null) {
+        if (fields == null) {
+            // $$<callsign>,<id>,<time>,<lat>,<lon>,<alt>*<CRC>
+            LOG.info("Decoding 'sodaqone' message...");
+            
+            // SODAQ payload
+            final SodaqOnePayload sodaq = SodaqOnePayload.parse(message.getPayloadRaw());
+            
+            // construct a sentence
+            final double latitude = sodaq.getLatitude();
+            final double longitude = sodaq.getLongitude();
+            final double altitude = sodaq.getAltitude();
+            final Date time = new Date(1000L * sodaq.getTimeStamp());
+            return new Sentence(callSign, id, time, latitude, longitude, altitude);
+        } else {
             // $$<callsign>,<id>,<time>,<lat>,<lon>,<alt>,<temperature>,<battery_voltage>*<CRC>
             LOG.info("Decoding 'tftelkamp' message...");
 
@@ -49,20 +62,7 @@ public final class PayloadDecoder {
                 sentence.addField(String.format(Locale.US, "%.3f", vccNode.doubleValue()));
             }
             return sentence;
-        } else {
-            // $$<callsign>,<id>,<time>,<lat>,<lon>,<alt>*<CRC>
-            LOG.info("Decoding 'sodaqone' message...");
-            
-            // SODAQ payload
-            final SodaqOnePayload sodaq = SodaqOnePayload.parse(message.getPayloadRaw());
-            
-            // construct a sentence
-            final double latitude = sodaq.getLatitude();
-            final double longitude = sodaq.getLongitude();
-            final double altitude = sodaq.getAltitude();
-            final Date time = new Date(1000L * sodaq.getTimeStamp());
-            return new Sentence(callSign, id, time, latitude, longitude, altitude);
-        }        
+        }
     }
     
 }

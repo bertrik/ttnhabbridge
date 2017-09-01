@@ -7,6 +7,7 @@ import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -66,7 +67,7 @@ public final class HabitatUploader {
             this.sha256 = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             // this is fatal
-            throw new IllegalStateException("No SHA-256 hash found");
+        	throw new IllegalStateException("No SHA-256 hash found", e);
         }
         this.restClient = restClient;
     }
@@ -140,7 +141,7 @@ public final class HabitatUploader {
     private String createDocId(byte[] bytes) {
         final byte[] base64 = base64Encoder.encode(bytes);
         final byte[] hash = sha256.digest(base64);
-        return DatatypeConverter.printHexBinary(hash).toLowerCase();
+        return DatatypeConverter.printHexBinary(hash).toLowerCase(Locale.US);
     }
 
     /**

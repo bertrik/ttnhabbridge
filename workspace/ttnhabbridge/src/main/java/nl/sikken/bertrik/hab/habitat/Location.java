@@ -38,7 +38,7 @@ public final class Location {
      * @return true if this is a fully valid location
      */
     public boolean isValid() {
-        return lat != null && lon != null && alt != null;
+        return (lat != null) && (lon != null) && (alt != null);
     }
 
 }

@@ -1,20 +1,17 @@
 package nl.sikken.bertrik;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 /**
  * Unit tests for TtnHabBridgeConfig.
  */
 public final class TtnHabBridgeConfigTest {
-    
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();    
     
     /**
      * Verifies basic loading/saving of a configuration.
@@ -23,10 +20,17 @@ public final class TtnHabBridgeConfigTest {
      */
     @Test
     public void testLoadSave() throws IOException {
+        final byte[] data;
+        // save
         final TtnHabBridgeConfig config = new TtnHabBridgeConfig();
-        final File file = new File(tempFolder.getRoot(), "test.properties");
-        config.save(file);
-        config.load(file);
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+            config.save(os);
+            data = os.toByteArray();
+        }
+        // load
+        try (InputStream is = new ByteArrayInputStream(data)) {
+            config.load(is);
+        }
     }
     
     /**
@@ -40,6 +44,7 @@ public final class TtnHabBridgeConfigTest {
         Assert.assertNotNull(config.getTtnMqttUrl());
         Assert.assertNotNull(config.getTtnAppId());
         Assert.assertNotNull(config.getTtnAppKey());
+        Assert.assertNotNull(config.getTtnGwCacheExpiry());
     }
 
 }

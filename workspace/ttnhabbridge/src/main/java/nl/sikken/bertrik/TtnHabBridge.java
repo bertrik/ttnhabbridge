@@ -1,6 +1,8 @@
 package nl.sikken.bertrik;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
@@ -138,11 +140,13 @@ public final class TtnHabBridge {
 
     private static ITtnHabBridgeConfig readConfig(File file) throws IOException {
         final TtnHabBridgeConfig config = new TtnHabBridgeConfig();
-        try {
-            config.load(file);
+        try (FileInputStream fis = new FileInputStream(file)) {
+            config.load(fis);
         } catch (IOException e) {
             LOG.info("Failed to load config {}, writing defaults", file.getAbsoluteFile());
-            config.save(file);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                config.save(fos);
+            }
         }
         return config;
     }

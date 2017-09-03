@@ -1,9 +1,8 @@
 package nl.sikken.bertrik;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
@@ -54,16 +53,14 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
     }
     
     /**
-     * Load settings from file.
+     * Load settings from stream.
      * 
-     * @param file the file
+     * @param is input stream containing the settings
      * @throws IOException in case of a problem reading the file
      */
-    public void load(File file) throws IOException {
+    public void load(InputStream is) throws IOException {
         final Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(file)) {
-            properties.load(fis);
-        }
+        properties.load(is);
         for (EConfigItem e : EConfigItem.values()) {
             String value = properties.getProperty(e.key);
             if (value != null) {
@@ -73,13 +70,13 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
     }
     
     /**
-     * Save settings to file.
+     * Save settings to stream.
      * 
-     * @param file the file
+     * @param os the output stream
      * @throws IOException in case of a file problem
      */
-    public void save(File file) throws IOException {
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.US_ASCII)) {
+    public void save(OutputStream os) throws IOException {
+        try (Writer writer = new OutputStreamWriter(os, StandardCharsets.US_ASCII)) {
             for (EConfigItem e : EConfigItem.values()) {
                 // comment line
                 writer.append("# " + e.comment + "\n");

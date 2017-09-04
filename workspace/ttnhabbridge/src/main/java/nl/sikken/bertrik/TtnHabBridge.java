@@ -54,6 +54,8 @@ public final class TtnHabBridge {
         final ITtnHabBridgeConfig config = readConfig(new File(CONFIG_FILE));
         final TtnHabBridge app = new TtnHabBridge(config);
 
+        Thread.setDefaultUncaughtExceptionHandler(app::handleUncaughtException);
+
         app.start();
         Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
     }
@@ -137,13 +139,24 @@ public final class TtnHabBridge {
         habUploader.stop();
         LOG.info("Stopped TTN HAB bridge application");
     }
-
+    
+    /**
+     * Handles uncaught exceptions: log it and stop the application.
+     * 
+     * @param t the thread
+     * @param e the exception
+     */
+    private void handleUncaughtException(Thread t, Throwable e) {
+        LOG.error("Caught unhandled exception, application will be stopped ...", e);
+        stop();
+    }
+    
     private static ITtnHabBridgeConfig readConfig(File file) throws IOException {
         final TtnHabBridgeConfig config = new TtnHabBridgeConfig();
         try (FileInputStream fis = new FileInputStream(file)) {
             config.load(fis);
         } catch (IOException e) {
-            LOG.info("Failed to load config {}, writing defaults", file.getAbsoluteFile());
+            LOG.warn("Failed to load config {}, writing defaults", file.getAbsoluteFile());
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 config.save(fos);
             }

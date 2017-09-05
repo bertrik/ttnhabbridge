@@ -26,8 +26,8 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
         TTN_APP_ID("ttn.app.id", "habhub", "TTN Application Id (e.g. habhub, ttnmapper, etc.)"),
         TTN_APP_KEY("ttn.app.key", "ttn-account-v2.Sh49WL90oQz-ZuxoDrS6yKuACL_jtAA0agdDfO_eVj4", "TTN Application key"),
         TTN_GW_CACHE_EXPIRY("ttn.gwcache.expiry", "600", "Gateway cache expiration time (seconds)"),
-        TTN_PAYLOAD_FORMAT("ttn.payload.format", "sodaqone",
-                "Payload format, allowed values: 'sodaqone','koppelting','cayenne'"),
+        TTN_PAYLOAD_ENCODING("ttn.payload.encoding", "sodaqone",
+                "Payload format, allowed values: 'sodaqone','json','cayenne'"),
         ;
         
         String key;
@@ -119,8 +119,8 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
     }
 
     @Override
-    public String getTtnPayloadFormat() {
-        return props.get(EConfigItem.TTN_PAYLOAD_FORMAT);
+    public String getTtnPayloadEncoding() {
+        return props.get(EConfigItem.TTN_PAYLOAD_ENCODING);
     }
     
 }

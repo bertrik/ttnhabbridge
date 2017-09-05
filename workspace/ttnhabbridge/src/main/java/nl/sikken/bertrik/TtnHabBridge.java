@@ -72,7 +72,7 @@ public final class TtnHabBridge {
                 HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
         this.habUploader = new HabitatUploader(restApi);
         this.mapper = new ObjectMapper();
-        this.decoder = new PayloadDecoder();
+        this.decoder = new PayloadDecoder(config.getTtnPayloadEncoding());
         this.gwCache = new ExpiringCache(config.getTtnGwCacheExpiry());
     }
 

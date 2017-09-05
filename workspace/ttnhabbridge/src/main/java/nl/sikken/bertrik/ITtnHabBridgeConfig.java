@@ -36,8 +36,8 @@ public interface ITtnHabBridgeConfig {
     int getTtnGwCacheExpiry();
     
     /**
-     * @return the payload format, can be "sodaq", "koppelting", "cayenne"
+     * @return the payload encoding, can be "sodaq", "json", "cayenne"
      */
-    String getTtnPayloadFormat();
+    String getTtnPayloadEncoding();
 
 }

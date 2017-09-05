@@ -41,7 +41,7 @@ public final class PayloadDecoderTest {
         final TtnMessage message = mapper.readValue(data, TtnMessage.class);
         Assert.assertEquals(3, message.getMetaData().getMqttGateways().size());
         
-        final PayloadDecoder decoder = new PayloadDecoder();
+        final PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.JSON.getName());
         final Sentence sentence = decoder.decode(message);
 
         Assert.assertEquals("$$devtrack,1707,19:02:46,51.564211,4.368230,660.0,1.1,3.148*B35B",
@@ -70,10 +70,18 @@ public final class PayloadDecoderTest {
         Assert.assertEquals(27, message.getMetaData().getMqttGateways().get(0).getAltitude(), 0.1);
         
         // decode payload
-        final PayloadDecoder decoder = new PayloadDecoder();
+        final PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.SODAQ_ONE.getName());
         final Sentence sentence = decoder.decode(message);
         
         Assert.assertEquals("$$mapper2,4,07:11:18,52.022064,4.693023,30.0,19,4.10*81FD", sentence.format().trim());
     }
     
+    /**
+     * Verifies that an unknown payload encoding is detected.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testInvalidEncoding() {
+        final PayloadDecoder decoder = new PayloadDecoder("unknown");
+        Assert.assertNotNull(decoder);
+    }
 }

@@ -24,8 +24,10 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
 
         TTN_MQTT_URL("ttn.mqtt.url", "tcp://eu.thethings.network", "URL of the TTN MQTT server"),
         TTN_APP_ID("ttn.app.id", "habhub", "TTN Application Id (e.g. habhub, ttnmapper, etc.)"),
-        TTN_APP_KEY("ttn.app.key", "ttn-account-v2.Sh49WL90oQz-ZuxoDrS6yKuACL_jtAA0agdDfO_eVj4", "TTN Application key"), 
+        TTN_APP_KEY("ttn.app.key", "ttn-account-v2.Sh49WL90oQz-ZuxoDrS6yKuACL_jtAA0agdDfO_eVj4", "TTN Application key"),
         TTN_GW_CACHE_EXPIRY("ttn.gwcache.expiry", "600", "Gateway cache expiration time (seconds)"),
+        TTN_PAYLOAD_FORMAT("ttn.payload.format", "sodaqone",
+                "Payload format, allowed values: 'sodaqone','koppelting','cayenne'"),
         ;
         
         String key;
@@ -114,6 +116,11 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
     @Override
     public int getTtnGwCacheExpiry() {
         return Integer.parseInt(props.get(EConfigItem.TTN_GW_CACHE_EXPIRY));
+    }
+
+    @Override
+    public String getTtnPayloadFormat() {
+        return props.get(EConfigItem.TTN_PAYLOAD_FORMAT);
     }
     
 }

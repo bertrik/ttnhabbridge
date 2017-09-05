@@ -26,7 +26,7 @@ public final class SodaqOnePayload {
      * Constructor.
      * 
      * @param timeStamp the time stamp (UTC seconds)
-     * @param battVoltage the battery voltage (unknown encoding)
+     * @param battVoltage the battery voltage (volts)
      * @param boardTemp the board temperature (degrees celcius)
      * @param latitude the latitude (units of 1E-7)
      * @param longitude the longitude (units of 1E-7)
@@ -60,7 +60,7 @@ public final class SodaqOnePayload {
     public static SodaqOnePayload parse(byte[] raw) throws BufferUnderflowException {
         final ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
         final long time = bb.getInt() & 0xFFFFFFFFL;
-        final double voltage = 3.0 + (bb.get() * 1.5 / 256);
+        final double voltage = 3.0 + 0.01 * (bb.get() & 0xFF);
         final int boardTemp = bb.get();
         final double latitude = bb.getInt() / 1e7;
         final double longitude = bb.getInt() / 1e7;

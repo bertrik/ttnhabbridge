@@ -73,7 +73,7 @@ public final class PayloadDecoderTest {
         final PayloadDecoder decoder = new PayloadDecoder();
         final Sentence sentence = decoder.decode(message);
         
-        Assert.assertEquals("$$mapper2,4,07:11:18,52.022064,4.693023,30.0*22B8", sentence.format().trim());
+        Assert.assertEquals("$$mapper2,4,07:11:18,52.022064,4.693023,30.0,19,4.10*81FD", sentence.format().trim());
     }
     
 }

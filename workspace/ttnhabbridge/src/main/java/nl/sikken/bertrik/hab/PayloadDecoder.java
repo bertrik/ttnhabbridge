@@ -44,7 +44,10 @@ public final class PayloadDecoder {
             final double longitude = sodaq.getLongitude();
             final double altitude = sodaq.getAltitude();
             final Date time = new Date(1000L * sodaq.getTimeStamp());
-            return new Sentence(callSign, id, time, latitude, longitude, altitude);
+            final Sentence sentence = new Sentence(callSign, id, time, latitude, longitude, altitude);
+            sentence.addField(String.format(Locale.US, "%.0f", sodaq.getBoardTemp()));
+            sentence.addField(String.format(Locale.US, "%.2f", sodaq.getBattVoltage()));
+            return sentence;
         } else {
             // $$<callsign>,<id>,<time>,<lat>,<lon>,<alt>,<temperature>,<battery_voltage>*<CRC>
             LOG.info("Decoding 'tftelkamp' message...");

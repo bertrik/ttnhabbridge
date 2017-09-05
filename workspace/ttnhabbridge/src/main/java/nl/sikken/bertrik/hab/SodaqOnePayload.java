@@ -13,7 +13,7 @@ public final class SodaqOnePayload {
 
     private final long timeStamp;
     private final double battVoltage;
-    private final int boardTemp;
+    private final double boardTemp;
     private final double latitude;
     private final double longitude;
     private final double altitude;
@@ -36,7 +36,7 @@ public final class SodaqOnePayload {
      * @param numSats number of satellites used in fix
      * @param ttf the time to fix
      */
-    public SodaqOnePayload(long timeStamp, double battVoltage, int boardTemp, double latitude, double longitude,
+    public SodaqOnePayload(long timeStamp, double battVoltage, double boardTemp, double latitude, double longitude,
             double altitude, double sog, int cog, int numSats, int ttf) {
         this.timeStamp = timeStamp;
         this.battVoltage = battVoltage;
@@ -61,7 +61,7 @@ public final class SodaqOnePayload {
         final ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
         final long time = bb.getInt() & 0xFFFFFFFFL;
         final double voltage = 3.0 + 0.01 * (bb.get() & 0xFF);
-        final int boardTemp = bb.get();
+        final double boardTemp = bb.get();
         final double latitude = bb.getInt() / 1e7;
         final double longitude = bb.getInt() / 1e7;
         final int altitude = bb.getShort();
@@ -81,7 +81,7 @@ public final class SodaqOnePayload {
         return battVoltage;
     }
 
-    public int getBoardTemp() {
+    public double getBoardTemp() {
         return boardTemp;
     }
 
@@ -115,7 +115,7 @@ public final class SodaqOnePayload {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "ts=%d,batt=%.2f,temp=%d,lat=%f,lon=%f,alt=%.0f", timeStamp, battVoltage,
+        return String.format(Locale.US, "ts=%d,batt=%.2f,temp=%.0f,lat=%f,lon=%f,alt=%.0f", timeStamp, battVoltage,
                 boardTemp, latitude, longitude, altitude);
     }
 

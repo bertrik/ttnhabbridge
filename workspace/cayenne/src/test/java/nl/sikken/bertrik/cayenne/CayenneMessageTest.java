@@ -87,6 +87,22 @@ public final class CayenneMessageTest {
         Assert.assertArrayEquals(new String[] {"247.84"}, items.get(2));
         Assert.assertArrayEquals(new String[] {"27.0"}, items.get(3));
     }
+    
+    /**
+     * Verifies parsing of some actual data from a sodaq one, with a fix applied to the voltage value.
+     * @throws CayenneException in case of a parsing exception
+     */
+    @Test
+    public void testActualData2() throws CayenneException {
+    	final String base64 = "AYgH8CEAt03/+VwCAgGfA2cA8A==";
+        final byte[] data = Base64.getDecoder().decode(base64);
+        final CayenneMessage payload = CayenneMessage.parse(data);
+
+        final Map<Integer, String[]> items = payload.getItems();
+        Assert.assertArrayEquals(new String[] {"52.0225", "4.6925", "-17.00"}, items.get(1));
+        Assert.assertArrayEquals(new String[] {"4.15"}, items.get(2));
+        Assert.assertArrayEquals(new String[] {"24.0"}, items.get(3));
+    }
 
     /**
      * Verifies parsing an empty string.

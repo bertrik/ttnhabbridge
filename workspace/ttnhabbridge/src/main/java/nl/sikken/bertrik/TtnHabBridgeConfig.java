@@ -30,9 +30,9 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
                 "Payload format, allowed values: 'sodaqone','json','cayenne'"),
         ;
         
-        String key;
-        String def;
-        String comment;
+        private final String key;
+        private final String def;
+        private final String comment;
 
         EConfigItem(String key, String def, String comment) {
             this.key = key;

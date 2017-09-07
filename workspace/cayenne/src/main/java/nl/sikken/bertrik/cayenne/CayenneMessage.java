@@ -2,18 +2,17 @@ package nl.sikken.bertrik.cayenne;
 
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.List;
 
 /**
  * A cayenne message containing cayenne data items.
  */
 public final class CayenneMessage {
     
-    private final Map<Integer,String[]> map = new HashMap<>();
+    private final List<CayenneItem> items = new ArrayList<>();
     
     /**
      * Parses the byte array into a cayenne message.
@@ -34,7 +33,8 @@ public final class CayenneMessage {
                     throw new CayenneException("Invalid cayenne type " + type);
                 }
                 final String[] formatted = ct.format(bb);
-                message.map.put(channel, formatted);
+                final CayenneItem item = new CayenneItem(channel, ct, formatted);
+                message.items.add(item);
             }
         } catch (BufferUnderflowException e) {
             throw new CayenneException(e);
@@ -43,19 +43,35 @@ public final class CayenneMessage {
     }
     
     /**
-     * @return a map from a channel number to a formatted String[].
+     * @return an immutable list of measurement items in the order it appears in the raw data
      */
-    public Map<Integer, String[]> getItems() {
-        return Collections.unmodifiableMap(map);
+    public List<CayenneItem> getItems() {
+        return Collections.unmodifiableList(items);
+    }
+    
+    /**
+     * Finds an item by type.
+     * 
+     * @param type the desired type
+     * @return the item, or null if it does not exist
+     */
+    public CayenneItem ofType(ECayenneItem type) {
+        return items.stream().filter(i -> (i.getType() == type)).findFirst().orElse(null);
+    }
+    
+    /**
+     * Finds an item by channel.
+     * 
+     * @param channel the desired channel
+     * @return the item, or null if it does not exist
+     */
+    public CayenneItem ofChannel(int channel) {
+        return items.stream().filter(i -> (i.getChannel() == channel)).findFirst().orElse(null);
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        map.forEach((k,v) -> {
-          sb.append(String.format(Locale.US, "[%d]='%s',", k, Arrays.toString(v)));  
-        });
-        return sb.toString();
+        return Arrays.toString(items.toArray());
     }
     
 }

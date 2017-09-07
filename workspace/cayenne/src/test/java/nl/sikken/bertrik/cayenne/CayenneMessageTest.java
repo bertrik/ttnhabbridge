@@ -1,7 +1,6 @@
 package nl.sikken.bertrik.cayenne;
 
 import java.util.Base64;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,11 +22,10 @@ public final class CayenneMessageTest {
     public void testTwoTemperatureSensors() throws CayenneException {
         final byte[] data = {0x03, 0x67, 0x01, 0x10, 0x05, 0x67, 0x00, (byte) 0xFF};
         final CayenneMessage payload = CayenneMessage.parse(data);
-        LOG.info("payload = {}", payload);
+        LOG.info("payload: {}", payload);
         
-        final Map<Integer, String[]> items = payload.getItems();
-        Assert.assertArrayEquals(new String[] {"27.2"}, items.get(3));
-        Assert.assertArrayEquals(new String[] {"25.5"}, items.get(5));
+        Assert.assertArrayEquals(new String[] {"27.2"}, payload.ofChannel(3).getValue());
+        Assert.assertArrayEquals(new String[] {"25.5"}, payload.ofChannel(5).getValue());
     }
     
     /**
@@ -40,9 +38,8 @@ public final class CayenneMessageTest {
             {0x01, 0x67, (byte) 0xFF, (byte) 0xD7, 0x06, 0x71, 0x04, (byte) 0xD2, (byte) 0xFB, 0x2E, 0x00, 0x00};
         final CayenneMessage payload = CayenneMessage.parse(data);
 
-        final Map<Integer, String[]> items = payload.getItems();
-        Assert.assertArrayEquals(new String[] {"-4.1"}, items.get(1));
-        Assert.assertArrayEquals(new String[] {"1.234", "-1.234", "0.000"}, items.get(6));
+        Assert.assertArrayEquals(new String[] {"-4.1"}, payload.ofChannel(1).getValue());
+        Assert.assertArrayEquals(new String[] {"1.234", "-1.234", "0.000"}, payload.ofChannel(6).getValue());
     }
 
     /**
@@ -55,8 +52,7 @@ public final class CayenneMessageTest {
             {0x01, (byte) 0x88, 0x06, 0x076, 0x5f, (byte) 0xf2, (byte) 0x96, 0x0a, 0x00, 0x03, (byte) 0xe8};
         final CayenneMessage payload = CayenneMessage.parse(data);
 
-        final Map<Integer, String[]> items = payload.getItems();
-        Assert.assertArrayEquals(new String[] {"42.3519", "-87.9094", "10.00"}, items.get(1));
+        Assert.assertArrayEquals(new String[] {"42.3519", "-87.9094", "10.00"}, payload.ofChannel(1).getValue());
     }
 
     /**
@@ -68,8 +64,8 @@ public final class CayenneMessageTest {
         final byte[] data = {1, 104, 100};
         final CayenneMessage payload = CayenneMessage.parse(data);
         
-        final Map<Integer, String[]> items = payload.getItems();
-        Assert.assertArrayEquals(new String[] {"50.0"}, items.get(1));
+//        final Map<Integer, String[]> items = payload.getItems();
+        Assert.assertArrayEquals(new String[] {"50.0"}, payload.ofChannel(1).getValue());
     }
     
     /**
@@ -82,10 +78,9 @@ public final class CayenneMessageTest {
         final byte[] data = Base64.getDecoder().decode(base64);
         final CayenneMessage payload = CayenneMessage.parse(data);
 
-        final Map<Integer, String[]> items = payload.getItems();
-        Assert.assertArrayEquals(new String[] {"52.0225", "4.6928", "-2.00"}, items.get(1));
-        Assert.assertArrayEquals(new String[] {"247.84"}, items.get(2));
-        Assert.assertArrayEquals(new String[] {"27.0"}, items.get(3));
+        Assert.assertArrayEquals(new String[] {"52.0225", "4.6928", "-2.00"}, payload.ofChannel(1).getValue());
+        Assert.assertArrayEquals(new String[] {"247.84"}, payload.ofChannel(2).getValue());
+        Assert.assertArrayEquals(new String[] {"27.0"}, payload.ofChannel(3).getValue());
     }
     
     /**
@@ -98,10 +93,23 @@ public final class CayenneMessageTest {
         final byte[] data = Base64.getDecoder().decode(base64);
         final CayenneMessage payload = CayenneMessage.parse(data);
 
-        final Map<Integer, String[]> items = payload.getItems();
-        Assert.assertArrayEquals(new String[] {"52.0225", "4.6925", "-17.00"}, items.get(1));
-        Assert.assertArrayEquals(new String[] {"4.15"}, items.get(2));
-        Assert.assertArrayEquals(new String[] {"24.0"}, items.get(3));
+        // verify we can get at the data by channel
+        Assert.assertArrayEquals(new String[] {"52.0225", "4.6925", "-17.00"}, payload.ofChannel(1).getValue());
+        Assert.assertArrayEquals(new String[] {"4.15"}, payload.ofChannel(2).getValue());
+        Assert.assertArrayEquals(new String[] {"24.0"}, payload.ofChannel(3).getValue());
+
+        // verify we can also get data by type
+        Assert.assertArrayEquals(new String[] {"52.0225", "4.6925", "-17.00"}, 
+                                 payload.ofType(ECayenneItem.GPS_LOCATION).getValue());
+        Assert.assertArrayEquals(new String[] {"4.15"}, payload.ofType(ECayenneItem.ANALOG_INPUT).getValue());
+        Assert.assertArrayEquals(new String[] {"24.0"}, payload.ofType(ECayenneItem.TEMPERATURE).getValue());
+        
+        // verify non-existing channel and type
+        Assert.assertNull(payload.ofChannel(0));
+        Assert.assertNull(payload.ofType(ECayenneItem.BAROMETER));
+        
+        // verify toString method
+        Assert.assertNotNull(payload.toString());
     }
 
     /**

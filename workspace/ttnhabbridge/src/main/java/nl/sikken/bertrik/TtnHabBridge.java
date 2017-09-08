@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import nl.sikken.bertrik.hab.DecodeException;
 import nl.sikken.bertrik.hab.ExpiringCache;
 import nl.sikken.bertrik.hab.PayloadDecoder;
 import nl.sikken.bertrik.hab.Sentence;
@@ -123,8 +123,8 @@ public final class TtnHabBridge {
             habUploader.schedulePayloadTelemetryUpload(line, receivers, now);
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
-        } catch (BufferUnderflowException e) {
-            LOG.warn("Sodaq payload exception: {}", e.getMessage());
+        } catch (DecodeException e) {
+            LOG.warn("Payload decoding exception: {}", e.getMessage());
         }
     }
 

@@ -7,13 +7,21 @@ import java.nio.ByteBuffer;
  */
 public interface IFormatter {
 
+    /**
+     * Parses raw data into an array of doubles
+     * 
+     * @param bb the byte buffer
+     * @return the parsed value as a number
+     */
+    Double[] parse(ByteBuffer bb);
+
     /** 
      * Formats the data into an array of strings.
      * For example, for a GPS location it outputs: latitude in [0], longitude in [1], altitude in [2].
      * 
-     * @param bb the byte buffer containing the data
+     * @param values the value as double array
      * @return the string representation
      */
-    String[] format(ByteBuffer bb);
+    String[] format(Double[] values);
 
 }

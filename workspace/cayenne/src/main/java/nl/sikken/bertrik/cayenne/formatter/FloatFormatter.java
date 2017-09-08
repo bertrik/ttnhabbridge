@@ -39,13 +39,21 @@ public final class FloatFormatter extends BaseFormatter {
     }
     
     @Override
-    public String[] format(ByteBuffer bb) {
-        final String[] values = new String[length];
+    public Double[] parse(ByteBuffer bb) {
+        final Double[] values = new Double[length];
         for (int i = 0; i < length; i++) {
-            double value = scale * getValue(bb, size, signed);
-            values[i] = String.format(Locale.US, format, value);
+            values[i] = scale * getValue(bb, size, signed);
         }
         return values;
     }
     
+    @Override
+    public String[] format(Double[] values) {
+        final String[] formatted = new String[length];
+        for (int i = 0; i < length; i++) {
+            formatted[i] = String.format(Locale.US, format, values[i]);
+        }
+        return formatted;
+    }
+
 }

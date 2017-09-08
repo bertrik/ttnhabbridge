@@ -10,19 +10,19 @@ public final class CayenneItem {
     
     private final int channel;
     private final ECayenneItem type;
-    private final String[] value;
+    private final Double[] values;
 
     /**
      * Constructor.
      * 
      * @param channel the unique channel
      * @param type the type
-     * @param value the (string) value
+     * @param values the values
      */
-    public CayenneItem(int channel, ECayenneItem type, String[] value) {
+    public CayenneItem(int channel, ECayenneItem type, Double[] values) {
         this.channel = channel;
         this.type = type;
-        this.value = value;
+        this.values = values;
     }
 
     public int getChannel() {
@@ -33,13 +33,17 @@ public final class CayenneItem {
         return type;
     }
 
-    public String[] getValue() {
-        return value;
+    public Double[] getValues() {
+        return values;
+    }
+    
+    public String[] format() {
+        return type.format(values);
     }
     
     @Override
     public String toString() {
-        return String.format(Locale.US, "{chan=%d,type=%s,value=%s}", channel, type, Arrays.toString(value));  
+        return String.format(Locale.US, "{chan=%d,type=%s,value=%s}", channel, type, Arrays.toString(format()));  
     }
     
 }

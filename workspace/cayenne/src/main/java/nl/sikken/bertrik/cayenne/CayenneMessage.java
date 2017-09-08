@@ -32,8 +32,8 @@ public final class CayenneMessage {
                 if (ct == null) {
                     throw new CayenneException("Invalid cayenne type " + type);
                 }
-                final String[] formatted = ct.format(bb);
-                final CayenneItem item = new CayenneItem(channel, ct, formatted);
+                final Double[] values = ct.parse(bb);
+                final CayenneItem item = new CayenneItem(channel, ct, values);
                 message.items.add(item);
             }
         } catch (BufferUnderflowException e) {

@@ -3,6 +3,8 @@ apply plugin: "application"
 mainClassName = 'nl.sikken.bertrik.TtnHabBridge'
 
 dependencies {
+    compile project(':cayenne')
+
     compile libraries.slf4jlog4j
     
     compile libraries.mqtt_client

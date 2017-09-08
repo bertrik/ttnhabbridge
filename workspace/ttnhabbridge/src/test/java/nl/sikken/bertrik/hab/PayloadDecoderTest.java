@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import nl.sikken.bertrik.hab.Sentence;
 import nl.sikken.bertrik.hab.ttn.TtnMessage;
 
 /**
@@ -21,9 +20,10 @@ public final class PayloadDecoderTest {
      * Verifies decoding of some actual MQTT data, in JSON format.
      * 
      * @throws IOException in case of a parse exception
+     * @throws DecodeException in case of a decode exception
      */
     @Test
-    public void testDecodeJson() throws IOException {
+    public void testDecodeJson() throws IOException, DecodeException {
         final String data = "{\"app_id\":\"spaceballoon\",\"dev_id\":\"devtrack\","
                 + "\"hardware_serial\":\"00490B7EB25521E6\",\"port\":1,\"counter\":1707,"
                 + "\"payload_raw\":\"AAsm1AxMAUEAY/wCNh68EwKaihEClAEAAwAF\",\"payload_fields\":{\"baralt\":321,"
@@ -52,9 +52,10 @@ public final class PayloadDecoderTest {
      * Verifies decoding of some actual MQTT data, in RAW format.
      * 
      * @throws IOException in case of a parse exception
+     * @throws DecodeException in case of a decode exception
      */
     @Test
-    public void testDecodeRaw() throws IOException {
+    public void testDecodeRaw() throws IOException, DecodeException {
         final String data = "{\"app_id\":\"ttnmapper\",\"dev_id\":\"mapper2\","
                 + "\"hardware_serial\":\"0004A30B001ADBC5\",\"port\":1,\"counter\":4,"
                 + "\"payload_raw\":\"loeaWW4T2+8BHzYZzAIeAA8A/QUS\","
@@ -74,6 +75,30 @@ public final class PayloadDecoderTest {
         final Sentence sentence = decoder.decode(message);
         
         Assert.assertEquals("$$mapper2,4,07:11:18,52.022064,4.693023,30.0,19,4.10*81FD", sentence.format().trim());
+    }
+    
+    /**
+     * Verifies decoding of some actual MQTT data, in cayenne format (fix applied to analog input).
+     * 
+     * @throws IOException in case of a parse exception
+     * @throws DecodeException in case of a decode exception
+     */
+    @Test
+    public void testDecodeCayenne() throws IOException, DecodeException {
+        final String data = "{\"app_id\":\"habhub\",\"dev_id\":\"ttntest1\",\"hardware_serial\":\"0004A30B001ADBC5\","
+                + "\"port\":1,\"counter\":9,\"payload_raw\":\"AYgH8BwAt08AETACAgGlA2cBIg==\","
+                + "\"metadata\":{\"time\":\"2017-09-08T16:53:10.446526987Z\",\"frequency\":868.1,"
+                + "\"modulation\":\"LORA\",\"data_rate\":\"SF7BW125\",\"coding_rate\":\"4/5\","
+                + "\"gateways\":[{\"gtw_id\":\"eui-008000000000b8b6\",\"timestamp\":2382048707,"
+                + "\"time\":\"2017-09-08T16:53:10.342388Z\",\"channel\":0,\"rssi\":-119,\"snr\":-2,\"rf_chain\":1,"
+                + "\"latitude\":52.0182,\"longitude\":4.70844,\"altitude\":27}]}}";
+        final TtnMessage message = mapper.readValue(data, TtnMessage.class);
+        
+        // decode payload
+        final PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CAYENNE.getName());
+        final Sentence sentence = decoder.decode(message);
+        
+        Assert.assertEquals("$$ttntest1,9,16:53:10,52.022000,4.692700,44.0,29.0,4.21*A3A9", sentence.format().trim());
     }
     
     /**

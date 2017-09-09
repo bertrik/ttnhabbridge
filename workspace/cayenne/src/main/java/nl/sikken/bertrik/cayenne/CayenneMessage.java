@@ -1,6 +1,5 @@
 package nl.sikken.bertrik.cayenne;
 
-import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,21 +22,10 @@ public final class CayenneMessage {
      */
     public static CayenneMessage parse(byte[] data) throws CayenneException {
         final CayenneMessage message = new CayenneMessage();
-        try {
-            final ByteBuffer bb = ByteBuffer.wrap(data);
-            while (bb.hasRemaining()) {
-                final int channel = bb.get();
-                final int type = bb.get() & 0xFF;
-                final ECayenneItem ct = ECayenneItem.parse(type);
-                if (ct == null) {
-                    throw new CayenneException("Invalid cayenne type " + type);
-                }
-                final Double[] values = ct.parse(bb);
-                final CayenneItem item = new CayenneItem(channel, ct, values);
-                message.items.add(item);
-            }
-        } catch (BufferUnderflowException e) {
-            throw new CayenneException(e);
+        final ByteBuffer bb = ByteBuffer.wrap(data);
+        while (bb.hasRemaining()) {
+            final CayenneItem item = CayenneItem.parse(bb);
+            message.items.add(item);
         }
         return message;
     }

@@ -1,5 +1,7 @@
 package nl.sikken.bertrik.cayenne;
 
+import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -39,6 +41,28 @@ public final class CayenneItem {
     
     public String[] format() {
         return type.format(values);
+    }
+    
+    /**
+     * Parses one item from the byte buffer and returns it.
+     * 
+     * @param bb the byte buffer
+     * @return a new cayenne item
+     * @throws CayenneException if an error occurs during parsing
+     */
+    public static CayenneItem parse(ByteBuffer bb) throws CayenneException {
+        try {
+            final int channel = bb.get();
+            final int type = bb.get() & 0xFF;
+            final ECayenneItem ct = ECayenneItem.parse(type);
+            if (ct == null) {
+                throw new CayenneException("Invalid cayenne type " + type);
+            }
+            final Double[] values = ct.parse(bb);
+            return new CayenneItem(channel, ct, values);
+        } catch (BufferUnderflowException e) {
+            throw new CayenneException(e);
+        }
     }
     
     @Override

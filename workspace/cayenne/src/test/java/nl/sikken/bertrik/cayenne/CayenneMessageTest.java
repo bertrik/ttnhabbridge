@@ -64,7 +64,6 @@ public final class CayenneMessageTest {
         final byte[] data = {1, 104, 100};
         final CayenneMessage payload = CayenneMessage.parse(data);
         
-//        final Map<Integer, String[]> items = payload.getItems();
         Assert.assertArrayEquals(new String[] {"50.0"}, payload.ofChannel(1).format());
     }
     

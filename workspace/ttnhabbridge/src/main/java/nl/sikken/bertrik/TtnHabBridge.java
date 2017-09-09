@@ -29,8 +29,6 @@ import nl.sikken.bertrik.hab.ttn.TtnMessageGateway;
 /**
  * Bridge between the-things-network and the habhub network.
  * 
- * Possible improvements: 
- * - add uncaught exception handler 
  */
 public final class TtnHabBridge {
 

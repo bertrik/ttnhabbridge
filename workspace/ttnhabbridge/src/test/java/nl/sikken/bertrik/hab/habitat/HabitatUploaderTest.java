@@ -1,5 +1,6 @@
 package nl.sikken.bertrik.hab.habitat;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -32,10 +33,10 @@ public final class HabitatUploaderTest {
 		uploader.start();
 		try {
 			final HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
-			final Date date = new Date();
-			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
+			final Instant instant = Instant.now();
+			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant, 52.0182307, 4.695772, 1000);
 
-			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), date);
+			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), Date.from(instant));
             Mockito.verify(restClient, Mockito.timeout(3000).times(1)).updateListener(Mockito.anyString(),
                     Mockito.anyString());
 		} finally {
@@ -84,10 +85,10 @@ public final class HabitatUploaderTest {
 		final HabitatUploader uploader = new HabitatUploader(restClient);
 		uploader.start();
 		try {
-			final Date date = new Date();
-			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, date, 52.0182307, 4.695772, 1000);
+			final Instant instant = Instant.now();
+			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant, 52.0182307, 4.695772, 1000);
 			final HabReceiver receiver = new HabReceiver("BERTRIK", null);
-			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), date);
+			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), Date.from(instant));
 			Thread.sleep(3000);
 		} finally {
 			uploader.stop();

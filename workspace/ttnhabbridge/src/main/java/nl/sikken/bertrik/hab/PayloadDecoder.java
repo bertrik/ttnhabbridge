@@ -88,7 +88,7 @@ public final class PayloadDecoder {
             final double longitude = sodaq.getLongitude();
             final double altitude = sodaq.getAltitude();
             final Date time = new Date(1000L * sodaq.getTimeStamp());
-            final Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
+            final Sentence sentence = new Sentence(callSign, counter, time.toInstant(), latitude, longitude, altitude);
             sentence.addField(String.format(Locale.US, "%.0f", sodaq.getBoardTemp()));
             sentence.addField(String.format(Locale.US, "%.2f", sodaq.getBattVoltage()));
             return sentence;
@@ -115,7 +115,7 @@ public final class PayloadDecoder {
             final double latitude = fields.get("lat").doubleValue();
             final double longitude = fields.get("lon").doubleValue();
             final double altitude = fields.get("gpsalt").doubleValue();
-            final Sentence sentence = new Sentence(callSign, counter, Date.from(time), latitude, longitude, altitude);
+            final Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
             final JsonNode tempNode = fields.get("temp");
             final JsonNode vccNode = fields.get("vcc");
             if ((tempNode != null) && (vccNode != null)) {
@@ -150,7 +150,7 @@ public final class PayloadDecoder {
             final double latitude = location[0];
             final double longitude = location[1];
             final double altitude = location[2];
-            final Sentence sentence = new Sentence(callSign, counter, Date.from(time), latitude, longitude, altitude);
+            final Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
 
             // temperature and battery
             final CayenneItem tempItem = cayenne.ofType(ECayenneItem.TEMPERATURE);

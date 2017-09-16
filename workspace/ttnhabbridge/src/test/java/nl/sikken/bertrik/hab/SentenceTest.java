@@ -1,5 +1,6 @@
 package nl.sikken.bertrik.hab;
 
+import java.time.Instant;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -15,7 +16,8 @@ public final class SentenceTest {
      */
     @Test
     public void testSentence() {
-        final Sentence sentence = new Sentence("CALL", 1, new Date(0), 3.45, 6.78, 9.0);
+        final Date date = new Date(0);
+        final Sentence sentence = new Sentence("CALL", 1, date.toInstant(), 3.45, 6.78, 9.0);
         final String s = sentence.format();
 
         Assert.assertEquals("$$CALL,1,00:00:00,3.450000,6.780000,9.0*25E9\n", s);
@@ -26,7 +28,7 @@ public final class SentenceTest {
      */
     @Test
     public void testSentenceExtras() {
-        final Sentence sentence = new Sentence("CALL", 1, new Date(), 3.45, 6.78, 9.0);
+        final Sentence sentence = new Sentence("CALL", 1, Instant.now(), 3.45, 6.78, 9.0);
         sentence.addField("hello");
         final String s = sentence.format();
 

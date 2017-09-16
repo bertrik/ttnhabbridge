@@ -2,7 +2,6 @@ package nl.sikken.bertrik.hab.ttn;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -26,7 +25,7 @@ public final class TtnMessageMetaDataTest {
         final Instant instant = data.getTime();
         Assert.assertNotNull(instant);
         
-        final Sentence sentence = new Sentence("call", 0, Date.from(instant), 0.0, 0.0, 0.0);
+        final Sentence sentence = new Sentence("call", 0, instant, 0.0, 0.0, 0.0);
         final String line = sentence.format();
         Assert.assertTrue(line.contains("17:18:02"));
     }

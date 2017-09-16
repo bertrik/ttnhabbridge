@@ -1,12 +1,13 @@
 package nl.sikken.bertrik.hab;
 
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Representation of a HAB telemetry sentence.
@@ -15,7 +16,7 @@ public final class Sentence {
 
     private final String callSign;
     private final int id;
-    private final Date time;
+    private final Instant time;
     private final double latitude;
     private final double longitude;
     private final double altitude;
@@ -29,12 +30,12 @@ public final class Sentence {
      * 
      * @param callSign the call sign
      * @param id some incrementing number
-     * @param time the current time (UTC seconds)
+     * @param time the creation time
      * @param latitude the latitude (degrees)
      * @param longitude the longitude (degrees)
      * @param altitude the altitude (meter)
      */
-    public Sentence(String callSign, int id, Date time, double latitude, double longitude, double altitude) {
+    public Sentence(String callSign, int id, Instant time, double latitude, double longitude, double altitude) {
         this.callSign = callSign;
         this.id = id;
         this.time = time;
@@ -59,9 +60,9 @@ public final class Sentence {
      */
     public String format() {
         // format time
-        final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss", Locale.US);
-        fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-        final String timeString = fmt.format(time);
+        final LocalDateTime local = LocalDateTime.ofInstant(time, ZoneId.of("UTC"));
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
+        final String timeString = local.format(formatter);
 
         // format basic string
         final StringBuilder sb = new StringBuilder();

@@ -1,6 +1,6 @@
 package nl.sikken.bertrik.hab.habitat.docs;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,8 +15,8 @@ public final class PayloadTelemetryDocTest {
 	 */
 	@Test
 	public void testFormat() {
-		final Date date = new Date();
-		final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(date, "BERTRIK", new byte[] {1, 2, 3});
+		final Instant instant = Instant.now();
+		final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, "BERTRIK", new byte[] {1, 2, 3});
 		final String json = doc.format();
 		
 		Assert.assertNotNull(json);

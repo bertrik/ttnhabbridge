@@ -1,9 +1,9 @@
 package nl.sikken.bertrik.hab.habitat.docs;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,23 +15,23 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public final class PayloadTelemetryDoc {
 
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
+    private final DateTimeFormatter dateFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
-    private final Date dateCreated;
-    private final Date dateUploaded;
+    private final OffsetDateTime dateCreated;
+    private final OffsetDateTime dateUploaded;
     private final String callSign;
     private final byte[] rawBytes;
 
     /**
      * Constructor.
      * 
-     * @param date the creation/upload date
+     * @param instant the creation/upload date/time
      * @param callSign the receiver call sign
      * @param rawBytes the raw telemetry string as bytes
      */
-    public PayloadTelemetryDoc(Date date, String callSign, byte[] rawBytes) {
-        this.dateCreated = date;
-        this.dateUploaded = date;
+    public PayloadTelemetryDoc(Instant instant, String callSign, byte[] rawBytes) {
+        this.dateCreated = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
+        this.dateUploaded = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
         this.callSign = callSign;
         this.rawBytes = rawBytes;
     }

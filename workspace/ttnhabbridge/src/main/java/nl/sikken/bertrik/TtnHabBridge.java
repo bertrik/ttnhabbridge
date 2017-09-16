@@ -118,7 +118,7 @@ public final class TtnHabBridge {
             }
 
             // send payload telemetry data
-            habUploader.schedulePayloadTelemetryUpload(line, receivers, now);
+            habUploader.schedulePayloadTelemetryUpload(line, receivers, now.toInstant());
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         } catch (DecodeException e) {

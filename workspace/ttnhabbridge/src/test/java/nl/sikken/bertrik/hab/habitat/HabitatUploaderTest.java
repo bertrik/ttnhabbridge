@@ -36,7 +36,7 @@ public final class HabitatUploaderTest {
 			final Instant instant = Instant.now();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant, 52.0182307, 4.695772, 1000);
 
-			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), Date.from(instant));
+			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
             Mockito.verify(restClient, Mockito.timeout(3000).times(1)).updateListener(Mockito.anyString(),
                     Mockito.anyString());
 		} finally {
@@ -88,7 +88,7 @@ public final class HabitatUploaderTest {
 			final Instant instant = Instant.now();
 			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant, 52.0182307, 4.695772, 1000);
 			final HabReceiver receiver = new HabReceiver("BERTRIK", null);
-			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), Date.from(instant));
+			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
 			Thread.sleep(3000);
 		} finally {
 			uploader.stop();

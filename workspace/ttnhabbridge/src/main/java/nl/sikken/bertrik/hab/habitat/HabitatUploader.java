@@ -3,6 +3,7 @@ package nl.sikken.bertrik.hab.habitat;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.Date;
@@ -95,9 +96,9 @@ public final class HabitatUploader {
      * 
      * @param sentence the ASCII sentence
      * @param receivers list of listener that received this sentence
-     * @param date the current date
+     * @param instant the current date/time
      */
-    public void schedulePayloadTelemetryUpload(String sentence, List<HabReceiver> receivers, Date date) {
+    public void schedulePayloadTelemetryUpload(String sentence, List<HabReceiver> receivers, Instant instant) {
         LOG.info("Uploading for {} receivers: {}", receivers.size(), sentence.trim());
 
         // encode sentence as raw bytes
@@ -108,7 +109,7 @@ public final class HabitatUploader {
 
         for (HabReceiver receiver : receivers) {
             // create Json
-            final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(date, receiver.getCallsign(), bytes);
+            final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, receiver.getCallsign(), bytes);
             final String json = doc.format();
 
             // submit it to our processing thread

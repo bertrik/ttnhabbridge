@@ -55,7 +55,7 @@ public final class PayloadDecoderTest {
      * @throws DecodeException in case of a decode exception
      */
     @Test
-    public void testDecodeRaw() throws IOException, DecodeException {
+    public void testDecodeSodaqOne() throws IOException, DecodeException {
         final String data = "{\"app_id\":\"ttnmapper\",\"dev_id\":\"mapper2\","
                 + "\"hardware_serial\":\"0004A30B001ADBC5\",\"port\":1,\"counter\":4,"
                 + "\"payload_raw\":\"loeaWW4T2+8BHzYZzAIeAA8A/QUS\","

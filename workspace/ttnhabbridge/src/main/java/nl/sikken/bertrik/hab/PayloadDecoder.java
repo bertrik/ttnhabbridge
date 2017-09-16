@@ -2,7 +2,6 @@ package nl.sikken.bertrik.hab;
 
 import java.nio.BufferUnderflowException;
 import java.time.Instant;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -87,8 +86,8 @@ public final class PayloadDecoder {
             final double latitude = sodaq.getLatitude();
             final double longitude = sodaq.getLongitude();
             final double altitude = sodaq.getAltitude();
-            final Date time = new Date(1000L * sodaq.getTimeStamp());
-            final Sentence sentence = new Sentence(callSign, counter, time.toInstant(), latitude, longitude, altitude);
+            final Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
+            final Sentence sentence = new Sentence(callSign, counter, instant, latitude, longitude, altitude);
             sentence.addField(String.format(Locale.US, "%.0f", sodaq.getBoardTemp()));
             sentence.addField(String.format(Locale.US, "%.2f", sodaq.getBattVoltage()));
             return sentence;

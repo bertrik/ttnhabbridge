@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public abstract class ListenerDoc {
 
-//    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
     private final JsonNodeFactory factory = new JsonNodeFactory(false);
 

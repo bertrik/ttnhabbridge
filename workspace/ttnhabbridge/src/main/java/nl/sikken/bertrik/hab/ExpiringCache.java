@@ -1,6 +1,6 @@
 package nl.sikken.bertrik.hab;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class ExpiringCache {
 
-    private final Map<String, Date> map = new ConcurrentHashMap<String, Date>();
-    private final long expiryTimeMs;
+    private final Map<String, Instant> map = new ConcurrentHashMap<>();
+    private final long expiryTimeSec;
 
     /**
      * Constructor.
@@ -18,19 +18,19 @@ public final class ExpiringCache {
      * @param expiryTimeSec the expiry time (seconds)
      */
     public ExpiringCache(int expiryTimeSec) {
-        this.expiryTimeMs = expiryTimeSec * 1000L;
+        this.expiryTimeSec = expiryTimeSec;
     }
     
     /**
      * Adds the item to the cache. 
      * 
      * @param id the id of the item
-     * @param date the date
+     * @param instant the current time
      * @return true if the item was newly added
      */
-    public boolean add(String id, Date date) {
-        cleanUp(date);
-        final Date previous = map.putIfAbsent(id, date);
+    public boolean add(String id, Instant instant) {
+        cleanUp(instant);
+        final Instant previous = map.putIfAbsent(id, instant);
         return previous == null;
     }
 
@@ -39,10 +39,10 @@ public final class ExpiringCache {
      * 
      * @param now the current date
      */
-    private void cleanUp(Date now) {
-        final Date limit = new Date(now.getTime() - expiryTimeMs);
+    private void cleanUp(Instant now) {
+        final Instant limit = now.minusSeconds(expiryTimeSec);
         map.forEach((k,v) -> {
-            if (v.before(limit)) {
+            if (v.isBefore(limit)) {
                 map.remove(k, v);
             }
         });

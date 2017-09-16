@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -113,7 +112,7 @@ public final class TtnHabBridge {
                 receivers.add(receiver);
 
                 // send listener data only if it has a valid location and hasn't been sent recently
-                if (gwLocation.isValid() && gwCache.add(gwName, Date.from(now))) {
+                if (gwLocation.isValid() && gwCache.add(gwName, now)) {
                     habUploader.scheduleListenerDataUpload(receiver, now);
                 }
             }

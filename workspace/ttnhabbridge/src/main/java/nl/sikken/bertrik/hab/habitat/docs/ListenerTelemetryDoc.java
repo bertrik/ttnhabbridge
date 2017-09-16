@@ -1,6 +1,6 @@
 package nl.sikken.bertrik.hab.habitat.docs;
 
-import java.util.Date;
+import java.time.Instant;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -19,11 +19,11 @@ public final class ListenerTelemetryDoc extends ListenerDoc {
     /**
      * Constructor.
      * 
-     * @param date the creation/upload date
+     * @param instant the creation/upload date
      * @param receiver the receiver info
      */
-    public ListenerTelemetryDoc(Date date, HabReceiver receiver) {
-        super(date, "listener_telemetry");
+    public ListenerTelemetryDoc(Instant instant, HabReceiver receiver) {
+        super(instant, "listener_telemetry");
         this.receiver = receiver;
     }
 

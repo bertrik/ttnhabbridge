@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,7 +104,7 @@ public final class TtnHabBridge {
             final String line = sentence.format();
             
             // collect list of listeners 
-            final Date now = new Date();
+            final Instant now = Instant.now();
             final List<HabReceiver> receivers = new ArrayList<>();
             for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
                 final String gwName = gw.getId();
@@ -112,13 +113,13 @@ public final class TtnHabBridge {
                 receivers.add(receiver);
 
                 // send listener data only if it has a valid location and hasn't been sent recently
-                if (gwLocation.isValid() && gwCache.add(gwName, now)) {
+                if (gwLocation.isValid() && gwCache.add(gwName, Date.from(now))) {
                     habUploader.scheduleListenerDataUpload(receiver, now);
                 }
             }
 
             // send payload telemetry data
-            habUploader.schedulePayloadTelemetryUpload(line, receivers, now.toInstant());
+            habUploader.schedulePayloadTelemetryUpload(line, receivers, now);
         } catch (IOException e) {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         } catch (DecodeException e) {

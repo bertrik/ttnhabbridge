@@ -2,7 +2,6 @@ package nl.sikken.bertrik.hab.habitat;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Date;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -61,9 +60,9 @@ public final class HabitatUploaderTest {
         uploader.start();
         try {
             final HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
-            final Date date = new Date();
+            final Instant instant = Instant.now();
             
-            uploader.scheduleListenerDataUpload(receiver, date);
+            uploader.scheduleListenerDataUpload(receiver, instant);
             
             // expect two documents
             Mockito.verify(restClient, Mockito.timeout(3000).times(2)).uploadDocument(Mockito.anyString(),
@@ -106,9 +105,9 @@ public final class HabitatUploaderTest {
 	    final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
 	    final HabitatUploader uploader = new HabitatUploader(restClient);
 	    try {
-            final Date date = new Date();
+            final Instant instant = Instant.now();
             final HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0182307, 4.695772, 15.0));
-	        uploader.scheduleListenerDataUpload(receiver, date);
+	        uploader.scheduleListenerDataUpload(receiver, instant);
 	        Thread.sleep(3000);
 	    } finally {
 	        uploader.stop();

@@ -1,6 +1,6 @@
 package nl.sikken.bertrik.hab.habitat.docs;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,9 +18,9 @@ public final class ListenerInfoDocTest {
      */
     @Test
     public void testFormat() {
-        final Date date = new Date();
+        final Instant instant = Instant.now();
         final HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0162, 4.4753, 0.0));
-        final ListenerInformationDoc doc = new ListenerInformationDoc(date, receiver);
+        final ListenerInformationDoc doc = new ListenerInformationDoc(instant, receiver);
         final String json = doc.format();
 
         Assert.assertNotNull(json);

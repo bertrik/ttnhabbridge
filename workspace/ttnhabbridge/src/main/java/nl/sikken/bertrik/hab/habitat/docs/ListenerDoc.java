@@ -1,9 +1,9 @@
 package nl.sikken.bertrik.hab.habitat.docs;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -14,20 +14,21 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public abstract class ListenerDoc {
 
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
+//    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
+    private final DateTimeFormatter dateFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
     private final JsonNodeFactory factory = new JsonNodeFactory(false);
 
-    private final Date date;
+    private final OffsetDateTime date;
     private final String type;
 
     /**
      * Constructor.
-     * @param date the creation/upload date
+     * @param instant the creation/upload date
      * @param type the document type
      */
-    protected ListenerDoc(Date date, String type) {
+    protected ListenerDoc(Instant instant, String type) {
         this.type = type;
-        this.date = date;
+        this.date = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
     }
 
     /**

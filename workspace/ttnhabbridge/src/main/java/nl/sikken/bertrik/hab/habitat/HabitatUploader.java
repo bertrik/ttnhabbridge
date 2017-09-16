@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Base64.Encoder;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -149,19 +148,19 @@ public final class HabitatUploader {
      * Schedules new listener data to be sent to habitat.
      * 
      * @param receiver the receiver data
-     * @param date the current date
+     * @param instant the current date/time
      */
-    public void scheduleListenerDataUpload(HabReceiver receiver, Date date) {
-        executor.submit(() -> uploadListener(receiver, date));
+    public void scheduleListenerDataUpload(HabReceiver receiver, Instant instant) {
+        executor.submit(() -> uploadListener(receiver, instant));
     }
     
     /**
      * Uploads listener data (information and telemetry)
      * 
      * @param receiver the receiver/listener
-     * @param date the current date
+     * @param instant the current date/time
      */
-    private void uploadListener(HabReceiver receiver, Date date) {
+    private void uploadListener(HabReceiver receiver, Instant instant) {
         LOG.info("Upload listener data for {}", receiver);
         try {
             // get two uuids
@@ -173,13 +172,13 @@ public final class HabitatUploader {
 
                 // upload payload listener info
                 LOG.info("Upload listener info using UUID {}...", uuids.get(0));
-                final ListenerInformationDoc info = new ListenerInformationDoc(date, receiver);
+                final ListenerInformationDoc info = new ListenerInformationDoc(instant, receiver);
                 final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
                 LOG.info("Result listener info: {}", infoResult);
                 
                 // upload payload telemetry
                 LOG.info("Upload listener telemetry using UUID {}...", uuids.get(1));
-                final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(date, receiver);
+                final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(instant, receiver);
                 final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
                 LOG.info("Result listener telemetry: {}", telemResult);
             } else {

@@ -24,7 +24,7 @@ public final class CayenneItem {
     public CayenneItem(int channel, ECayenneItem type, Double[] values) {
         this.channel = channel;
         this.type = type;
-        this.values = values;
+        this.values = values.clone();
     }
 
     public int getChannel() {
@@ -36,7 +36,7 @@ public final class CayenneItem {
     }
 
     public Double[] getValues() {
-        return values;
+        return values.clone();
     }
     
     public String[] format() {

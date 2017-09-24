@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 public interface IFormatter {
 
     /**
-     * Parses raw data into an array of doubles
+     * Parses raw data into an array of doubles.
      * 
      * @param bb the byte buffer
      * @return the parsed value as a number
@@ -23,5 +23,13 @@ public interface IFormatter {
      * @return the string representation
      */
     String[] format(Double[] values);
+
+    /**
+     * Encodes the data into the byte buffer
+     * 
+     * @param bb the buffer to encode to
+     * @param values the values to encode
+     */
+    void encode(ByteBuffer bb, Double[] values);
 
 }

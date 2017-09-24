@@ -31,6 +31,30 @@ public final class CayenneMessage {
     }
     
     /**
+     * Adds a cayenne measurement item to the message.
+     * 
+     * @param item the item to add
+     */
+    public void add(CayenneItem item) {
+        items.add(item);
+    }
+    
+    /**
+     * Encodes the cayenne message into a byte array.
+     * 
+     * @return the byte array.
+     * @throws CayenneException in case something went wrong during encoding (e.g. message too big)
+     */
+    public byte[] encode() throws CayenneException {
+        final byte[] bytes = new byte[500];
+        final ByteBuffer bb = ByteBuffer.wrap(bytes);
+        for (CayenneItem i : items) {
+            i.encode(bb);
+        }
+        return Arrays.copyOfRange(bytes, 0, bb.position());
+    }
+    
+    /**
      * @return an immutable list of measurement items in the order it appears in the raw data
      */
     public List<CayenneItem> getItems() {

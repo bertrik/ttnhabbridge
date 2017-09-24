@@ -11,7 +11,7 @@ import nl.sikken.bertrik.cayenne.formatter.IFormatter;
 import nl.sikken.bertrik.cayenne.formatter.BooleanFormatter;
 
 /**
- * Enumeration of possible cayenne item types.
+ * Enumeration of possible Cayenne item types.
  */
 public enum ECayenneItem {
     DIGITAL_INPUT(0, new BooleanFormatter(1, 1, false)),
@@ -61,12 +61,34 @@ public enum ECayenneItem {
         return type;
     }
     
+    /**
+     * Formats the measurement values into an array of strings. 
+     * 
+     * @param values the values to encode
+     * @return the formatted values
+     */
     public String[] format(Double[] values) {
         return formatter.format(values);
     }
     
+    /**
+     * Parses the contents of the byte buffer into an array of numerical values.
+     * 
+     * @param bb the byte buffer to parse from
+     * @return the numerical values
+     */
     public Double[] parse(ByteBuffer bb) {
         return formatter.parse(bb);
+    }
+
+    /**
+     * Encodes an array of numerical values into a byte buffer.
+     * 
+     * @param bb the byte buffer to encode into
+     * @param values the numerical values
+     */
+    public void encode(ByteBuffer bb, Double[] values) {
+        formatter.encode(bb, values);
     }
     
 }

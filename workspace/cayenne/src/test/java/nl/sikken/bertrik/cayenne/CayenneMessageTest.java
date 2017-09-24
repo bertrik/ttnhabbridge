@@ -148,5 +148,57 @@ public final class CayenneMessageTest {
         CayenneMessage.parse(new byte[] {2, 1});
     }
     
+    /**
+     * Verifies encoding of a float value.
+     * 
+     * @throws CayenneException in case of a parsing exception
+     */
+    @Test
+    public void encodeFloat() throws CayenneException {
+        final CayenneMessage message = new CayenneMessage();
+        message.add(new CayenneItem(1, ECayenneItem.ANALOG_INPUT, -12.34));
+        
+        final byte[] encoded = message.encode();
+        
+        final CayenneMessage decoded = CayenneMessage.parse(encoded);
+        Assert.assertEquals(-12.34, decoded.getItems().get(0).getValues()[0], 0.01);
+    }
+    
+    /**
+     * Verifies encoding of a humidity value.
+     * 
+     * @throws CayenneException in case of a parsing exception
+     */
+    @Test
+    public void encodeHumidity() throws CayenneException {
+        final CayenneMessage message = new CayenneMessage();
+        message.add(new CayenneItem(1, ECayenneItem.HUMIDITY, 35.5));
+        
+        final byte[] encoded = message.encode();
+        final CayenneMessage decoded = CayenneMessage.parse(encoded);
+
+        final CayenneItem item = decoded.getItems().get(0);
+        Assert.assertEquals(ECayenneItem.HUMIDITY, item.getType());
+        Assert.assertEquals(35.5, item.getValues()[0], 0.1);
+    }
+    
+    /**
+     * Verifies encoding of a boolean value.
+     * 
+     * @throws CayenneException in case of a parsing exception
+     */
+    @Test
+    public void encodeBoolean() throws CayenneException {
+        final CayenneMessage message = new CayenneMessage();
+        message.add(new CayenneItem(1, ECayenneItem.PRESENCE, 1.0));
+        
+        final byte[] encoded = message.encode();
+        final CayenneMessage decoded = CayenneMessage.parse(encoded);
+
+        final CayenneItem item = decoded.getItems().get(0);
+        Assert.assertEquals(ECayenneItem.PRESENCE, item.getType());
+        Assert.assertEquals(1.0, item.getValues()[0], 0.01);
+    }
+    
 }
 

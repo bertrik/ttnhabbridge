@@ -56,4 +56,11 @@ public final class FloatFormatter extends BaseFormatter {
         return formatted;
     }
 
+    @Override
+    public void encode(ByteBuffer bb, Double[] values) {
+        for (int i = 0; i < length; i++) {
+            putValue(bb, size, (int)Math.round(values[i] / scale));
+        }
+    }
+
 }

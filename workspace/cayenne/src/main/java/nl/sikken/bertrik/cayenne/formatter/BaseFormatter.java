@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 public abstract class BaseFormatter implements IFormatter {
 
     /**
-     * Gets a value from the byte buffer.
+     * Gets an integer value from the byte buffer.
      * 
      * @param bb the byte buffer
      * @param n the number of bytes to get
@@ -23,6 +23,22 @@ public abstract class BaseFormatter implements IFormatter {
             val += bb.get() & 0xFF;
         }
         return val;
+    }
+    
+    /**
+     * Puts an integer value into a byte buffer
+     * 
+     * @param bb the byte buffer
+     * @param n the number of bytes to put
+     * @param value the value to encode
+     */
+    protected void putValue(ByteBuffer bb, int n, int value) {
+        int shift = (n - 1) * 8;
+        for (int i = 0; i < n; i++) {
+            byte b = (byte) ((value >> shift) & 0xFF);
+            bb.put(b);
+            shift -= 8;
+        }
     }
     
 }

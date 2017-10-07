@@ -50,6 +50,10 @@ public final class CayenneItem {
     public Double[] getValues() {
         return values.clone();
     }
+    
+    public Double getValue() {
+        return values[0];
+    }
 
     public String[] format() {
         return type.format(values);

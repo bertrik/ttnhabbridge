@@ -14,6 +14,8 @@ public final class CayenneMessageTest {
     
     private static final Logger LOG = LoggerFactory.getLogger(CayenneMessageTest.class);
     
+    private final int MAX_BUF_SIZE = 500;
+    
     /**
      * Verifies example from specification.
      * @throws CayenneException in case of a parsing exception
@@ -158,7 +160,7 @@ public final class CayenneMessageTest {
         final CayenneMessage message = new CayenneMessage();
         message.add(new CayenneItem(1, ECayenneItem.ANALOG_INPUT, -12.34));
         
-        final byte[] encoded = message.encode();
+        final byte[] encoded = message.encode(MAX_BUF_SIZE);
         
         final CayenneMessage decoded = CayenneMessage.parse(encoded);
         Assert.assertEquals(-12.34, decoded.getItems().get(0).getValues()[0], 0.01);
@@ -174,7 +176,7 @@ public final class CayenneMessageTest {
         final CayenneMessage message = new CayenneMessage();
         message.add(new CayenneItem(1, ECayenneItem.HUMIDITY, 35.5));
         
-        final byte[] encoded = message.encode();
+        final byte[] encoded = message.encode(MAX_BUF_SIZE);
         final CayenneMessage decoded = CayenneMessage.parse(encoded);
 
         final CayenneItem item = decoded.getItems().get(0);
@@ -192,7 +194,7 @@ public final class CayenneMessageTest {
         final CayenneMessage message = new CayenneMessage();
         message.add(new CayenneItem(1, ECayenneItem.PRESENCE, 1.0));
         
-        final byte[] encoded = message.encode();
+        final byte[] encoded = message.encode(MAX_BUF_SIZE);
         final CayenneMessage decoded = CayenneMessage.parse(encoded);
 
         final CayenneItem item = decoded.getItems().get(0);

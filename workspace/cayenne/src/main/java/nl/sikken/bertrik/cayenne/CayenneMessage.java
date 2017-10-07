@@ -1,6 +1,7 @@
 package nl.sikken.bertrik.cayenne;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,16 +43,16 @@ public final class CayenneMessage {
     /**
      * Encodes the cayenne message into a byte array.
      * 
+     * @param maxSize the maximum size of the cayenne message
      * @return the byte array.
      * @throws CayenneException in case something went wrong during encoding (e.g. message too big)
      */
-    public byte[] encode() throws CayenneException {
-        final byte[] bytes = new byte[500];
-        final ByteBuffer bb = ByteBuffer.wrap(bytes);
+    public byte[] encode(int maxSize) throws CayenneException {
+        final ByteBuffer bb = ByteBuffer.allocate(maxSize).order(ByteOrder.LITTLE_ENDIAN);
         for (CayenneItem i : items) {
             i.encode(bb);
         }
-        return Arrays.copyOfRange(bytes, 0, bb.position());
+        return Arrays.copyOfRange(bb.array(), 0, bb.position());
     }
     
     /**

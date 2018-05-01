@@ -1,32 +1,24 @@
 package nl.sikken.bertrik.hab.habitat;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Interface definition for payload telemetry and listener telemetry towards Habitat.
  */
-@Path("")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 public interface IHabitatRestApi {
 
-    @Path("/habitat/_design/payload_telemetry/_update/add_listener/{doc_id}")
-    @PUT
-    String updateListener(@PathParam("doc_id") String docId, String json);
+    @PUT("/habitat/_design/payload_telemetry/_update/add_listener/{doc_id}")
+    Call<String> updateListener(@Path("doc_id") String docId, @Body String json);
 
-    @Path("/_uuids")
-    @GET
-    UuidsList getUuids(@QueryParam("count") int count);
+    @GET("/_uuids")
+    Call<UuidsList> getUuids(@Query("count") int count);
     
-    @Path("/habitat/{doc_id}")
-    @PUT
-    UploadResult uploadDocument(@PathParam("doc_id") String docId, String document);
+    @PUT("/habitat/{doc_id}")
+    Call<UploadResult> uploadDocument(@Path("doc_id") String docId, @Body String document);
 
 }

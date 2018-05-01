@@ -1,5 +1,6 @@
 package nl.sikken.bertrik.hab.habitat;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Arrays;
 
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import nl.sikken.bertrik.hab.Sentence;
+import retrofit2.mock.Calls;
 
 /**
  * Unit tests for HabitatUploader.
@@ -18,13 +20,16 @@ public final class HabitatUploaderTest {
     
 	/**
 	 * Happy flow scenario for payload upload.
+	 * @throws IOException 
 	 */
 	@Test
-	public void testUploadPayload() {
+	public void testUploadPayload() throws IOException {
 		// create a mocked rest client
 		final IHabitatRestApi restClient = Mockito.mock(IHabitatRestApi.class);
-		Mockito.when(restClient.updateListener(Mockito.anyString(), Mockito.anyString())).thenReturn("OK");
-		Mockito.when(restClient.getUuids(Mockito.anyInt())).thenReturn(new UuidsList(Arrays.asList("uuid1", "uuid2")));
+		Mockito.when(restClient.updateListener(Mockito.anyString(), Mockito.anyString()))
+		        .thenReturn(Calls.response("OK"));
+		Mockito.when(restClient.getUuids(Mockito.anyInt()))
+		        .thenReturn(Calls.response(new UuidsList(Arrays.asList("uuid1", "uuid2"))));
 		
 		final HabitatUploader uploader = new HabitatUploader(restClient);
 		
@@ -50,9 +55,10 @@ public final class HabitatUploaderTest {
 	public void testUploadListener() {
         // create a mocked rest client
         final IHabitatRestApi restClient = Mockito.mock(IHabitatRestApi.class);
-        Mockito.when(restClient.getUuids(Mockito.anyInt())).thenReturn(new UuidsList(Arrays.asList("uuid1", "uuid2")));
+        Mockito.when(restClient.getUuids(Mockito.anyInt()))
+                .thenReturn(Calls.response(new UuidsList(Arrays.asList("uuid1", "uuid2"))));
         Mockito.when(restClient.uploadDocument(Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(new UploadResult(true, "id", "rev"));
+                .thenReturn(Calls.response(new UploadResult(true, "id", "rev")));
         
         final HabitatUploader uploader = new HabitatUploader(restClient);
         

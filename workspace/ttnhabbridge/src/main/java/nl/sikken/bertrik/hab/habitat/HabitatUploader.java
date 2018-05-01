@@ -1,5 +1,6 @@
 package nl.sikken.bertrik.hab.habitat;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,20 +11,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.xml.bind.DatatypeConverter;
 
-import org.glassfish.jersey.client.ClientProperties;
-import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nl.sikken.bertrik.hab.habitat.docs.ListenerInformationDoc;
 import nl.sikken.bertrik.hab.habitat.docs.ListenerTelemetryDoc;
 import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Habitat uploader.
@@ -52,9 +53,19 @@ public final class HabitatUploader {
     public static IHabitatRestApi newRestClient(String url, int timeout) {
         // create the REST client
         LOG.info("Creating new habitat REST client with timeout {} for {}", timeout, url);
-        final WebTarget target = ClientBuilder.newClient().property(ClientProperties.CONNECT_TIMEOUT, timeout)
-                .property(ClientProperties.READ_TIMEOUT, timeout).target(url);
-        return WebResourceFactory.newResource(IHabitatRestApi.class, target);
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                .writeTimeout(timeout, TimeUnit.MILLISECONDS)
+                .readTimeout(timeout, TimeUnit.MILLISECONDS)
+                .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create())
+                .client(client)
+                .build();
+        
+        return retrofit.create(IHabitatRestApi.class);
     }
 
     /**
@@ -125,9 +136,9 @@ public final class HabitatUploader {
     private void uploadPayloadTelemetry(String docId, String json) {
         LOG.info("Upload payload telemetry doc {}: {}", docId, json);
         try {
-            final String response = restClient.updateListener(docId, json);
+            final String response = restClient.updateListener(docId, json).execute().body();
             LOG.info("Result payload telemetry doc {}: {}", docId, response);
-        } catch (WebApplicationException e) {
+        } catch (IOException e) {
             LOG.warn("Caught exception: {}", e.getMessage());
         }
     }
@@ -165,7 +176,7 @@ public final class HabitatUploader {
         try {
             // get two uuids
             LOG.info("Getting UUIDs for listener data upload...");
-            final UuidsList list = restClient.getUuids(2);
+            final UuidsList list = restClient.getUuids(2).execute().body();
             final List<String> uuids = list.getUuids();
             if ((uuids != null) && (uuids.size() >= 2)) {
                 LOG.info("Got {} UUIDs", uuids.size());
@@ -173,18 +184,19 @@ public final class HabitatUploader {
                 // upload payload listener info
                 LOG.info("Upload listener info using UUID {}...", uuids.get(0));
                 final ListenerInformationDoc info = new ListenerInformationDoc(instant, receiver);
-                final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format());
+                final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format()).execute().body();
                 LOG.info("Result listener info: {}", infoResult);
                 
                 // upload payload telemetry
                 LOG.info("Upload listener telemetry using UUID {}...", uuids.get(1));
                 final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(instant, receiver);
-                final UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format());
+                final UploadResult telemResult = 
+                        restClient.uploadDocument(uuids.get(1), telem.format()).execute().body();
                 LOG.info("Result listener telemetry: {}", telemResult);
             } else {
                 LOG.warn("Did not receive UUIDs for upload");
             }
-        } catch (WebApplicationException e) {
+        } catch (IOException e) {
             LOG.warn("Caught WebServiceException: {}", e.getMessage());
         }
     }

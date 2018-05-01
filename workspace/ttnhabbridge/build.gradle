@@ -9,7 +9,9 @@ dependencies {
     
     compile libraries.mqtt_client
     compile libraries.jackson
-    compile libraries.jersey_client
+    compile libraries.retrofit
+    
+    testCompile libraries.retrofit_mock
 }
 
 //Add configuration folder to classpath:

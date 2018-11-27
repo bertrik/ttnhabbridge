@@ -18,7 +18,7 @@ subprojects {
     }
 
     pmd {
-        toolVersion = "5.8.1"
+        toolVersion = "6.9.0"
     }
 
     // Standard libraries added to all projects

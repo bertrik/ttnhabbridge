@@ -1,5 +1,5 @@
 language: java
-before_script: cd workspace/gradle
+before_script: cd gradle
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

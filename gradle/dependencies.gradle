@@ -11,6 +11,12 @@ ext {
 libraries.slf4j = 'org.slf4j:slf4j-api:1.7.25'
 libraries.slf4jlog4j = 'org.slf4j:slf4j-log4j12:1.7.25'
 
+libraries.xml_bind = [
+	'javax.xml.bind:jaxb-api:2.3.0',
+	'com.sun.xml.bind:jaxb-core:2.3.0',
+	'com.sun.xml.bind:jaxb-impl:2.3.0'
+]
+
 libraries.jackson = [
     'com.fasterxml.jackson.core:jackson-databind:2.9.7'
 ]

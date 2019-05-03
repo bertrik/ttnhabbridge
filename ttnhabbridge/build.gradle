@@ -9,6 +9,7 @@ dependencies {
     
     compile libraries.mqtt_client
     compile libraries.jackson
+    compile libraries.xml_bind
     compile libraries.retrofit
     
     testCompile libraries.retrofit_mock

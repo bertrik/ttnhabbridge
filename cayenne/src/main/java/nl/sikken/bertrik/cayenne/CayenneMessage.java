@@ -48,9 +48,9 @@ public final class CayenneMessage {
      * @throws CayenneException in case something went wrong during encoding (e.g. message too big)
      */
     public byte[] encode(int maxSize) throws CayenneException {
-        final ByteBuffer bb = ByteBuffer.allocate(maxSize).order(ByteOrder.LITTLE_ENDIAN);
-        for (CayenneItem i : items) {
-            i.encode(bb);
+        ByteBuffer bb = ByteBuffer.allocate(maxSize).order(ByteOrder.LITTLE_ENDIAN);
+        for (CayenneItem item : items) {
+        	item.encode(bb);
         }
         return Arrays.copyOfRange(bb.array(), 0, bb.position());
     }

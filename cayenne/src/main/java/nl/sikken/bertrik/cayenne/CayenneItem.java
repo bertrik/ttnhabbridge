@@ -68,13 +68,10 @@ public final class CayenneItem {
      */
     public static CayenneItem parse(ByteBuffer bb) throws CayenneException {
         try {
-            final int channel = bb.get();
-            final int type = bb.get() & 0xFF;
-            final ECayenneItem ct = ECayenneItem.parse(type);
-            if (ct == null) {
-                throw new CayenneException("Invalid cayenne type " + type);
-            }
-            final Double[] values = ct.parse(bb);
+            int channel = bb.get();
+            int type = bb.get() & 0xFF;
+            ECayenneItem ct = ECayenneItem.parse(type);
+            Double[] values = ct.parse(bb);
             return new CayenneItem(channel, ct, values);
         } catch (BufferUnderflowException e) {
             throw new CayenneException(e);

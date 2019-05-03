@@ -12,7 +12,7 @@ public final class FloatFormatter extends BaseFormatter {
     private final int size;
     private final double scale;
     private final boolean signed;
-    private final String format;
+    private final String formatString;
 
     /**
      * Constructor.
@@ -27,7 +27,7 @@ public final class FloatFormatter extends BaseFormatter {
         this.size = size;
         this.scale = scale;
         this.signed = signed;
-        this.format = createFormatString(scale);
+        this.formatString = createFormatString(scale);
     }
     
     private String createFormatString(double scale) {
@@ -51,7 +51,7 @@ public final class FloatFormatter extends BaseFormatter {
     public String[] format(Double[] values) {
         final String[] formatted = new String[length];
         for (int i = 0; i < length; i++) {
-            formatted[i] = String.format(Locale.US, format, values[i]);
+            formatted[i] = String.format(Locale.US, formatString, values[i]);
         }
         return formatted;
     }

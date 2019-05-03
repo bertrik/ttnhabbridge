@@ -140,6 +140,9 @@ public final class HabitatUploader {
             LOG.info("Result payload telemetry doc {}: {}", docId, response);
         } catch (IOException e) {
             LOG.warn("Caught exception: {}", e.getMessage());
+        } catch (Exception e) {
+        	LOG.trace("Caught unhandled exception", e);
+        	LOG.error("Caught unhandled exception", e.getMessage());
         }
     }
 

@@ -123,6 +123,9 @@ public final class TtnHabBridge {
             LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         } catch (DecodeException e) {
             LOG.warn("Payload decoding exception: {}", e.getMessage());
+        } catch (Exception e) {
+        	LOG.trace("Caught unhandled exception", e);
+        	LOG.error("Caught unhandled exception", e.getMessage());
         }
     }
 

@@ -142,7 +142,7 @@ public final class HabitatUploader {
             LOG.warn("Caught exception: {}", e.getMessage());
         } catch (Exception e) {
         	LOG.trace("Caught unhandled exception", e);
-        	LOG.error("Caught unhandled exception", e.getMessage());
+        	LOG.error("Caught unhandled exception: " + e.getMessage());
         }
     }
 

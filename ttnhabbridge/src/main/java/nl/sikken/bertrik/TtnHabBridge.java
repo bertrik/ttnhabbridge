@@ -125,7 +125,7 @@ public final class TtnHabBridge {
             LOG.warn("Payload decoding exception: {}", e.getMessage());
         } catch (Exception e) {
         	LOG.trace("Caught unhandled exception", e);
-        	LOG.error("Caught unhandled exception", e.getMessage());
+        	LOG.error("Caught unhandled exception:" + e.getMessage());
         }
     }
 

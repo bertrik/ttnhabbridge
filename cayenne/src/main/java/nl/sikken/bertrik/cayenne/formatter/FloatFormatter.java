@@ -35,7 +35,7 @@ public final class FloatFormatter extends BaseFormatter {
         for (double d = scale; d < 1.0; d *= 10) {
             decimals++;
         }
-        return String.format(Locale.US, "%%.%df", decimals);
+        return String.format(Locale.ROOT, "%%.%df", decimals);
     }
     
     @Override
@@ -51,7 +51,7 @@ public final class FloatFormatter extends BaseFormatter {
     public String[] format(Double[] values) {
         final String[] formatted = new String[length];
         for (int i = 0; i < length; i++) {
-            formatted[i] = String.format(Locale.US, formatString, values[i]);
+            formatted[i] = String.format(Locale.ROOT, formatString, values[i]);
         }
         return formatted;
     }

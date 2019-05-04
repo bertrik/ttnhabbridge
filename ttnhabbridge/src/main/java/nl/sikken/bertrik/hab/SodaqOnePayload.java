@@ -115,7 +115,7 @@ public final class SodaqOnePayload {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "ts=%d,batt=%.2f,temp=%.0f,lat=%f,lon=%f,alt=%.0f", timeStamp, battVoltage,
+        return String.format(Locale.ROOT, "ts=%d,batt=%.2f,temp=%.0f,lat=%f,lon=%f,alt=%.0f", timeStamp, battVoltage,
                 boardTemp, latitude, longitude, altitude);
     }
 

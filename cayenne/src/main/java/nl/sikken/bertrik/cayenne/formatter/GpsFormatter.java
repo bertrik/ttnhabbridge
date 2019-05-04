@@ -22,9 +22,9 @@ public final class GpsFormatter extends BaseFormatter {
     @Override
     public String[] format(Double[] values) {
         return new String[] {
-                String.format(Locale.US, "%.4f", values[0]), 
-                String.format(Locale.US, "%.4f", values[1]),
-                String.format(Locale.US, "%.2f", values[2])
+                String.format(Locale.ROOT, "%.4f", values[0]), 
+                String.format(Locale.ROOT, "%.4f", values[1]),
+                String.format(Locale.ROOT, "%.2f", values[2])
                 }; 
     }
 

@@ -61,12 +61,12 @@ public final class Sentence {
     public String format() {
         // format time
         final LocalDateTime local = LocalDateTime.ofInstant(time, ZoneId.of("UTC"));
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.ROOT);
         final String timeString = local.format(formatter);
 
         // format basic string
         final StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.US, "%s,%d,%s,%.6f,%.6f,%.1f", callSign, id, timeString, latitude, longitude,
+        sb.append(String.format(Locale.ROOT, "%s,%d,%s,%.6f,%.6f,%.1f", callSign, id, timeString, latitude, longitude,
                 altitude));
         for (String s : extras) {
             sb.append(',');
@@ -77,7 +77,7 @@ public final class Sentence {
         // append header, checksum, etc
         final byte[] bytes = basic.getBytes(StandardCharsets.US_ASCII);
         final int crcValue = crc16.calculate(bytes, 0xFFFF);
-        return String.format(Locale.US, "$$%s*%04X\n", basic, crcValue);
+        return String.format(Locale.ROOT, "$$%s*%04X\n", basic, crcValue);
     }
 
     @Override

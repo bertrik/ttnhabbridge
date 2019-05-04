@@ -155,7 +155,7 @@ public final class HabitatUploader {
     private String createDocId(byte[] bytes) {
         final byte[] base64 = base64Encoder.encode(bytes);
         final byte[] hash = sha256.digest(base64);
-        return DatatypeConverter.printHexBinary(hash).toLowerCase(Locale.US);
+        return DatatypeConverter.printHexBinary(hash).toLowerCase(Locale.ROOT);
     }
 
     /**

@@ -89,8 +89,8 @@ public final class PayloadDecoder {
             final double altitude = sodaq.getAltitude();
             final Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
             final Sentence sentence = new Sentence(callSign, counter, instant, latitude, longitude, altitude);
-            sentence.addField(String.format(Locale.US, "%.0f", sodaq.getBoardTemp()));
-            sentence.addField(String.format(Locale.US, "%.2f", sodaq.getBattVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%.0f", sodaq.getBoardTemp()));
+            sentence.addField(String.format(Locale.ROOT, "%.2f", sodaq.getBattVoltage()));
             return sentence;
         } catch (BufferUnderflowException e) {
             throw new DecodeException("Error decoding sodaqone", e);
@@ -119,8 +119,8 @@ public final class PayloadDecoder {
             final JsonNode tempNode = fields.get("temp");
             final JsonNode vccNode = fields.get("vcc");
             if ((tempNode != null) && (vccNode != null)) {
-                sentence.addField(String.format(Locale.US, "%.1f", tempNode.doubleValue()));
-                sentence.addField(String.format(Locale.US, "%.3f", vccNode.doubleValue()));
+                sentence.addField(String.format(Locale.ROOT, "%.1f", tempNode.doubleValue()));
+                sentence.addField(String.format(Locale.ROOT, "%.3f", vccNode.doubleValue()));
             }
             return sentence;
         } catch (RuntimeException e) {

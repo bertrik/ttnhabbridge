@@ -80,7 +80,7 @@ public final class CayenneItem {
     
     @Override
     public String toString() {
-        return String.format(Locale.US, "{chan=%d,type=%s,value=%s}", channel, type, Arrays.toString(format()));  
+        return String.format(Locale.ROOT, "{chan=%d,type=%s,value=%s}", channel, type, Arrays.toString(format()));  
     }
 
     public void encode(ByteBuffer bb) throws CayenneException {

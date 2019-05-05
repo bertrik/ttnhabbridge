@@ -40,18 +40,18 @@ public final class PayloadTelemetryDoc {
      * @return the payload telemetry doc as JSON string
      */
     public String format() {
-        final JsonNodeFactory factory = new JsonNodeFactory(false);
-        final ObjectNode topNode = factory.objectNode();
+        JsonNodeFactory factory = new JsonNodeFactory(false);
+        ObjectNode topNode = factory.objectNode();
 
         // create data node
-        final ObjectNode dataNode = factory.objectNode();
+        ObjectNode dataNode = factory.objectNode();
         dataNode.set("_raw", factory.binaryNode(rawBytes));
 
         // create receivers node
-        final ObjectNode receiverNode = factory.objectNode();
+        ObjectNode receiverNode = factory.objectNode();
         receiverNode.set("time_created", factory.textNode(dateFormat.format(dateCreated)));
         receiverNode.set("time_uploaded", factory.textNode(dateFormat.format(dateUploaded)));
-        final ObjectNode receiversNode = factory.objectNode();
+        ObjectNode receiversNode = factory.objectNode();
         receiversNode.set(callSign, receiverNode);
 
         // put it together in the top node

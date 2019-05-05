@@ -40,7 +40,7 @@ public final class FloatFormatter extends BaseFormatter {
     
     @Override
     public Double[] parse(ByteBuffer bb) {
-        final Double[] values = new Double[length];
+        Double[] values = new Double[length];
         for (int i = 0; i < length; i++) {
             values[i] = scale * getValue(bb, size, signed);
         }
@@ -49,7 +49,7 @@ public final class FloatFormatter extends BaseFormatter {
     
     @Override
     public String[] format(Double[] values) {
-        final String[] formatted = new String[length];
+        String[] formatted = new String[length];
         for (int i = 0; i < length; i++) {
             formatted[i] = String.format(Locale.ROOT, formatString, values[i]);
         }

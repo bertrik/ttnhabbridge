@@ -27,7 +27,7 @@ public final class BooleanFormatter extends BaseFormatter {
 
     @Override
     public Double[] parse(ByteBuffer bb) {
-        final Double[] values = new Double[length];
+        Double[] values = new Double[length];
         for (int i = 0; i < length; i++) {
             values[i] = (getValue(bb, size, signed) > 0) ? 1.0 : 0.0;
         }
@@ -36,7 +36,7 @@ public final class BooleanFormatter extends BaseFormatter {
 
     @Override
     public String[] format(Double[] values) {
-        final String[] formatted = new String[length];
+        String[] formatted = new String[length];
         for (int i = 0; i < length; i++) {
             formatted[i] = String.format(Locale.US, "%d", values[i].intValue());
         }

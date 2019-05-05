@@ -49,8 +49,8 @@ public final class TtnHabBridge {
      * @throws MqttException in case of a problem starting MQTT client
      */
     public static void main(String[] arguments) throws IOException, MqttException {
-        final ITtnHabBridgeConfig config = readConfig(new File(CONFIG_FILE));
-        final TtnHabBridge app = new TtnHabBridge(config);
+        ITtnHabBridgeConfig config = readConfig(new File(CONFIG_FILE));
+        TtnHabBridge app = new TtnHabBridge(config);
 
         Thread.setDefaultUncaughtExceptionHandler(app::handleUncaughtException);
 
@@ -66,7 +66,7 @@ public final class TtnHabBridge {
     private TtnHabBridge(ITtnHabBridgeConfig config) {
         this.ttnListener = new TtnListener(this::handleTTNMessage, 
                                            config.getTtnMqttUrl(), config.getTtnAppId(), config.getTtnAppKey());
-        final IHabitatRestApi restApi = 
+        IHabitatRestApi restApi = 
                 HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
         this.habUploader = new HabitatUploader(restApi);
         this.mapper = new ObjectMapper();
@@ -98,17 +98,17 @@ public final class TtnHabBridge {
     private void handleTTNMessage(String topic, String textMessage) {
         try {
             // decode from JSON
-            final TtnMessage message = mapper.readValue(textMessage, TtnMessage.class);
-            final Sentence sentence = decoder.decode(message);
-            final String line = sentence.format();
+            TtnMessage message = mapper.readValue(textMessage, TtnMessage.class);
+            Sentence sentence = decoder.decode(message);
+            String line = sentence.format();
             
             // collect list of listeners 
-            final Instant now = Instant.now();
-            final List<HabReceiver> receivers = new ArrayList<>();
+            Instant now = Instant.now();
+            List<HabReceiver> receivers = new ArrayList<>();
             for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
-                final String gwName = gw.getId();
-                final Location gwLocation = gw.getLocation();
-                final HabReceiver receiver = new HabReceiver(gwName, gwLocation);
+                String gwName = gw.getId();
+                Location gwLocation = gw.getLocation();
+                HabReceiver receiver = new HabReceiver(gwName, gwLocation);
                 receivers.add(receiver);
 
                 // send listener data only if it has a valid location and hasn't been sent recently
@@ -153,7 +153,7 @@ public final class TtnHabBridge {
     }
     
     private static ITtnHabBridgeConfig readConfig(File file) throws IOException {
-        final TtnHabBridgeConfig config = new TtnHabBridgeConfig();
+        TtnHabBridgeConfig config = new TtnHabBridgeConfig();
         try (FileInputStream fis = new FileInputStream(file)) {
             config.load(fis);
         } catch (IOException e) {

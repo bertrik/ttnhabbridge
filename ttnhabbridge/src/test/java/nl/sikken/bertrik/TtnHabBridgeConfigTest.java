@@ -20,9 +20,9 @@ public final class TtnHabBridgeConfigTest {
      */
     @Test
     public void testLoadSave() throws IOException {
-        final byte[] data;
+        byte[] data;
         // save
-        final TtnHabBridgeConfig config = new TtnHabBridgeConfig();
+        TtnHabBridgeConfig config = new TtnHabBridgeConfig();
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             config.save(os);
             data = os.toByteArray();
@@ -38,7 +38,7 @@ public final class TtnHabBridgeConfigTest {
      */
     @Test
     public void testAllProps() {
-        final TtnHabBridgeConfig config = new TtnHabBridgeConfig();
+        TtnHabBridgeConfig config = new TtnHabBridgeConfig();
         Assert.assertNotNull(config.getHabitatUrl());
         Assert.assertNotNull(config.getHabitatTimeout());
         Assert.assertNotNull(config.getTtnMqttUrl());

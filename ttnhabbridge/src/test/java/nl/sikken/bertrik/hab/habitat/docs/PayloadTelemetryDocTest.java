@@ -15,9 +15,9 @@ public final class PayloadTelemetryDocTest {
 	 */
 	@Test
 	public void testFormat() {
-		final Instant instant = Instant.now();
-		final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, "BERTRIK", new byte[] {1, 2, 3});
-		final String json = doc.format();
+		Instant instant = Instant.now();
+		PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, "BERTRIK", new byte[] {1, 2, 3});
+		String json = doc.format();
 		
 		Assert.assertNotNull(json);
 	}

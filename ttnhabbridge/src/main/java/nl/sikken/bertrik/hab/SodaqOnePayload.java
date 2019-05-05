@@ -58,17 +58,17 @@ public final class SodaqOnePayload {
      * @throws BufferUnderflowException in case of a buffer underflow
      */
     public static SodaqOnePayload parse(byte[] raw) throws BufferUnderflowException {
-        final ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
-        final long time = bb.getInt() & 0xFFFFFFFFL;
-        final double voltage = 3.0 + 0.01 * (bb.get() & 0xFF);
-        final double boardTemp = bb.get();
-        final double latitude = bb.getInt() / 1e7;
-        final double longitude = bb.getInt() / 1e7;
-        final int altitude = bb.getShort();
-        final double sog = bb.getShort() / 360.0;
-        final int cog = bb.get();
-        final int numSats = bb.get();
-        final int ttf = bb.get();
+        ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
+        long time = bb.getInt() & 0xFFFFFFFFL;
+        double voltage = 3.0 + 0.01 * (bb.get() & 0xFF);
+        double boardTemp = bb.get();
+        double latitude = bb.getInt() / 1e7;
+        double longitude = bb.getInt() / 1e7;
+        int altitude = bb.getShort();
+        double sog = bb.getShort() / 360.0;
+        int cog = bb.get();
+        int numSats = bb.get();
+        int ttf = bb.get();
 
         return new SodaqOnePayload(time, voltage, boardTemp, latitude, longitude, altitude, sog, cog, numSats, ttf);
     }

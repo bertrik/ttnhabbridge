@@ -19,14 +19,14 @@ public final class TtnMessageMetaDataTest {
      */
     @Test
     public void testTime() {
-        final String time = "2017-08-23T17:18:02.509425571Z";
-        final List<TtnMessageGateway> gws = new ArrayList<>();
-        final TtnMessageMetaData data = new TtnMessageMetaData(time, gws);
-        final Instant instant = data.getTime();
+        String time = "2017-08-23T17:18:02.509425571Z";
+        List<TtnMessageGateway> gws = new ArrayList<>();
+        TtnMessageMetaData data = new TtnMessageMetaData(time, gws);
+        Instant instant = data.getTime();
         Assert.assertNotNull(instant);
         
-        final Sentence sentence = new Sentence("call", 0, instant, 0.0, 0.0, 0.0);
-        final String line = sentence.format();
+        Sentence sentence = new Sentence("call", 0, instant, 0.0, 0.0, 0.0);
+        String line = sentence.format();
         Assert.assertTrue(line.contains("17:18:02"));
     }
     

@@ -29,7 +29,7 @@ public final class ListenerTelemetryDoc extends ListenerDoc {
 
     @Override
     protected JsonNode createDataNode() {
-        final ObjectNode node = factory().objectNode();
+        ObjectNode node = factory().objectNode();
         node.set("callsign", factory().textNode(receiver.getCallsign()));
         node.set("latitude", factory().numberNode(receiver.getLocation().getLat()));
         node.set("longitude", factory().numberNode(receiver.getLocation().getLon()));

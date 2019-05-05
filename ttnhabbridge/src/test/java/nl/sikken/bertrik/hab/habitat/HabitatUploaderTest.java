@@ -25,20 +25,20 @@ public final class HabitatUploaderTest {
 	@Test
 	public void testUploadPayload() throws IOException {
 		// create a mocked rest client
-		final IHabitatRestApi restClient = Mockito.mock(IHabitatRestApi.class);
+		IHabitatRestApi restClient = Mockito.mock(IHabitatRestApi.class);
 		Mockito.when(restClient.updateListener(Mockito.anyString(), Mockito.anyString()))
 		        .thenReturn(Calls.response("OK"));
 		Mockito.when(restClient.getUuids(Mockito.anyInt()))
 		        .thenReturn(Calls.response(new UuidsList(Arrays.asList("uuid1", "uuid2"))));
 		
-		final HabitatUploader uploader = new HabitatUploader(restClient);
+		HabitatUploader uploader = new HabitatUploader(restClient);
 		
 		// verify upload using the uploader
 		uploader.start();
 		try {
-			final HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
-			final Instant instant = Instant.now();
-			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant, 52.0182307, 4.695772, 1000);
+			HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
+			Instant instant = Instant.now();
+			Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant, 52.0182307, 4.695772, 1000);
 
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
             Mockito.verify(restClient, Mockito.timeout(3000).times(1)).updateListener(Mockito.anyString(),
@@ -54,19 +54,19 @@ public final class HabitatUploaderTest {
 	@Test
 	public void testUploadListener() {
         // create a mocked rest client
-        final IHabitatRestApi restClient = Mockito.mock(IHabitatRestApi.class);
+        IHabitatRestApi restClient = Mockito.mock(IHabitatRestApi.class);
         Mockito.when(restClient.getUuids(Mockito.anyInt()))
                 .thenReturn(Calls.response(new UuidsList(Arrays.asList("uuid1", "uuid2"))));
         Mockito.when(restClient.uploadDocument(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(Calls.response(new UploadResult(true, "id", "rev")));
         
-        final HabitatUploader uploader = new HabitatUploader(restClient);
+        HabitatUploader uploader = new HabitatUploader(restClient);
         
         // verify upload using the uploader
         uploader.start();
         try {
-            final HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
-            final Instant instant = Instant.now();
+            HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
+            Instant instant = Instant.now();
             
             uploader.scheduleListenerDataUpload(receiver, instant);
             
@@ -86,13 +86,13 @@ public final class HabitatUploaderTest {
 	@Test
     @Ignore("this is not a junit test")
 	public void testActualPayloadUpload() throws InterruptedException {
-		final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
-		final HabitatUploader uploader = new HabitatUploader(restClient);
+		IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
+		HabitatUploader uploader = new HabitatUploader(restClient);
 		uploader.start();
 		try {
-			final Instant instant = Instant.now();
-			final Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant, 52.0182307, 4.695772, 1000);
-			final HabReceiver receiver = new HabReceiver("BERTRIK", null);
+			Instant instant = Instant.now();
+			Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant, 52.0182307, 4.695772, 1000);
+			HabReceiver receiver = new HabReceiver("BERTRIK", null);
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
 			Thread.sleep(3000);
 		} finally {
@@ -108,11 +108,11 @@ public final class HabitatUploaderTest {
 	@Test
     @Ignore("this is not a junit test")
 	public void testActualListenerUpload() throws InterruptedException {
-	    final IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
-	    final HabitatUploader uploader = new HabitatUploader(restClient);
+	    IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
+	    HabitatUploader uploader = new HabitatUploader(restClient);
 	    try {
-            final Instant instant = Instant.now();
-            final HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0182307, 4.695772, 15.0));
+            Instant instant = Instant.now();
+            HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0182307, 4.695772, 15.0));
 	        uploader.scheduleListenerDataUpload(receiver, instant);
 	        Thread.sleep(3000);
 	    } finally {

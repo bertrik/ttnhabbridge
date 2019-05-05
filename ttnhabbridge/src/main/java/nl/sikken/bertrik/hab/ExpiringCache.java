@@ -30,7 +30,7 @@ public final class ExpiringCache {
      */
     public boolean add(String id, Instant instant) {
         cleanUp(instant);
-        final Instant previous = map.putIfAbsent(id, instant);
+        Instant previous = map.putIfAbsent(id, instant);
         return previous == null;
     }
 
@@ -40,7 +40,7 @@ public final class ExpiringCache {
      * @param now the current date
      */
     private void cleanUp(Instant now) {
-        final Instant limit = now.minusSeconds(expiryTimeSec);
+        Instant limit = now.minusSeconds(expiryTimeSec);
         map.forEach((k,v) -> {
             if (v.isBefore(limit)) {
                 map.remove(k, v);

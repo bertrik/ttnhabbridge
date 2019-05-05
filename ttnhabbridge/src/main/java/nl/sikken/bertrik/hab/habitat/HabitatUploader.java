@@ -112,15 +112,15 @@ public final class HabitatUploader {
         LOG.info("Uploading for {} receivers: {}", receivers.size(), sentence.trim());
 
         // encode sentence as raw bytes
-        final byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
+        byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
 
         // determine docId
-        final String docId = createDocId(bytes);
+        String docId = createDocId(bytes);
 
         for (HabReceiver receiver : receivers) {
             // create Json
-            final PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, receiver.getCallsign(), bytes);
-            final String json = doc.format();
+            PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, receiver.getCallsign(), bytes);
+            String json = doc.format();
 
             // submit it to our processing thread
             executor.submit(() -> uploadPayloadTelemetry(docId, json));
@@ -136,7 +136,7 @@ public final class HabitatUploader {
     private void uploadPayloadTelemetry(String docId, String json) {
         LOG.info("Upload payload telemetry doc {}: {}", docId, json);
         try {
-            final String response = restClient.updateListener(docId, json).execute().body();
+            String response = restClient.updateListener(docId, json).execute().body();
             LOG.info("Result payload telemetry doc {}: {}", docId, response);
         } catch (IOException e) {
             LOG.warn("Caught exception: {}", e.getMessage());
@@ -153,8 +153,8 @@ public final class HabitatUploader {
      * @return the document id
      */
     private String createDocId(byte[] bytes) {
-        final byte[] base64 = base64Encoder.encode(bytes);
-        final byte[] hash = sha256.digest(base64);
+        byte[] base64 = base64Encoder.encode(bytes);
+        byte[] hash = sha256.digest(base64);
         return DatatypeConverter.printHexBinary(hash).toLowerCase(Locale.ROOT);
     }
 
@@ -179,21 +179,21 @@ public final class HabitatUploader {
         try {
             // get two uuids
             LOG.info("Getting UUIDs for listener data upload...");
-            final UuidsList list = restClient.getUuids(2).execute().body();
-            final List<String> uuids = list.getUuids();
+            UuidsList list = restClient.getUuids(2).execute().body();
+            List<String> uuids = list.getUuids();
             if ((uuids != null) && (uuids.size() >= 2)) {
                 LOG.info("Got {} UUIDs", uuids.size());
 
                 // upload payload listener info
                 LOG.info("Upload listener info using UUID {}...", uuids.get(0));
-                final ListenerInformationDoc info = new ListenerInformationDoc(instant, receiver);
-                final UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format()).execute().body();
+                ListenerInformationDoc info = new ListenerInformationDoc(instant, receiver);
+                UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format()).execute().body();
                 LOG.info("Result listener info: {}", infoResult);
                 
                 // upload payload telemetry
                 LOG.info("Upload listener telemetry using UUID {}...", uuids.get(1));
-                final ListenerTelemetryDoc telem = new ListenerTelemetryDoc(instant, receiver);
-                final UploadResult telemResult = 
+                ListenerTelemetryDoc telem = new ListenerTelemetryDoc(instant, receiver);
+                UploadResult telemResult = 
                         restClient.uploadDocument(uuids.get(1), telem.format()).execute().body();
                 LOG.info("Result listener telemetry: {}", telemResult);
             } else {

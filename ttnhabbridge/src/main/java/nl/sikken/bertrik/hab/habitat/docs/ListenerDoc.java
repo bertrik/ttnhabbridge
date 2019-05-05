@@ -34,7 +34,7 @@ public abstract class ListenerDoc {
      * @return the JSON representation
      */
     public String format() {
-        final ObjectNode topNode = factory.objectNode();
+        ObjectNode topNode = factory.objectNode();
         topNode.set("type", factory.textNode(type));
         topNode.set("time_created", factory.textNode(dateFormat.format(date)));
         topNode.set("time_uploaded", factory.textNode(dateFormat.format(date)));

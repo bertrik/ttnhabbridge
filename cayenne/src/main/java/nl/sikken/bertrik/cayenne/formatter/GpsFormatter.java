@@ -13,9 +13,9 @@ public final class GpsFormatter extends BaseFormatter {
 
     @Override
     public Double[] parse(ByteBuffer bb) {
-        final double lat = LAT_LON_SCALE * getValue(bb, 3, true);
-        final double lon = LAT_LON_SCALE * getValue(bb, 3, true);
-        final double alt = ALT_SCALE * getValue(bb, 3, true);
+        double lat = LAT_LON_SCALE * getValue(bb, 3, true);
+        double lon = LAT_LON_SCALE * getValue(bb, 3, true);
+        double alt = ALT_SCALE * getValue(bb, 3, true);
         return new Double[] {lat, lon, alt};
     }
 

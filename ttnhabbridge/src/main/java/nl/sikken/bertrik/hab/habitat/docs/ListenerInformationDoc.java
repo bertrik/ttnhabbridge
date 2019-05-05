@@ -33,10 +33,10 @@ public final class ListenerInformationDoc extends ListenerDoc {
 
     @Override
     protected JsonNode createDataNode() {
-        final ObjectNode node = factory().objectNode();
+        ObjectNode node = factory().objectNode();
         node.set("callsign", factory().textNode(receiver.getCallsign()));
         node.set("radio", factory().textNode("TheThingsNetwork"));
-        final String antenna = String.format(Locale.US, "%.0f m", receiver.getLocation().getAlt());
+        String antenna = String.format(Locale.US, "%.0f m", receiver.getLocation().getAlt());
         node.set("antenna", factory().textNode(antenna));
         return node;
     }

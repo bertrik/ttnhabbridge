@@ -57,7 +57,7 @@ public final class TtnListener {
         // connect
         LOG.info("Connecting as user '{}' to MQTT server {}", appId, url);
         this.mqttClient = new MqttClient(url, clientId, new MemoryPersistence());
-        final MqttConnectOptions options = new MqttConnectOptions();
+        MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(appId);
         options.setPassword(appKey.toCharArray());
         options.setAutomaticReconnect(false);
@@ -78,7 +78,7 @@ public final class TtnListener {
      * @throws Exception who knows?
      */
     private void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-        final String message = new String(mqttMessage.getPayload(), StandardCharsets.US_ASCII);
+        String message = new String(mqttMessage.getPayload(), StandardCharsets.US_ASCII);
         LOG.info("Message arrived on topic '{}': {}", topic, message);
         // forward it to our user
         callback.messageReceived(topic, message);

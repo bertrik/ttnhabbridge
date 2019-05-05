@@ -45,11 +45,11 @@ public final class PayloadDecoder {
      */
     public Sentence decode(TtnMessage message) throws DecodeException {
         // common fields
-        final String callSign = message.getDevId();
-        final int counter = message.getCounter();
+        String callSign = message.getDevId();
+        int counter = message.getCounter();
 
         // specific fields
-        final Sentence sentence;
+        Sentence sentence;
         switch (encoding) {
         case SODAQ_ONE:
             sentence = decodeSodaqOne(message, callSign, counter);
@@ -81,14 +81,14 @@ public final class PayloadDecoder {
         
         try {
             // SODAQ payload
-            final SodaqOnePayload sodaq = SodaqOnePayload.parse(message.getPayloadRaw());
+            SodaqOnePayload sodaq = SodaqOnePayload.parse(message.getPayloadRaw());
             
             // construct a sentence
-            final double latitude = sodaq.getLatitude();
-            final double longitude = sodaq.getLongitude();
-            final double altitude = sodaq.getAltitude();
-            final Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
-            final Sentence sentence = new Sentence(callSign, counter, instant, latitude, longitude, altitude);
+            double latitude = sodaq.getLatitude();
+            double longitude = sodaq.getLongitude();
+            double altitude = sodaq.getAltitude();
+            Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
+            Sentence sentence = new Sentence(callSign, counter, instant, latitude, longitude, altitude);
             sentence.addField(String.format(Locale.ROOT, "%.0f", sodaq.getBoardTemp()));
             sentence.addField(String.format(Locale.ROOT, "%.2f", sodaq.getBattVoltage()));
             return sentence;
@@ -110,14 +110,14 @@ public final class PayloadDecoder {
         LOG.info("Decoding 'json' message...");
     
         try {
-            final Instant time = message.getMetaData().getTime();
-            final ObjectNode fields = message.getPayloadFields();
-            final double latitude = fields.get("lat").doubleValue();
-            final double longitude = fields.get("lon").doubleValue();
-            final double altitude = fields.get("gpsalt").doubleValue();
-            final Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
-            final JsonNode tempNode = fields.get("temp");
-            final JsonNode vccNode = fields.get("vcc");
+            Instant time = message.getMetaData().getTime();
+            ObjectNode fields = message.getPayloadFields();
+            double latitude = fields.get("lat").doubleValue();
+            double longitude = fields.get("lon").doubleValue();
+            double altitude = fields.get("gpsalt").doubleValue();
+            Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
+            JsonNode tempNode = fields.get("temp");
+            JsonNode vccNode = fields.get("vcc");
             if ((tempNode != null) && (vccNode != null)) {
                 sentence.addField(String.format(Locale.ROOT, "%.1f", tempNode.doubleValue()));
                 sentence.addField(String.format(Locale.ROOT, "%.3f", vccNode.doubleValue()));
@@ -141,20 +141,20 @@ public final class PayloadDecoder {
         LOG.info("Decoding 'cayenne' message...");
         
         try {
-            final Instant time = message.getMetaData().getTime();
-            final CayenneMessage cayenne = CayenneMessage.parse(message.getPayloadRaw());
+            Instant time = message.getMetaData().getTime();
+            CayenneMessage cayenne = CayenneMessage.parse(message.getPayloadRaw());
             
             // decode location
-            final CayenneItem gpsItem = cayenne.ofType(ECayenneItem.GPS_LOCATION);
-            final Double[] location = gpsItem.getValues();
-            final double latitude = location[0];
-            final double longitude = location[1];
-            final double altitude = location[2];
-            final Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
+            CayenneItem gpsItem = cayenne.ofType(ECayenneItem.GPS_LOCATION);
+            Double[] location = gpsItem.getValues();
+            double latitude = location[0];
+            double longitude = location[1];
+            double altitude = location[2];
+            Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
 
             // temperature and battery
-            final CayenneItem tempItem = cayenne.ofType(ECayenneItem.TEMPERATURE);
-            final CayenneItem battItem = cayenne.ofType(ECayenneItem.ANALOG_INPUT);
+            CayenneItem tempItem = cayenne.ofType(ECayenneItem.TEMPERATURE);
+            CayenneItem battItem = cayenne.ofType(ECayenneItem.ANALOG_INPUT);
             if ((tempItem != null) && (battItem != null)) {
                 sentence.addField(tempItem.format()[0]);
                 sentence.addField(battItem.format()[0]);

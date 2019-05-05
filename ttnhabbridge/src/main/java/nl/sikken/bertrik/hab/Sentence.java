@@ -60,23 +60,23 @@ public final class Sentence {
      */
     public String format() {
         // format time
-        final LocalDateTime local = LocalDateTime.ofInstant(time, ZoneId.of("UTC"));
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.ROOT);
-        final String timeString = local.format(formatter);
+        LocalDateTime local = LocalDateTime.ofInstant(time, ZoneId.of("UTC"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.ROOT);
+        String timeString = local.format(formatter);
 
         // format basic string
-        final StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.ROOT, "%s,%d,%s,%.6f,%.6f,%.1f", callSign, id, timeString, latitude, longitude,
                 altitude));
         for (String s : extras) {
             sb.append(',');
             sb.append(s);
         }
-        final String basic = sb.toString();
+        String basic = sb.toString();
 
         // append header, checksum, etc
-        final byte[] bytes = basic.getBytes(StandardCharsets.US_ASCII);
-        final int crcValue = crc16.calculate(bytes, 0xFFFF);
+        byte[] bytes = basic.getBytes(StandardCharsets.US_ASCII);
+        int crcValue = crc16.calculate(bytes, 0xFFFF);
         return String.format(Locale.ROOT, "$$%s*%04X\n", basic, crcValue);
     }
 

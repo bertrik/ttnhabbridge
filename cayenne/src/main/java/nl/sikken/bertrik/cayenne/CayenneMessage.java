@@ -22,10 +22,10 @@ public final class CayenneMessage {
      * @throws CayenneException in case of a parsing problem
      */
     public static CayenneMessage parse(byte[] data) throws CayenneException {
-        final CayenneMessage message = new CayenneMessage();
-        final ByteBuffer bb = ByteBuffer.wrap(data);
+        CayenneMessage message = new CayenneMessage();
+        ByteBuffer bb = ByteBuffer.wrap(data);
         while (bb.hasRemaining()) {
-            final CayenneItem item = CayenneItem.parse(bb);
+            CayenneItem item = CayenneItem.parse(bb);
             message.add(item);
         }
         return message;

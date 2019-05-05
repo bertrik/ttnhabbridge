@@ -18,10 +18,10 @@ public final class ListenerInfoDocTest {
      */
     @Test
     public void testFormat() {
-        final Instant instant = Instant.now();
-        final HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0162, 4.4753, 0.0));
-        final ListenerInformationDoc doc = new ListenerInformationDoc(instant, receiver);
-        final String json = doc.format();
+        Instant instant = Instant.now();
+        HabReceiver receiver = new HabReceiver("BERTRIK", new Location(52.0162, 4.4753, 0.0));
+        ListenerInformationDoc doc = new ListenerInformationDoc(instant, receiver);
+        String json = doc.format();
 
         Assert.assertNotNull(json);
     }

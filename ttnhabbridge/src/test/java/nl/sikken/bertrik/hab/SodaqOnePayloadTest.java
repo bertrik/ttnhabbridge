@@ -15,9 +15,9 @@ public final class SodaqOnePayloadTest {
      */
     @Test
     public void testParse() {
-        final String encoded = "wd6dWXEOiQMCH9ELzAIXAAAAAAUB";
-        final byte[] data = Base64.getDecoder().decode(encoded);
-        final SodaqOnePayload payload = SodaqOnePayload.parse(data); 
+        String encoded = "wd6dWXEOiQMCH9ELzAIXAAAAAAUB";
+        byte[] data = Base64.getDecoder().decode(encoded);
+        SodaqOnePayload payload = SodaqOnePayload.parse(data); 
         
         Assert.assertEquals(1503518401, payload.getTimeStamp());
         Assert.assertNotNull(payload.toString());

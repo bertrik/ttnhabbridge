@@ -61,7 +61,7 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
      * @throws IOException in case of a problem reading the file
      */
     public void load(InputStream is) throws IOException {
-        final Properties properties = new Properties();
+        Properties properties = new Properties();
         properties.load(is);
         for (EConfigItem e : EConfigItem.values()) {
             String value = properties.getProperty(e.key);

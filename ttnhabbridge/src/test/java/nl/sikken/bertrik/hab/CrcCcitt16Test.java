@@ -21,10 +21,10 @@ public final class CrcCcitt16Test {
      */
     @Test
     public void testCrc() throws UnsupportedEncodingException {
-        final String s = "hadie,181,10:42:10,54.422829,-6.741293,27799.3,1:10";
-        final byte[] data = s.getBytes(StandardCharsets.US_ASCII);
+        String s = "hadie,181,10:42:10,54.422829,-6.741293,27799.3,1:10";
+        byte[] data = s.getBytes(StandardCharsets.US_ASCII);
 
-        final CrcCcitt16 crc = new CrcCcitt16();
+        CrcCcitt16 crc = new CrcCcitt16();
         int value = crc.calculate(data, 0xFFFF);
 
         Assert.assertEquals(0x002A, value);

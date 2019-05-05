@@ -38,7 +38,7 @@ public final class BooleanFormatter extends BaseFormatter {
     public String[] format(Double[] values) {
         String[] formatted = new String[length];
         for (int i = 0; i < length; i++) {
-            formatted[i] = String.format(Locale.US, "%d", values[i].intValue());
+            formatted[i] = String.format(Locale.ROOT, "%d", values[i].intValue());
         }
         return formatted;
     }

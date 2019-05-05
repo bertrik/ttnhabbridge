@@ -50,7 +50,7 @@ public final class UploadResult {
     
     @Override
     public String toString() {
-        return String.format(Locale.US, "ok=%s,id=%s,rev=%s", ok, id, rev);
+        return String.format(Locale.ROOT, "ok=%s,id=%s,rev=%s", ok, id, rev);
     }
     
 }

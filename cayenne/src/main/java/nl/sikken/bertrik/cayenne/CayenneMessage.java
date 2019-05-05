@@ -26,7 +26,7 @@ public final class CayenneMessage {
         final ByteBuffer bb = ByteBuffer.wrap(data);
         while (bb.hasRemaining()) {
             final CayenneItem item = CayenneItem.parse(bb);
-            message.items.add(item);
+            message.add(item);
         }
         return message;
     }

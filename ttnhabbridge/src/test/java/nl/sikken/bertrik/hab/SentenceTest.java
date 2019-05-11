@@ -20,6 +20,7 @@ public final class SentenceTest {
         String s = sentence.format();
 
         Assert.assertEquals("$$CALL,1,00:00:00,3.450000,6.780000,9.0*25E9\n", s);
+        Assert.assertNotNull(sentence.toString());
     }
 
     /**

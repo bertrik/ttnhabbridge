@@ -17,7 +17,7 @@ final class TtnHabBridgeConfig extends BaseConfig implements ITtnHabBridgeConfig
         TTN_MQTT_URL("ttn.mqtt.url", "tcp://eu.thethings.network", "URL of the TTN MQTT server"),
         TTN_APP_ID("ttn.app.id", "habhub", "TTN Application Id (e.g. habhub, ttnmapper, etc.)"),
         TTN_APP_KEY("ttn.app.key", "ttn-account-v2.Sh49WL90oQz-ZuxoDrS6yKuACL_jtAA0agdDfO_eVj4", "TTN Application key"),
-        TTN_GW_CACHE_EXPIRY("ttn.gwcache.expiry", "600", "Gateway cache expiration time (seconds)"),
+        TTN_GW_CACHE_EXPIRY_SEC("ttn.gwcache.expiry", "600", "Gateway cache expiration time (seconds)"),
         TTN_PAYLOAD_ENCODING("ttn.payload.encoding", "cayenne",
                 "Payload format, allowed values: 'sodaqone','json','cayenne'"),
         ;
@@ -70,8 +70,8 @@ final class TtnHabBridgeConfig extends BaseConfig implements ITtnHabBridgeConfig
     }
 
     @Override
-    public int getTtnGwCacheExpiry() {
-        return Integer.parseInt(get(EConfigItem.TTN_GW_CACHE_EXPIRY.key));
+    public Duration getTtnGwCacheExpiry() {
+        return Duration.ofSeconds(Integer.parseInt(get(EConfigItem.TTN_GW_CACHE_EXPIRY_SEC.key)));
     }
 
     @Override

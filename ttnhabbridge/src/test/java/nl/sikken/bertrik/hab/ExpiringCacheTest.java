@@ -1,5 +1,6 @@
 package nl.sikken.bertrik.hab;
 
+import java.time.Duration;
 import java.time.Instant;
 
 import org.junit.Assert;
@@ -15,7 +16,7 @@ public final class ExpiringCacheTest {
      */
     @Test
     public void testExpiry() {
-        ExpiringCache cache = new ExpiringCache(1);
+        ExpiringCache cache = new ExpiringCache(Duration.ofSeconds(1));
 
         // add two items
         Instant date1 = Instant.now();

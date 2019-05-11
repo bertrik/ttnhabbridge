@@ -33,9 +33,9 @@ public interface ITtnHabBridgeConfig {
     String getTtnAppKey();
     
     /**
-     * @return the expiry time (seconds) of a gateway, i.e. the interval of listener information an telemetry uploads. 
+     * @return the expiry time of a gateway, i.e. the interval of listener information an telemetry uploads. 
      */
-    int getTtnGwCacheExpiry();
+    Duration getTtnGwCacheExpiry();
     
     /**
      * @return the payload encoding, can be "sodaq", "json", "cayenne"

@@ -1,6 +1,7 @@
 package nl.sikken.bertrik.hab.habitat;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 
@@ -24,7 +25,7 @@ public final class HabitatUploaderTest {
      */
     @Test
     public void testCreateRestClient() {
-    	Assert.assertNotNull(HabitatUploader.newRestClient("http://localhost", 1000));
+    	Assert.assertNotNull(HabitatUploader.newRestClient("http://localhost", Duration.ofMillis(1000)));
     }
     
 	/**
@@ -95,7 +96,8 @@ public final class HabitatUploaderTest {
 	@Test
     @Ignore("this is not a junit test")
 	public void testActualPayloadUpload() throws InterruptedException {
-		IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
+		IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 
+				Duration.ofSeconds(3000));
 		HabitatUploader uploader = new HabitatUploader(restClient);
 		uploader.start();
 		try {
@@ -117,7 +119,8 @@ public final class HabitatUploaderTest {
 	@Test
     @Ignore("this is not a junit test")
 	public void testActualListenerUpload() throws InterruptedException {
-	    IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 3000);
+	    IHabitatRestApi restClient = HabitatUploader.newRestClient("http://habitat.habhub.org", 
+	    		Duration.ofMillis(3000));
 	    HabitatUploader uploader = new HabitatUploader(restClient);
 	    try {
             Instant instant = Instant.now();

@@ -77,7 +77,7 @@ public final class TtnListener {
      * @param mqttMessage the message
      * @throws Exception who knows?
      */
-    private void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+    void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
         String message = new String(mqttMessage.getPayload(), StandardCharsets.US_ASCII);
         LOG.info("Message arrived on topic '{}': {}", topic, message);
         // forward it to our user

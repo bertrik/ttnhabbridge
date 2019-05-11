@@ -1,5 +1,7 @@
 package nl.sikken.bertrik;
 
+import java.time.Duration;
+
 /**
  * Configuration class.
  */
@@ -10,7 +12,7 @@ final class TtnHabBridgeConfig extends BaseConfig implements ITtnHabBridgeConfig
      */
     private enum EConfigItem {
         HABITAT_URL("habitat.url", "http://habitat.habhub.org", "URL of the habitat server"),
-        HABITAT_TIMEOUT("habitat.timeout", "3000", "Timeout in milliseconds"),
+        HABITAT_TIMEOUT_MS("habitat.timeout", "3000", "Timeout in milliseconds"),
 
         TTN_MQTT_URL("ttn.mqtt.url", "tcp://eu.thethings.network", "URL of the TTN MQTT server"),
         TTN_APP_ID("ttn.app.id", "habhub", "TTN Application Id (e.g. habhub, ttnmapper, etc.)"),
@@ -43,8 +45,8 @@ final class TtnHabBridgeConfig extends BaseConfig implements ITtnHabBridgeConfig
     }
     
     @Override
-    public int getHabitatTimeout() {
-        return Integer.parseInt(get(EConfigItem.HABITAT_TIMEOUT.key));
+    public Duration getHabitatTimeout() {
+        return Duration.ofMillis(Integer.parseInt(get(EConfigItem.HABITAT_TIMEOUT_MS.key)));
     }
 
     @Override

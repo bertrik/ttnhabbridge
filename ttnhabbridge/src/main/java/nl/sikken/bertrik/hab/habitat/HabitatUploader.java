@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Base64.Encoder;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -50,13 +50,11 @@ public final class HabitatUploader {
      * @param timeout the connect and read timeout (ms)
      * @return a new REST client
      */
-    public static IHabitatRestApi newRestClient(String url, int timeout) {
+    public static IHabitatRestApi newRestClient(String url, Duration timeout) {
         // create the REST client
         LOG.info("Creating new habitat REST client with timeout {} for {}", timeout, url);
         OkHttpClient client = new OkHttpClient().newBuilder()
-                .connectTimeout(timeout, TimeUnit.MILLISECONDS)
-                .writeTimeout(timeout, TimeUnit.MILLISECONDS)
-                .readTimeout(timeout, TimeUnit.MILLISECONDS)
+                .callTimeout(timeout)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)

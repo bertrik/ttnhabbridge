@@ -1,5 +1,7 @@
 package nl.sikken.bertrik;
 
+import java.time.Duration;
+
 /**
  * Configuration interface for the application.
  */
@@ -11,9 +13,9 @@ public interface ITtnHabBridgeConfig {
     String getHabitatUrl();
     
     /**
-     * @return timeout (ms) for communication with the habitat server
+     * @return timeout for communication with the habitat server
      */
-    int    getHabitatTimeout();
+    Duration getHabitatTimeout();
     
     /**
      * @return the URL of the TTN MQTT server

@@ -21,9 +21,18 @@ public final class SimpleCayenneTest {
     @Test
     public void testEncode() throws CayenneException {
         SimpleCayenne cayenne = new SimpleCayenne();
-        cayenne.addGps(1, 52.0, 4.0, -1.0);
+        cayenne.addAccelerometer(1, 1.0, 2.0, 3.0);
         cayenne.addAnalogInput(2, 3.82);
-        cayenne.addTemperature(3, 19.0);
+        cayenne.addAnalogOutput(3, 3.14);
+        cayenne.addBarometricPressure(4, 100000);
+        cayenne.addDigitalInput(5, true);
+        cayenne.addDigitalOutput(6, true);
+        cayenne.addGps(7, 52.0, 4.0, -1.0);
+        cayenne.addGyrometer(8, 1.0, 2.0, 3.0);
+        cayenne.addIlluminance(9, 1000.0);
+        cayenne.addPresence(10, true);
+        cayenne.addRelativeHumidity(11, 50.0);
+        cayenne.addTemperature(12, 19.0);
         LOG.info("Encoded message: {}", cayenne);
         
         // encode it
@@ -32,10 +41,10 @@ public final class SimpleCayenneTest {
         
         // decode it
         CayenneMessage message = CayenneMessage.parse(data);
-        List<CayenneItem> items = message.getItems();
-        Assert.assertEquals(52.0, items.get(0).getValues()[0], 0.1);
-        Assert.assertEquals(3.82, items.get(1).getValue(), 0.01);
-        Assert.assertEquals(19.0, items.get(2).getValues()[0], 0.1);
+        Assert.assertEquals(12, message.getItems().size());
+        Assert.assertEquals(52.0, message.ofType(ECayenneItem.GPS_LOCATION).getValues()[0], 0.1);
+        Assert.assertEquals(3.82, message.ofType(ECayenneItem.ANALOG_INPUT).getValue(), 0.01);
+        Assert.assertEquals(19.0, message.ofType(ECayenneItem.TEMPERATURE).getValue(), 0.1);
     }
     
     /**

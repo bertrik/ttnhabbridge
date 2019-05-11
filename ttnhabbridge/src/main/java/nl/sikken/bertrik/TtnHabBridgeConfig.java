@@ -1,19 +1,9 @@
 package nl.sikken.bertrik;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
 /**
  * Configuration class.
  */
-public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
+final class TtnHabBridgeConfig extends BaseConfig implements ITtnHabBridgeConfig {
     
     /**
      * One enumeration item per configuration item.
@@ -31,17 +21,15 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
         ;
         
         private final String key;
-        private final String def;
+        private final String value;
         private final String comment;
 
         EConfigItem(String key, String def, String comment) {
             this.key = key;
-            this.def = def;
+            this.value = def;
             this.comment = comment;
         }
     }
-    
-    private final Map<EConfigItem, String> props = new HashMap<>();
     
     /**
      * Constructor.
@@ -50,77 +38,43 @@ public final class TtnHabBridgeConfig implements ITtnHabBridgeConfig {
      */
     public TtnHabBridgeConfig() {
         for (EConfigItem e : EConfigItem.values()) {
-            props.put(e, e.def);
-        }
-    }
-    
-    /**
-     * Load settings from stream.
-     * 
-     * @param is input stream containing the settings
-     * @throws IOException in case of a problem reading the file
-     */
-    public void load(InputStream is) throws IOException {
-        Properties properties = new Properties();
-        properties.load(is);
-        for (EConfigItem e : EConfigItem.values()) {
-            String value = properties.getProperty(e.key);
-            if (value != null) {
-                props.put(e, value);
-            }
-        }
-    }
-    
-    /**
-     * Save settings to stream.
-     * 
-     * @param os the output stream
-     * @throws IOException in case of a file problem
-     */
-    public void save(OutputStream os) throws IOException {
-        try (Writer writer = new OutputStreamWriter(os, StandardCharsets.US_ASCII)) {
-            for (EConfigItem e : EConfigItem.values()) {
-                // comment line
-                writer.append("# " + e.comment + "\n");
-                writer.append(e.key + "=" + e.def + "\n");
-                writer.append("\n");
-            }
+            add(e.key, e.value, e.comment);
         }
     }
     
     @Override
     public int getHabitatTimeout() {
-        return Integer.parseInt(props.get(EConfigItem.HABITAT_TIMEOUT));
+        return Integer.parseInt(get(EConfigItem.HABITAT_TIMEOUT.key));
     }
 
     @Override
     public String getHabitatUrl() {
-        return props.get(EConfigItem.HABITAT_URL);
+        return get(EConfigItem.HABITAT_URL.key);
     }
 
     @Override
     public String getTtnMqttUrl() {
-        return props.get(EConfigItem.TTN_MQTT_URL);
+        return get(EConfigItem.TTN_MQTT_URL.key);
     }
 
     @Override 
     public String getTtnAppId() {
-        return props.get(EConfigItem.TTN_APP_ID);
+        return get(EConfigItem.TTN_APP_ID.key);
     }
     
     @Override 
     public String getTtnAppKey() {
-        return props.get(EConfigItem.TTN_APP_KEY);
+        return get(EConfigItem.TTN_APP_KEY.key);
     }
 
     @Override
     public int getTtnGwCacheExpiry() {
-        return Integer.parseInt(props.get(EConfigItem.TTN_GW_CACHE_EXPIRY));
+        return Integer.parseInt(get(EConfigItem.TTN_GW_CACHE_EXPIRY.key));
     }
 
     @Override
     public String getTtnPayloadEncoding() {
-        return props.get(EConfigItem.TTN_PAYLOAD_ENCODING);
+        return get(EConfigItem.TTN_PAYLOAD_ENCODING.key);
     }
     
 }

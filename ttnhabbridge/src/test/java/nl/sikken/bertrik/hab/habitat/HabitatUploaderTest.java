@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -17,6 +18,14 @@ import retrofit2.mock.Calls;
 public final class HabitatUploaderTest {
     
     private static final Location LOCATION = new Location(52.0162, 4.4735, 5.0);
+    
+    /**
+     * Verifies creation of REST client.
+     */
+    @Test
+    public void testCreateRestClient() {
+    	Assert.assertNotNull(HabitatUploader.newRestClient("http://localhost", 1000));
+    }
     
 	/**
 	 * Happy flow scenario for payload upload.

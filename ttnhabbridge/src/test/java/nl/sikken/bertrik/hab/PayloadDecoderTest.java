@@ -98,7 +98,7 @@ public final class PayloadDecoderTest {
         PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CAYENNE.getName());
         Sentence sentence = decoder.decode(message);
         
-        Assert.assertEquals("$$ttntest1,9,16:53:10,52.022000,4.692700,44.0,29.0,4.21*A3A9", sentence.format().trim());
+        Assert.assertEquals("$$ttntest1,9,16:53:10,52.0220,4.6927,44.00,4.21,29.0*383E\n", sentence.format());
     }
     
     /**

@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import nl.sikken.bertrik.cayenne.CayenneException;
 import nl.sikken.bertrik.cayenne.CayenneItem;
 import nl.sikken.bertrik.cayenne.CayenneMessage;
-import nl.sikken.bertrik.cayenne.ECayenneItem;
 import nl.sikken.bertrik.hab.ttn.TtnMessage;
 
 /**
@@ -88,7 +87,10 @@ public final class PayloadDecoder {
             double longitude = sodaq.getLongitude();
             double altitude = sodaq.getAltitude();
             Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
-            Sentence sentence = new Sentence(callSign, counter, instant, latitude, longitude, altitude);
+            Sentence sentence = new Sentence(callSign, counter, instant);
+            sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
+            sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
+            sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
             sentence.addField(String.format(Locale.ROOT, "%.0f", sodaq.getBoardTemp()));
             sentence.addField(String.format(Locale.ROOT, "%.2f", sodaq.getBattVoltage()));
             return sentence;
@@ -115,7 +117,10 @@ public final class PayloadDecoder {
             double latitude = fields.get("lat").doubleValue();
             double longitude = fields.get("lon").doubleValue();
             double altitude = fields.get("gpsalt").doubleValue();
-            Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
+            Sentence sentence = new Sentence(callSign, counter, time);
+            sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
+            sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
+            sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
             JsonNode tempNode = fields.get("temp");
             JsonNode vccNode = fields.get("vcc");
             if ((tempNode != null) && (vccNode != null)) {
@@ -142,24 +147,16 @@ public final class PayloadDecoder {
         
         try {
             Instant time = message.getMetaData().getTime();
+            Sentence sentence = new Sentence(callSign, counter, time);
             CayenneMessage cayenne = CayenneMessage.parse(message.getPayloadRaw());
-            
-            // decode location
-            CayenneItem gpsItem = cayenne.ofType(ECayenneItem.GPS_LOCATION);
-            Double[] location = gpsItem.getValues();
-            double latitude = location[0];
-            double longitude = location[1];
-            double altitude = location[2];
-            Sentence sentence = new Sentence(callSign, counter, time, latitude, longitude, altitude);
 
-            // temperature and battery
-            CayenneItem tempItem = cayenne.ofType(ECayenneItem.TEMPERATURE);
-            CayenneItem battItem = cayenne.ofType(ECayenneItem.ANALOG_INPUT);
-            if ((tempItem != null) && (battItem != null)) {
-                sentence.addField(tempItem.format()[0]);
-                sentence.addField(battItem.format()[0]);
+            // add all items, in the order they appear in the cayenne message
+            for (CayenneItem item : cayenne.getItems()) {
+        		for (String s : item.format()) {
+        			sentence.addField(s);
+        		}
             }
-            
+			
             return sentence;
         } catch (CayenneException e) {
             throw new DecodeException("Error decoding cayenne", e);

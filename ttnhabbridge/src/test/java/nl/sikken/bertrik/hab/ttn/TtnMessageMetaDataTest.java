@@ -25,7 +25,7 @@ public final class TtnMessageMetaDataTest {
         Instant instant = data.getTime();
         Assert.assertNotNull(instant);
         
-        Sentence sentence = new Sentence("call", 0, instant, 0.0, 0.0, 0.0);
+        Sentence sentence = new Sentence("call", 0, instant);
         String line = sentence.format();
         Assert.assertTrue(line.contains("17:18:02"));
     }

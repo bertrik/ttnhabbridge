@@ -17,31 +17,22 @@ public final class Sentence {
     private final String callSign;
     private final int id;
     private final Instant time;
-    private final double latitude;
-    private final double longitude;
-    private final double altitude;
 
     private final CrcCcitt16 crc16 = new CrcCcitt16();
 
-    private final List<String> extras = new ArrayList<>();
+    private final List<String> fields = new ArrayList<>();
 
     /**
-     * Constructor with all mandatory fields.
+     * Constructor with the basic set of fields.
      * 
      * @param callSign the call sign
-     * @param id some incrementing number
+     * @param id message sequence number
      * @param time the creation time
-     * @param latitude the latitude (degrees)
-     * @param longitude the longitude (degrees)
-     * @param altitude the altitude (meter)
      */
-    public Sentence(String callSign, int id, Instant time, double latitude, double longitude, double altitude) {
+    public Sentence(String callSign, int id, Instant time) {
         this.callSign = callSign;
         this.id = id;
         this.time = time;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.altitude = altitude;
     }
 
     /**
@@ -50,7 +41,7 @@ public final class Sentence {
      * @param value the pre-formatted value
      */
     public void addField(String value) {
-        extras.add(value);
+        fields.add(value);
     }
 
     /**
@@ -66,9 +57,8 @@ public final class Sentence {
 
         // format basic string
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.ROOT, "%s,%d,%s,%.6f,%.6f,%.1f", callSign, id, timeString, latitude, longitude,
-                altitude));
-        for (String s : extras) {
+        sb.append(String.format(Locale.ROOT, "%s,%d,%s", callSign, id, timeString));
+        for (String s : fields) {
             sb.append(',');
             sb.append(s);
         }

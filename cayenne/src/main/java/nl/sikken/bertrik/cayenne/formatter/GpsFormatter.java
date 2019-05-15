@@ -31,7 +31,7 @@ public final class GpsFormatter extends BaseFormatter {
     @Override
     public void encode(ByteBuffer bb, Double[] values) {
         putValue(bb, 3, (int)Math.round(values[0] / LAT_LON_SCALE));
-        putValue(bb, 3, (int)Math.round(values[0] / LAT_LON_SCALE));
+        putValue(bb, 3, (int)Math.round(values[1] / LAT_LON_SCALE));
         putValue(bb, 3, (int)Math.round(values[2] / ALT_SCALE));
     }
 

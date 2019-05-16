@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import nl.sikken.bertrik.hab.DecodeException;
+import nl.sikken.bertrik.hab.EPayloadEncoding;
 import nl.sikken.bertrik.hab.ExpiringCache;
 import nl.sikken.bertrik.hab.PayloadDecoder;
 import nl.sikken.bertrik.hab.Sentence;
@@ -70,7 +71,7 @@ public final class TtnHabBridge {
                 HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
         this.habUploader = new HabitatUploader(restApi);
         this.mapper = new ObjectMapper();
-        this.decoder = new PayloadDecoder(config.getTtnPayloadEncoding());
+        this.decoder = new PayloadDecoder(EPayloadEncoding.parse(config.getTtnPayloadEncoding()));
         this.gwCache = new ExpiringCache(config.getTtnGwCacheExpiry());
     }
 

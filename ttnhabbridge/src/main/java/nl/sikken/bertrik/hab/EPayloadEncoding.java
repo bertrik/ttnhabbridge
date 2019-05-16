@@ -41,6 +41,11 @@ public enum EPayloadEncoding {
         return name;
     }
     
+    @Override
+    public String toString() {
+    	return name;
+    }
+    
     /**
      * Parses an encoding by name.
      * 

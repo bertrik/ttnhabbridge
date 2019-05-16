@@ -30,9 +30,9 @@ public final class PayloadDecoder {
      * 
      * @param encodingName the payload encoding name
      */
-    public PayloadDecoder(String encodingName) {
-        LOG.info("Payload decoder initialised for '{}' format", encodingName);
-        this.encoding = Objects.requireNonNull(EPayloadEncoding.parse(encodingName));
+    public PayloadDecoder(EPayloadEncoding encoding) {
+        LOG.info("Payload decoder initialised for '{}' format", encoding);
+        this.encoding = Objects.requireNonNull(encoding);
     }
     
     /**

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -32,8 +33,8 @@ public final class PayloadTelemetryDoc {
     public PayloadTelemetryDoc(Instant instant, String callSign, byte[] rawBytes) {
         this.dateCreated = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
         this.dateUploaded = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
-        this.callSign = callSign;
-        this.rawBytes = rawBytes;
+        this.callSign = Objects.requireNonNull(callSign);
+        this.rawBytes = rawBytes.clone();
     }
 
     /**

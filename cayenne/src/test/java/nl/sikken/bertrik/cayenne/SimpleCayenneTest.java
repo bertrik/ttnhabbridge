@@ -21,7 +21,7 @@ public final class SimpleCayenneTest {
         SimpleCayenne cayenne = new SimpleCayenne();
         cayenne.addAccelerometer(1, 1.0, 2.0, 3.0);
         cayenne.addAnalogInput(2, 3.82);
-        cayenne.addAnalogOutput(3, 3.14);
+        cayenne.addAnalogOutput(3, 3.15);
         cayenne.addBarometricPressure(4, 100000);
         cayenne.addDigitalInput(5, true);
         cayenne.addDigitalOutput(6, true);

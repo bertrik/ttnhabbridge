@@ -1,6 +1,6 @@
 plugins {
-  id  'com.github.spotbugs' version '2.0.0'
-  id 'com.github.ben-manes.versions' version '0.26.0'
+  id 'com.github.spotbugs' version '2.0.0'
+  id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
 version = '0.1'
@@ -35,11 +35,11 @@ subprojects {
 
     // Standard libraries added to all projects
     dependencies {
-        testCompile libraries.junit
-	    testCompile libraries.mockito
-	    testCompile libraries.slf4jlog4j
+        testImplementation libraries.junit
+	    testImplementation libraries.mockito
 
-        compile libraries.slf4j
+	    implementation libraries.slf4jlog4j
+        implementation libraries.slf4j
     }
 
 }

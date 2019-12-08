@@ -3,16 +3,16 @@ apply plugin: "application"
 mainClassName = 'nl.sikken.bertrik.TtnHabBridge'
 
 dependencies {
-    compile project(':cayenne')
+    implementation project(':cayenne')
 
-    compile libraries.slf4jlog4j
+    implementation libraries.slf4jlog4j
     
-    compile libraries.mqtt_client
-    compile libraries.jackson
-    compile libraries.xml_bind
-    compile libraries.retrofit
+    implementation libraries.mqtt_client
+    implementation libraries.jackson
+    implementation libraries.xml_bind
+    implementation libraries.retrofit
     
-    testCompile libraries.retrofit_mock
+    testImplementation libraries.retrofit_mock
 }
 
 //Add configuration folder to classpath:

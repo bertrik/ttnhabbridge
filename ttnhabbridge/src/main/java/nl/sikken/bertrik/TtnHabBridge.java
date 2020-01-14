@@ -42,6 +42,7 @@ public final class TtnHabBridge {
     private final ObjectMapper mapper;
     private final ExpiringCache gwCache;
 
+    
     /**
      * Main application entry point.
      * 

@@ -9,13 +9,15 @@ import nl.sikken.bertrik.cayenne.formatter.FloatFormatter;
 import nl.sikken.bertrik.cayenne.formatter.GpsFormatter;
 import nl.sikken.bertrik.cayenne.formatter.IFormatter;
 import nl.sikken.bertrik.cayenne.formatter.BooleanFormatter;
+import nl.sikken.bertrik.cayenne.formatter.IntegerFormatter;
+
 
 /**
  * Enumeration of possible Cayenne item types.
  */
 public enum ECayenneItem {
     DIGITAL_INPUT(0, new BooleanFormatter(1, 1, false)),
-    DIGITAL_OUTPUT(1, new BooleanFormatter(1, 1, false)),
+    DIGITAL_OUTPUT(1, new IntegerFormatter(1, 1, false)),
     ANALOG_INPUT(2, new FloatFormatter(1, 2, 0.01, true)),
     ANALOG_OUTPUT(3, new FloatFormatter(1, 2, 0.01, true)),
     ILLUMINANCE(101, new FloatFormatter(1, 2, 1.0, false)),

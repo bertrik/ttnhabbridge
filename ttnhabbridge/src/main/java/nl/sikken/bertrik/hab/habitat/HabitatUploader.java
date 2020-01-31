@@ -122,6 +122,8 @@ public final class HabitatUploader {
 
             // submit it to our processing thread
             executor.submit(() -> uploadPayloadTelemetry(docId, json));
+            
+            break; // added by Medad to only upload one record of data coming through
         }
     }
 

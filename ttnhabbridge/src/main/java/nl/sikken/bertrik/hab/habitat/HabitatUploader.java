@@ -165,7 +165,7 @@ public final class HabitatUploader {
      * @param instant the current date/time
      */
     public void scheduleListenerDataUpload(HabReceiver receiver, Instant instant) {
-        //executor.submit(() -> uploadListener(receiver, instant));
+        executor.submit(() -> uploadListener(receiver, instant)); // disable upload listener
     }
     
     /**

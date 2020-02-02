@@ -193,14 +193,14 @@ public final class CayenneMessageTest {
     @Test
     public void encodeBoolean() throws CayenneException {
         final CayenneMessage message = new CayenneMessage();
-        message.add(new CayenneItem(1, ECayenneItem.PRESENCE, 1.0));
+        message.add(new CayenneItem(1, ECayenneItem.PRESENCE, 1));
         
         final byte[] encoded = message.encode(MAX_BUF_SIZE);
         final CayenneMessage decoded = CayenneMessage.parse(encoded);
 
         final CayenneItem item = decoded.getItems().get(0);
         Assert.assertEquals(ECayenneItem.PRESENCE, item.getType());
-        Assert.assertEquals(1.0, item.getValues()[0].doubleValue(), 0.01);
+        Assert.assertEquals(1, item.getValues()[0].intValue());
     }
     
 }

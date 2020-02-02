@@ -26,10 +26,10 @@ public final class BooleanFormatter extends BaseFormatter {
     }
 
     @Override
-    public Double[] parse(ByteBuffer bb) {
-        Double[] values = new Double[length];
+    public Integer[] parse(ByteBuffer bb) {
+        Integer[] values = new Integer[length];
         for (int i = 0; i < length; i++) {
-            values[i] = (getValue(bb, size, signed) > 0) ? 1.0 : 0.0;
+            values[i] = (getValue(bb, size, signed) > 0) ? 1 : 0;
         }
         return values;
     }
@@ -46,7 +46,7 @@ public final class BooleanFormatter extends BaseFormatter {
     @Override
     public void encode(ByteBuffer bb, Number[] values) {
         for (int i = 0; i < length; i++) {
-            putValue(bb, 1, values[i].doubleValue() > 0.0 ? 1 : 0);
+            putValue(bb, 1, values[i].intValue() > 0 ? 1 : 0);
         }
     }
 

@@ -186,21 +186,40 @@ public final class CayenneMessageTest {
     }
     
     /**
-     * Verifies encoding of a boolean value.
+     * Verifies encoding of a digital input.
      * 
      * @throws CayenneException in case of a parsing exception
      */
     @Test
-    public void encodeBoolean() throws CayenneException {
+    public void testDigitalInput() throws CayenneException {
         final CayenneMessage message = new CayenneMessage();
-        message.add(new CayenneItem(1, ECayenneItem.PRESENCE, 1));
+        message.add(new CayenneItem(1, ECayenneItem.DIGITAL_INPUT, 1));
+        
+        final byte[] encoded = message.encode(MAX_BUF_SIZE);
+        final CayenneMessage decoded = CayenneMessage.parse(encoded);
+
+        final CayenneItem item = decoded.getItems().get(0);
+        Assert.assertEquals(ECayenneItem.DIGITAL_INPUT, item.getType());
+        Assert.assertEquals(1, item.getValues()[0].intValue());
+    }
+    
+    /**
+     * Verifies encoding/decoding of a presence value (e.g. number of satellites)
+     * 
+     * @throws CayenneException
+     */
+    @Test
+    public void testPresence() throws CayenneException {
+        final CayenneMessage message = new CayenneMessage();
+        message.add(new CayenneItem(1, ECayenneItem.PRESENCE, 7));
         
         final byte[] encoded = message.encode(MAX_BUF_SIZE);
         final CayenneMessage decoded = CayenneMessage.parse(encoded);
 
         final CayenneItem item = decoded.getItems().get(0);
         Assert.assertEquals(ECayenneItem.PRESENCE, item.getType());
-        Assert.assertEquals(1, item.getValues()[0].intValue());
+        Assert.assertEquals(7, item.getValues()[0].intValue());
+        Assert.assertEquals("7", item.format()[0]);
     }
     
 }

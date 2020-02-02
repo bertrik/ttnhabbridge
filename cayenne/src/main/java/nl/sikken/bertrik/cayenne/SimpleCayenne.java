@@ -13,13 +13,13 @@ public final class SimpleCayenne {
     private final CayenneMessage message = new CayenneMessage();
     private final Set<Integer> channels = new HashSet<>();
     
-    public void addDigitalInput(int channel, boolean on) throws CayenneException {
-        CayenneItem item = new CayenneItem(channel, ECayenneItem.DIGITAL_INPUT, on ? 1.0 : 0);
+    public void addDigitalInput(int channel, int value) throws CayenneException {
+        CayenneItem item = new CayenneItem(channel, ECayenneItem.DIGITAL_INPUT, value);
         addItem(item);
     }
     
-    public void addDigitalOutput(int channel, boolean on) throws CayenneException {
-        CayenneItem item = new CayenneItem(channel, ECayenneItem.DIGITAL_OUTPUT, on ? 1.0 : 0);
+    public void addDigitalOutput(int channel, int value) throws CayenneException {
+        CayenneItem item = new CayenneItem(channel, ECayenneItem.DIGITAL_OUTPUT, value);
         addItem(item);
     }
     
@@ -38,8 +38,8 @@ public final class SimpleCayenne {
         addItem(item);
     }
     
-    public void addPresence(int channel, boolean presence) throws CayenneException {
-        CayenneItem item = new CayenneItem(channel, ECayenneItem.PRESENCE, presence ? 1.0 : 0);
+    public void addPresence(int channel, int value) throws CayenneException {
+        CayenneItem item = new CayenneItem(channel, ECayenneItem.PRESENCE, value);
         addItem(item);
     }
     

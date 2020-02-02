@@ -72,7 +72,7 @@ public enum ECayenneItem {
      * @param values the values to encode
      * @return the formatted values
      */
-    public String[] format(Double[] values) {
+    public String[] format(Number[] values) {
         return formatter.format(values);
     }
     
@@ -82,7 +82,7 @@ public enum ECayenneItem {
      * @param bb the byte buffer to parse from
      * @return the numerical values
      */
-    public Double[] parse(ByteBuffer bb) {
+    public Number[] parse(ByteBuffer bb) {
         return formatter.parse(bb);
     }
 
@@ -92,7 +92,7 @@ public enum ECayenneItem {
      * @param bb the byte buffer to encode into
      * @param values the numerical values
      */
-    public void encode(ByteBuffer bb, Double[] values) {
+    public void encode(ByteBuffer bb, Number[] values) {
         formatter.encode(bb, values);
     }
     

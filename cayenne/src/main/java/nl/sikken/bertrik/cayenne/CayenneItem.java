@@ -13,7 +13,7 @@ public final class CayenneItem {
     
     private final int channel;
     private final ECayenneItem type;
-    private final Double[] values;
+    private final Number[] values;
 
     /**
      * Constructor.
@@ -22,7 +22,7 @@ public final class CayenneItem {
      * @param type the type
      * @param values the values
      */
-    public CayenneItem(int channel, ECayenneItem type, Double[] values) {
+    public CayenneItem(int channel, ECayenneItem type, Number[] values) {
         this.channel = channel;
         this.type = type;
         this.values = values.clone();
@@ -35,8 +35,8 @@ public final class CayenneItem {
      * @param type the type
      * @param value the value
      */
-    public CayenneItem(int channel, ECayenneItem type, Double value) {
-        this(channel, type, new Double[] {value});
+    public CayenneItem(int channel, ECayenneItem type, Number value) {
+        this(channel, type, new Number[] {value});
     }
 
     public int getChannel() {
@@ -47,11 +47,11 @@ public final class CayenneItem {
         return type;
     }
 
-    public Double[] getValues() {
+    public Number[] getValues() {
         return values.clone();
     }
     
-    public Double getValue() {
+    public Number getValue() {
         return values[0];
     }
 
@@ -71,7 +71,7 @@ public final class CayenneItem {
             int channel = bb.get();
             int type = bb.get() & 0xFF;
             ECayenneItem ct = ECayenneItem.parse(type);
-            Double[] values = ct.parse(bb);
+            Number[] values = ct.parse(bb);
             return new CayenneItem(channel, ct, values);
         } catch (BufferUnderflowException e) {
             throw new CayenneException(e);

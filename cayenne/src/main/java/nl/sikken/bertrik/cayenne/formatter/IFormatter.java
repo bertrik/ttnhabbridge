@@ -13,16 +13,16 @@ public interface IFormatter {
      * @param bb the byte buffer
      * @return the parsed value as a number
      */
-    Double[] parse(ByteBuffer bb);
+    Number[] parse(ByteBuffer bb);
 
     /** 
      * Formats the data into an array of strings.
      * For example, for a GPS location it outputs: latitude in [0], longitude in [1], altitude in [2].
      * 
-     * @param values the value as double array
+     * @param values the value as number array
      * @return the string representation
      */
-    String[] format(Double[] values);
+    String[] format(Number[] values);
 
     /**
      * Encodes the data into the byte buffer
@@ -30,6 +30,6 @@ public interface IFormatter {
      * @param bb the buffer to encode to
      * @param values the values to encode
      */
-    void encode(ByteBuffer bb, Double[] values);
+    void encode(ByteBuffer bb, Number[] values);
 
 }

@@ -163,7 +163,7 @@ public final class CayenneMessageTest {
         final byte[] encoded = message.encode(MAX_BUF_SIZE);
         
         final CayenneMessage decoded = CayenneMessage.parse(encoded);
-        Assert.assertEquals(-12.34, decoded.getItems().get(0).getValues()[0], 0.01);
+        Assert.assertEquals(-12.34, decoded.getItems().get(0).getValues()[0].doubleValue(), 0.01);
     }
     
     /**
@@ -181,7 +181,8 @@ public final class CayenneMessageTest {
 
         final CayenneItem item = decoded.getItems().get(0);
         Assert.assertEquals(ECayenneItem.HUMIDITY, item.getType());
-        Assert.assertEquals(35.5, item.getValues()[0], 0.1);
+        Assert.assertEquals(35.5, item.getValues()[0].doubleValue(), 0.1);
+        Assert.assertEquals("35.5", item.format()[0]);
     }
     
     /**
@@ -199,7 +200,7 @@ public final class CayenneMessageTest {
 
         final CayenneItem item = decoded.getItems().get(0);
         Assert.assertEquals(ECayenneItem.PRESENCE, item.getType());
-        Assert.assertEquals(1.0, item.getValues()[0], 0.01);
+        Assert.assertEquals(1.0, item.getValues()[0].doubleValue(), 0.01);
     }
     
 }

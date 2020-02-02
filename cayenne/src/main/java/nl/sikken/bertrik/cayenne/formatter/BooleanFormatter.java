@@ -35,7 +35,7 @@ public final class BooleanFormatter extends BaseFormatter {
     }
 
     @Override
-    public String[] format(Double[] values) {
+    public String[] format(Number[] values) {
         String[] formatted = new String[length];
         for (int i = 0; i < length; i++) {
             formatted[i] = String.format(Locale.ROOT, "%d", values[i].intValue());
@@ -44,9 +44,9 @@ public final class BooleanFormatter extends BaseFormatter {
     }
 
     @Override
-    public void encode(ByteBuffer bb, Double[] values) {
+    public void encode(ByteBuffer bb, Number[] values) {
         for (int i = 0; i < length; i++) {
-            putValue(bb, 1, values[i] > 0.0 ? 1 : 0);
+            putValue(bb, 1, values[i].doubleValue() > 0.0 ? 1 : 0);
         }
     }
 

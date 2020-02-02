@@ -20,7 +20,7 @@ public final class GpsFormatter extends BaseFormatter {
     }
 
     @Override
-    public String[] format(Double[] values) {
+    public String[] format(Number[] values) {
         return new String[] {
                 String.format(Locale.ROOT, "%.4f", values[0]), 
                 String.format(Locale.ROOT, "%.4f", values[1]),
@@ -29,10 +29,10 @@ public final class GpsFormatter extends BaseFormatter {
     }
 
     @Override
-    public void encode(ByteBuffer bb, Double[] values) {
-        putValue(bb, 3, (int)Math.round(values[0] / LAT_LON_SCALE));
-        putValue(bb, 3, (int)Math.round(values[1] / LAT_LON_SCALE));
-        putValue(bb, 3, (int)Math.round(values[2] / ALT_SCALE));
+    public void encode(ByteBuffer bb, Number[] values) {
+        putValue(bb, 3, (int)Math.round(values[0].doubleValue() / LAT_LON_SCALE));
+        putValue(bb, 3, (int)Math.round(values[1].doubleValue() / LAT_LON_SCALE));
+        putValue(bb, 3, (int)Math.round(values[2].doubleValue() / ALT_SCALE));
     }
 
 }

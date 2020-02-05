@@ -34,3 +34,6 @@ libraries.mqtt_client = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.2'
 libraries.junit = 'junit:junit:4.13'
 libraries.mockito = 'org.mockito:mockito-core:3.2.4'
 
+// check libraries
+libraries.spotbugs_annotations = 'com.github.spotbugs:spotbugs-annotations:3.1.2'
+

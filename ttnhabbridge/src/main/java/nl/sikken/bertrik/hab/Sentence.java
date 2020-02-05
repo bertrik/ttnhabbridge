@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Representation of a HAB telemetry sentence.
  */
@@ -49,6 +51,7 @@ public final class Sentence {
      * 
      * @return a sentence formatted according to the basic UKHAS convention
      */
+    @SuppressFBWarnings(value = "VA_FORMAT_STRING_USES_NEWLINE", justification = "use \n as specified")
     public String format() {
         // format time
         LocalDateTime local = LocalDateTime.ofInstant(time, ZoneId.of("UTC"));
@@ -67,7 +70,7 @@ public final class Sentence {
         // append header, checksum, etc
         byte[] bytes = basic.getBytes(StandardCharsets.US_ASCII);
         int crcValue = crc16.calculate(bytes, 0xFFFF);
-        return String.format(Locale.ROOT, "$$%s*%04X%n", basic, crcValue);
+        return String.format(Locale.ROOT, "$$%s*%04X\n", basic, crcValue);
     }
 
     @Override

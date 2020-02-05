@@ -1,6 +1,9 @@
 package nl.sikken.bertrik.hab;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Base64;
+import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,6 +11,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import nl.sikken.bertrik.hab.ttn.TtnMessage;
+import nl.sikken.bertrik.hab.ttn.TtnMessageMetaData;
 
 /**
  * Unit tests for PayloadDecoder.
@@ -93,7 +97,7 @@ public final class PayloadDecoderTest {
                 + "\"time\":\"2017-09-08T16:53:10.342388Z\",\"channel\":0,\"rssi\":-119,\"snr\":-2,\"rf_chain\":1,"
                 + "\"latitude\":52.0182,\"longitude\":4.70844,\"altitude\":27}]}}";
         TtnMessage message = mapper.readValue(data, TtnMessage.class);
-        
+
         // decode payload
         PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CAYENNE);
         Sentence sentence = decoder.decode(message);
@@ -109,4 +113,21 @@ public final class PayloadDecoderTest {
         PayloadDecoder decoder = new PayloadDecoder(null);
         Assert.assertNotNull(decoder);
     }
+    
+    /**
+     * Verifies decoding of another set of actual payload data.
+     * 
+     * @throws DecodeException
+     */
+    @Test
+    public void testCayenne2() throws DecodeException {
+    	TtnMessageMetaData metaData = new TtnMessageMetaData("2020-02-05T22:00:58.930936Z", Collections.emptyList());
+        TtnMessage message = new TtnMessage("test", 123, metaData,
+        		Base64.getDecoder().decode("AYgH1ecAzV4AC7gCZwArAwIBhg=="));
+        // decode payload
+        PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CAYENNE);
+        Sentence sentence = decoder.decode(message);
+        Assert.assertEquals("$$test,123,22:00:58,51.3511,5.2574,30.00,4.3,3.90*A07E\n", sentence.format());
+    }
+    
 }

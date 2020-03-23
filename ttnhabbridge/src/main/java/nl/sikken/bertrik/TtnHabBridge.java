@@ -42,7 +42,6 @@ public final class TtnHabBridge {
     private final ObjectMapper mapper;
     private final ExpiringCache gwCache;
 
-    
     /**
      * Main application entry point.
      * 
@@ -117,8 +116,6 @@ public final class TtnHabBridge {
                 if (gwLocation.isValid() && gwCache.add(gwName, now)) {
                     habUploader.scheduleListenerDataUpload(receiver, now);
                 }
-                
-                break; // stop gap measure to stop it from uploading so many gateways
             }
 
             // send payload telemetry data

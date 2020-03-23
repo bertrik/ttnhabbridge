@@ -122,8 +122,6 @@ public final class HabitatUploader {
 
             // submit it to our processing thread
             executor.submit(() -> uploadPayloadTelemetry(docId, json));
-            
-            break; // added by Medad to only upload one record of data coming through
         }
     }
 
@@ -165,7 +163,7 @@ public final class HabitatUploader {
      * @param instant the current date/time
      */
     public void scheduleListenerDataUpload(HabReceiver receiver, Instant instant) {
-        executor.submit(() -> uploadListener(receiver, instant)); // disable upload listener
+        executor.submit(() -> uploadListener(receiver, instant));
     }
     
     /**

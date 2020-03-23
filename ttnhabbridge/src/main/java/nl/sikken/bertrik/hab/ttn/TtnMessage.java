@@ -34,6 +34,19 @@ public final class TtnMessage {
     @JsonProperty("metadata")
     private TtnMessageMetaData metaData;
 
+    private TtnMessage() {
+    	// Jackson constructor
+    }
+    
+    // constructor for testing
+    public TtnMessage(String devId, int counter, TtnMessageMetaData metaData, byte[] payloadRaw) {
+    	this();
+    	this.devId = devId;
+    	this.counter = counter;
+    	this.metaData = metaData;
+    	this.payloadRaw = payloadRaw.clone();
+    }
+    
     public String getAppId() {
         return appId;
     }

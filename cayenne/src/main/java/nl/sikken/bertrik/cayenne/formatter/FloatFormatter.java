@@ -48,18 +48,18 @@ public final class FloatFormatter extends BaseFormatter {
     }
     
     @Override
-    public String[] format(Double[] values) {
+    public String[] format(Number[] values) {
         String[] formatted = new String[length];
         for (int i = 0; i < length; i++) {
-            formatted[i] = String.format(Locale.ROOT, formatString, values[i]);
+            formatted[i] = String.format(Locale.ROOT, formatString, values[i].doubleValue());
         }
         return formatted;
     }
 
     @Override
-    public void encode(ByteBuffer bb, Double[] values) {
+    public void encode(ByteBuffer bb, Number[] values) {
         for (int i = 0; i < length; i++) {
-            putValue(bb, size, (int)Math.round(values[i] / scale));
+            putValue(bb, size, (int)Math.round(values[i].doubleValue() / scale));
         }
     }
 

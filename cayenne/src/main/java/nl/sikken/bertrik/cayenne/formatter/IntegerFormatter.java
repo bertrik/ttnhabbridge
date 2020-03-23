@@ -3,19 +3,17 @@ package nl.sikken.bertrik.cayenne.formatter;
 import java.nio.ByteBuffer;
 import java.util.Locale;
 
-/**
- * Formatter for cayenne items which represent booleans.
- */
+
 public final class IntegerFormatter extends BaseFormatter {
 
     private final int length;
-    private final int size;
-    private final boolean signed;
+	private final int size;
+	private final boolean signed;
 
-    /**
+	/**
      * Constructor.
      * 
-     * @param length the length of the return vector
+     * @param length the number of elements
      * @param size the size of each element
      * @param signed if the element is signed
      */
@@ -25,31 +23,30 @@ public final class IntegerFormatter extends BaseFormatter {
         this.signed = signed;
     }
 
-    @Override
-    public Double[] parse(ByteBuffer bb) {
-        Double[] values = new Double[length];
+
+	@Override
+	public Number[] parse(ByteBuffer bb) {
+        Integer[] values = new Integer[length];
         for (int i = 0; i < length; i++) {
-            values[i] =(double) getValue(bb, size, signed);
+            values[i] = getValue(bb, size, signed);
         }
         return values;
-    }
+	}
 
-    
-
-    @Override
-    public String[] format(Double[] values) {
+	@Override
+	public String[] format(Number[] values) {
         String[] formatted = new String[length];
         for (int i = 0; i < length; i++) {
             formatted[i] = String.format(Locale.ROOT, "%d", values[i].intValue());
         }
         return formatted;
-    }
+	}
 
-    @Override
-    public void encode(ByteBuffer bb, Double[] values) {
+	@Override
+	public void encode(ByteBuffer bb, Number[] values) {
         for (int i = 0; i < length; i++) {
-            putValue(bb, 1, values[i] > 0.0 ? 1 : 0);
+            putValue(bb, size, values[i].intValue());
         }
-    }
+	}
 
 }

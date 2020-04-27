@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,8 @@ public final class TtnHabBridge {
      * @throws MqttException in case of a problem starting MQTT client
      */
     public static void main(String[] arguments) throws IOException, MqttException {
+        PropertyConfigurator.configure("log4j.properties");
+
         ITtnHabBridgeConfig config = readConfig(new File(CONFIG_FILE));
         TtnHabBridge app = new TtnHabBridge(config);
 

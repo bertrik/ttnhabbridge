@@ -60,7 +60,7 @@ public final class TtnListener {
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(appId);
         options.setPassword(appKey.toCharArray());
-        options.setAutomaticReconnect(false);
+        options.setAutomaticReconnect(true);
         mqttClient.connect(options);
         
         // subscribe

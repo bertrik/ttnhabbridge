@@ -137,10 +137,9 @@ public final class HabitatUploader {
             String response = restClient.updateListener(docId, json).execute().body();
             LOG.info("Result payload telemetry doc {}: {}", docId, response);
         } catch (IOException e) {
-            LOG.warn("Caught exception: {}", e.getMessage());
+            LOG.warn("Caught IOException: {}", e.getMessage());
         } catch (Exception e) {
-        	LOG.trace("Caught unhandled exception", e);
-        	LOG.error("Caught unhandled exception: " + e.getMessage());
+        	LOG.error("Caught Exception: {}", e);
         }
     }
 
@@ -198,7 +197,9 @@ public final class HabitatUploader {
                 LOG.warn("Did not receive UUIDs for upload");
             }
         } catch (IOException e) {
-            LOG.warn("Caught WebServiceException: {}", e.getMessage());
+            LOG.warn("Caught IOException: {}", e.getMessage());
+        } catch (Exception e) {
+            LOG.error("Caught Exception: {}", e);
         }
     }
     

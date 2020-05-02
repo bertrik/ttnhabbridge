@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import nl.sikken.bertrik.cayenne.CayenneException;
 import nl.sikken.bertrik.cayenne.CayenneItem;
 import nl.sikken.bertrik.cayenne.CayenneMessage;
+import nl.sikken.bertrik.cayenne.ECayennePayloadFormat;
 import nl.sikken.bertrik.hab.ttn.TtnMessage;
 
 /**
@@ -148,7 +149,9 @@ public final class PayloadDecoder {
         try {
             Instant time = message.getMetaData().getTime();
             Sentence sentence = new Sentence(callSign, counter, time);
-            CayenneMessage cayenne = CayenneMessage.parse(message.getPayloadRaw());
+            ECayennePayloadFormat cayenneFormat = ECayennePayloadFormat.fromPort(message.getPort());
+            CayenneMessage cayenne = new CayenneMessage(cayenneFormat);
+            cayenne.parse(message.getPayloadRaw());
 
             // add all items, in the order they appear in the cayenne message
             for (CayenneItem item : cayenne.getItems()) {

@@ -9,7 +9,7 @@ dependencies {
     
     implementation libraries.mqtt_client
     implementation libraries.jackson
-    implementation libraries.xml_bind
+    implementation libraries.jaxb_api
     implementation libraries.retrofit
     compileOnly libraries.spotbugs_annotations
     

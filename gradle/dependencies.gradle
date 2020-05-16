@@ -31,5 +31,5 @@ libraries.junit = 'junit:junit:4.13'
 libraries.mockito = 'org.mockito:mockito-core:3.3.3'
 
 // check libraries
-libraries.spotbugs_annotations = 'com.github.spotbugs:spotbugs-annotations:4.0.2'
+libraries.spotbugs_annotations = 'com.github.spotbugs:spotbugs-annotations:4.0.3'
 

@@ -29,7 +29,7 @@ public final class PayloadDecoder {
     /**
      * Constructor.
      * 
-     * @param encodingName the payload encoding name
+     * @param encoding the payload encoding
      */
     public PayloadDecoder(EPayloadEncoding encoding) {
         LOG.info("Payload decoder initialised for '{}' format", encoding);

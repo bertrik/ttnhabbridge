@@ -27,7 +27,7 @@ public final class TtnListener {
     /**
      * Constructor.
      * 
-     * @param receiveCallback the interface for indicating a received message.
+     * @param callback the listener for a received message.
      * @param url the URL of the MQTT server
      * @param appId the user name
      * @param appKey the password

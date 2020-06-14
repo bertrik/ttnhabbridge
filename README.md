@@ -20,9 +20,11 @@ Steps to prepare the Eclipse environment:
 * start Eclipse, using the 'workspace' directory as workspace
 * import sub-projects (ttnhabbridge, cayenne) into the workspace
 
-Steps to create a release:
-* edit the version number in @@@TODO
-* using gradle: type 'gradlew distTar' or 'gradlew distZip'
+Steps to update source code from github:
+* in the top-level 'ttnhabbridge' directory, enter 'git pull'
+
+Steps to create the executable package:
+* enter the 'gradle' directory, then type './gradlew assemble' (or just 'gradlew assemble' on Windows)
 * the .tar (for Linux) or .zip (for Windows) file can be found under ttnhabbridge/build/distributions
 
 # Deployment
@@ -30,4 +32,4 @@ Steps to deploy the application:
 * unzip the .zip or .tar file
 * cd into the application directory
 * start the .bat or .sh file
-* install the systemd service file, if desired (instructions inside the .service file)
+* edit and install the systemd service file, if desired (instructions inside the .service file)

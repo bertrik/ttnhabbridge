@@ -96,10 +96,11 @@ public final class TtnHabBridge {
     /**
      * Handles an incoming TTN message
      * 
+     * @param now message arrival time
      * @param topic the topic on which the message was received
      * @param textMessage the message contents
      */
-    private void handleTTNMessage(String topic, String textMessage) {
+    private void handleTTNMessage(Instant now, String topic, String textMessage) {
         try {
             // decode from JSON
             TtnMessage message = mapper.readValue(textMessage, TtnMessage.class);
@@ -107,7 +108,6 @@ public final class TtnHabBridge {
             String line = sentence.format();
             
             // collect list of listeners 
-            Instant now = Instant.now();
             List<HabReceiver> receivers = new ArrayList<>();
             for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
                 String gwName = gw.getId();

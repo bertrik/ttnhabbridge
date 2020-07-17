@@ -24,11 +24,11 @@ libraries.retrofit = [
 ]
 libraries.retrofit_mock = 'com.squareup.retrofit2:retrofit-mock:2.9.0'
 
-libraries.mqtt_client = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.4'
+libraries.mqtt_client = 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
 
 // test libraries
 libraries.junit = 'junit:junit:4.13'
-libraries.mockito = 'org.mockito:mockito-core:3.3.3'
+libraries.mockito = 'org.mockito:mockito-core:3.4.0'
 
 // check libraries
 libraries.spotbugs_annotations = 'com.github.spotbugs:spotbugs-annotations:4.0.6'

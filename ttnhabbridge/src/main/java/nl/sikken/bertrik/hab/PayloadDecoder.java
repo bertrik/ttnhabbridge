@@ -3,13 +3,11 @@ package nl.sikken.bertrik.hab;
 import java.nio.BufferUnderflowException;
 import java.time.Instant;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import nl.sikken.bertrik.cayenne.CayenneException;
 import nl.sikken.bertrik.cayenne.CayenneItem;
@@ -114,19 +112,20 @@ public final class PayloadDecoder {
     
         try {
             Instant time = message.getMetaData().getTime();
-            ObjectNode fields = message.getPayloadFields();
-            double latitude = fields.get("lat").doubleValue();
-            double longitude = fields.get("lon").doubleValue();
-            double altitude = fields.get("gpsalt").doubleValue();
+            Map<String, String> fields = message.getPayloadFields();
+            double latitude = Double.parseDouble(fields.get("lat"));
+            double longitude = Double.parseDouble(fields.get("lon"));
+            double altitude = Double.parseDouble(fields.get("gpsalt"));
             Sentence sentence = new Sentence(callSign, counter, time);
             sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
             sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
             sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
-            JsonNode tempNode = fields.get("temp");
-            JsonNode vccNode = fields.get("vcc");
-            if ((tempNode != null) && (vccNode != null)) {
-                sentence.addField(String.format(Locale.ROOT, "%.1f", tempNode.doubleValue()));
-                sentence.addField(String.format(Locale.ROOT, "%.3f", vccNode.doubleValue()));
+            
+            if (fields.containsKey("temp") && fields.containsKey("vcc")) {
+                Double temp = Double.parseDouble(fields.get("temp"));
+                Double vcc = Double.parseDouble(fields.get("vcc"));
+                sentence.addField(String.format(Locale.ROOT, "%.1f", temp));
+                sentence.addField(String.format(Locale.ROOT, "%.3f", vcc));
             }
             return sentence;
         } catch (RuntimeException e) {

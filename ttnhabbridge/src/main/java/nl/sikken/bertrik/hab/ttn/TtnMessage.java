@@ -70,7 +70,7 @@ public final class TtnMessage {
     }
 
     public byte[] getPayloadRaw() {
-        return payloadRaw;
+        return payloadRaw.clone();
     }
 
     public Map<String, String> getPayloadFields() {

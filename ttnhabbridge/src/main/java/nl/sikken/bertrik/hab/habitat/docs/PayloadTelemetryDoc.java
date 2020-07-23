@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -20,21 +22,23 @@ public final class PayloadTelemetryDoc {
 
     private final OffsetDateTime dateCreated;
     private final OffsetDateTime dateUploaded;
-    private final String callSign;
+    private final List<String> callSigns = new ArrayList<>();
     private final byte[] rawBytes;
 
     /**
      * Constructor.
      * 
-     * @param instant the creation/upload date/time
-     * @param callSign the receiver call sign
+     * @param instant  the creation/upload date/time
      * @param rawBytes the raw telemetry string as bytes
      */
-    public PayloadTelemetryDoc(Instant instant, String callSign, byte[] rawBytes) {
+    public PayloadTelemetryDoc(Instant instant, byte[] rawBytes) {
         this.dateCreated = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
         this.dateUploaded = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
-        this.callSign = Objects.requireNonNull(callSign);
         this.rawBytes = rawBytes.clone();
+    }
+
+    public void addCallSign(String callSign) {
+        this.callSigns.add(callSign);
     }
 
     /**
@@ -49,11 +53,13 @@ public final class PayloadTelemetryDoc {
         dataNode.set("_raw", factory.binaryNode(rawBytes));
 
         // create receivers node
-        ObjectNode receiverNode = factory.objectNode();
-        receiverNode.set("time_created", factory.textNode(dateFormat.format(dateCreated)));
-        receiverNode.set("time_uploaded", factory.textNode(dateFormat.format(dateUploaded)));
         ObjectNode receiversNode = factory.objectNode();
-        receiversNode.set(callSign, receiverNode);
+        for (String callSign : callSigns) {
+            ObjectNode receiverNode = factory.objectNode();
+            receiverNode.set("time_created", factory.textNode(dateFormat.format(dateCreated)));
+            receiverNode.set("time_uploaded", factory.textNode(dateFormat.format(dateUploaded)));
+            receiversNode.set(callSign, receiverNode);
+        }
 
         // put it together in the top node
         topNode.set("data", dataNode);

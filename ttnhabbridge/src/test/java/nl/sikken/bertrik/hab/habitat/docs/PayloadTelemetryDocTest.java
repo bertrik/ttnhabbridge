@@ -16,7 +16,8 @@ public final class PayloadTelemetryDocTest {
 	@Test
 	public void testFormat() {
 		Instant instant = Instant.now();
-		PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, "BERTRIK", new byte[] {1, 2, 3});
+		PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, new byte[] {1, 2, 3});
+		doc.addCallSign("BERTRIK");
 		String json = doc.format();
 		
 		Assert.assertNotNull(json);

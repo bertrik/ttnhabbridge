@@ -7,6 +7,8 @@ import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import nl.sikken.bertrik.hab.ttn.TtnMessage;
@@ -127,6 +129,20 @@ public final class PayloadDecoderTest {
         PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CAYENNE);
         Sentence sentence = decoder.decode(message);
         Assert.assertEquals("$$test,123,22:00:58,51.3511,5.2574,30.00,4.3,3.90*A07E\n", sentence.format());
+    }
+    
+    @Test
+    public void testCayenneWithFields() throws DecodeException, JsonMappingException, JsonProcessingException {
+        String json = "{\"app_id\":\"ttn-arduino-tracker-swallow\",\"dev_id\":\"ttnwiv2n\",\"hardware_serial\":\"003B0C6BF8C3B76E\",\"port\":1,\"counter\":170,\"payload_raw\":\"AYgHr8T/Yr4AIaI=\",\r\n" + 
+                "\"payload_fields\":{\"gps_1\":{\"altitude\":86.1,\"latitude\":50.3748,\"longitude\":-4.0258}},\"metadata\":{\"time\":\"2020-08-17T17:51:05.573485776Z\",\"frequency\":868.5,\"modulation\":\r\n" + 
+                "\"LORA\",\"data_rate\":\"SF7BW125\",\"airtime\":61696000,\"coding_rate\":\"4/5\",\"gateways\":[{\"gtw_id\":\"eui-58a0cbfffe801f61\",\"timestamp\":141113011,\"time\":\"2020-08-17T17:51:05.438510894Z\",\r\n" + 
+                "\"channel\":0,\"rssi\":-34,\"snr\":7.75,\"rf_chain\":0}]}}";
+        ObjectMapper mapper = new ObjectMapper();
+        TtnMessage message = mapper.readValue(json, TtnMessage.class);
+        PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CAYENNE);
+        Sentence sentence = decoder.decode(message);
+        Assert.assertNotNull(sentence);
+        Assert.assertEquals("$$ttnwiv2n,170,17:51:05,50.3748,-4.0258,86.10*6647\n", sentence.format());
     }
     
 }

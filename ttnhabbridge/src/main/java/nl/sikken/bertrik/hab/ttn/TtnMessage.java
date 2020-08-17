@@ -31,7 +31,7 @@ public final class TtnMessage {
     private byte[] payloadRaw = new byte[0];
 
     @JsonProperty("payload_fields")
-    private Map<String, String> payloadFields = new HashMap<>();
+    private Map<String, Object> payloadFields = new HashMap<>();
     
     @JsonProperty("metadata")
     private TtnMessageMetaData metaData;
@@ -73,7 +73,7 @@ public final class TtnMessage {
         return payloadRaw.clone();
     }
 
-    public Map<String, String> getPayloadFields() {
+    public Map<String, Object> getPayloadFields() {
         return payloadFields;
     }
 

@@ -112,18 +112,18 @@ public final class PayloadDecoder {
     
         try {
             Instant time = message.getMetaData().getTime();
-            Map<String, String> fields = message.getPayloadFields();
-            double latitude = Double.parseDouble(fields.get("lat"));
-            double longitude = Double.parseDouble(fields.get("lon"));
-            double altitude = Double.parseDouble(fields.get("gpsalt"));
+            Map<String, Object> fields = message.getPayloadFields();
+            double latitude = parseDouble(fields.get("lat"));
+            double longitude = parseDouble(fields.get("lon"));
+            double altitude = parseDouble(fields.get("gpsalt"));
             Sentence sentence = new Sentence(callSign, counter, time);
             sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
             sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
             sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
             
             if (fields.containsKey("temp") && fields.containsKey("vcc")) {
-                Double temp = Double.parseDouble(fields.get("temp"));
-                Double vcc = Double.parseDouble(fields.get("vcc"));
+                Double temp = parseDouble(fields.get("temp"));
+                Double vcc = parseDouble(fields.get("vcc"));
                 sentence.addField(String.format(Locale.ROOT, "%.1f", temp));
                 sentence.addField(String.format(Locale.ROOT, "%.3f", vcc));
             }
@@ -133,6 +133,18 @@ public final class PayloadDecoder {
         }
     }
 
+    private Double parseDouble(Object object) throws DecodeException {
+        if (object instanceof Number) {
+            Number number = (Number) object;
+            return number.doubleValue();
+        }
+        if (object instanceof String) {
+            String string = (String) object;
+            return Double.parseDouble(string);
+        }
+        throw new DecodeException("Cannot decode " + object);
+    }
+    
     /**
      * Decodes a cayenne encoded payload.
      * 

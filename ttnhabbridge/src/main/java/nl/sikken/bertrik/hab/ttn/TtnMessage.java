@@ -1,8 +1,10 @@
 package nl.sikken.bertrik.hab.ttn;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Representation of a message received from the TTN MQTT stream.
@@ -26,10 +28,10 @@ public final class TtnMessage {
     private int counter;
 
     @JsonProperty("payload_raw")
-    private byte[] payloadRaw;
+    private byte[] payloadRaw = new byte[0];
 
     @JsonProperty("payload_fields")
-    private ObjectNode payloadFields;
+    private Map<String, Object> payloadFields = new HashMap<>();
     
     @JsonProperty("metadata")
     private TtnMessageMetaData metaData;
@@ -71,7 +73,7 @@ public final class TtnMessage {
         return payloadRaw.clone();
     }
 
-    public ObjectNode getPayloadFields() {
+    public Map<String, Object> getPayloadFields() {
         return payloadFields;
     }
 

@@ -3,17 +3,16 @@ package nl.sikken.bertrik.hab;
 import java.nio.BufferUnderflowException;
 import java.time.Instant;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import nl.sikken.bertrik.cayenne.CayenneException;
 import nl.sikken.bertrik.cayenne.CayenneItem;
 import nl.sikken.bertrik.cayenne.CayenneMessage;
+import nl.sikken.bertrik.cayenne.ECayennePayloadFormat;
 import nl.sikken.bertrik.hab.ttn.TtnMessage;
 
 /**
@@ -28,7 +27,7 @@ public final class PayloadDecoder {
     /**
      * Constructor.
      * 
-     * @param encodingName the payload encoding name
+     * @param encoding the payload encoding
      */
     public PayloadDecoder(EPayloadEncoding encoding) {
         LOG.info("Payload decoder initialised for '{}' format", encoding);
@@ -113,19 +112,20 @@ public final class PayloadDecoder {
     
         try {
             Instant time = message.getMetaData().getTime();
-            ObjectNode fields = message.getPayloadFields();
-            double latitude = fields.get("lat").doubleValue();
-            double longitude = fields.get("lon").doubleValue();
-            double altitude = fields.get("gpsalt").doubleValue();
+            Map<String, Object> fields = message.getPayloadFields();
+            double latitude = parseDouble(fields.get("lat"));
+            double longitude = parseDouble(fields.get("lon"));
+            double altitude = parseDouble(fields.get("gpsalt"));
             Sentence sentence = new Sentence(callSign, counter, time);
             sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
             sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
             sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
-            JsonNode tempNode = fields.get("temp");
-            JsonNode vccNode = fields.get("vcc");
-            if ((tempNode != null) && (vccNode != null)) {
-                sentence.addField(String.format(Locale.ROOT, "%.1f", tempNode.doubleValue()));
-                sentence.addField(String.format(Locale.ROOT, "%.3f", vccNode.doubleValue()));
+            
+            if (fields.containsKey("temp") && fields.containsKey("vcc")) {
+                Double temp = parseDouble(fields.get("temp"));
+                Double vcc = parseDouble(fields.get("vcc"));
+                sentence.addField(String.format(Locale.ROOT, "%.1f", temp));
+                sentence.addField(String.format(Locale.ROOT, "%.3f", vcc));
             }
             return sentence;
         } catch (RuntimeException e) {
@@ -133,6 +133,18 @@ public final class PayloadDecoder {
         }
     }
 
+    private Double parseDouble(Object object) throws DecodeException {
+        if (object instanceof Number) {
+            Number number = (Number) object;
+            return number.doubleValue();
+        }
+        if (object instanceof String) {
+            String string = (String) object;
+            return Double.parseDouble(string);
+        }
+        throw new DecodeException("Cannot decode " + object);
+    }
+    
     /**
      * Decodes a cayenne encoded payload.
      * 
@@ -148,7 +160,9 @@ public final class PayloadDecoder {
         try {
             Instant time = message.getMetaData().getTime();
             Sentence sentence = new Sentence(callSign, counter, time);
-            CayenneMessage cayenne = CayenneMessage.parse(message.getPayloadRaw());
+            ECayennePayloadFormat cayenneFormat = ECayennePayloadFormat.fromPort(message.getPort());
+            CayenneMessage cayenne = new CayenneMessage(cayenneFormat);
+            cayenne.parse(message.getPayloadRaw());
 
             // add all items, in the order they appear in the cayenne message
             for (CayenneItem item : cayenne.getItems()) {

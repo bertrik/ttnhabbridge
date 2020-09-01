@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,8 @@ public final class TtnHabBridge {
      * @throws MqttException in case of a problem starting MQTT client
      */
     public static void main(String[] arguments) throws IOException, MqttException {
+        PropertyConfigurator.configure("log4j.properties");
+
         ITtnHabBridgeConfig config = readConfig(new File(CONFIG_FILE));
         TtnHabBridge app = new TtnHabBridge(config);
 
@@ -93,10 +96,11 @@ public final class TtnHabBridge {
     /**
      * Handles an incoming TTN message
      * 
+     * @param now message arrival time
      * @param topic the topic on which the message was received
      * @param textMessage the message contents
      */
-    private void handleTTNMessage(String topic, String textMessage) {
+    private void handleTTNMessage(Instant now, String topic, String textMessage) {
         try {
             // decode from JSON
             TtnMessage message = mapper.readValue(textMessage, TtnMessage.class);
@@ -104,7 +108,6 @@ public final class TtnHabBridge {
             String line = sentence.format();
             
             // collect list of listeners 
-            Instant now = Instant.now();
             List<HabReceiver> receivers = new ArrayList<>();
             for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
                 String gwName = gw.getId();

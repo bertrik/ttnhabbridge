@@ -11,26 +11,56 @@ import java.util.List;
  * A cayenne message containing cayenne data items.
  */
 public final class CayenneMessage {
-    
+
+    private final ECayennePayloadFormat format;
     private final List<CayenneItem> items = new ArrayList<>();
-    
+
+    public CayenneMessage() {
+        this(ECayennePayloadFormat.DYNAMIC_SENSOR_PAYLOAD);
+    }
+
+    /**
+     * @param format the payload format (e.g. parsed from the LoRaWAN port),
+     *               currently only DYNAMIC_SENSOR_PAYLOAD and PACKED_SENSOR_PAYLOAD
+     *               are supported.
+     */
+    public CayenneMessage(ECayennePayloadFormat format) {
+        switch (format) {
+        case DYNAMIC_SENSOR_PAYLOAD:
+        case PACKED_SENSOR_PAYLOAD:
+            break;
+        default:
+            throw new IllegalArgumentException("Payload format not supported: " + format);
+        }
+        this.format = format;
+    }
+
     /**
      * Parses the byte array into a cayenne message.
      * 
      * @param data the raw data
-     * @return the cayenne message
      * @throws CayenneException in case of a parsing problem
      */
-    public static CayenneMessage parse(byte[] data) throws CayenneException {
-        CayenneMessage message = new CayenneMessage();
+    public void parse(byte[] data) throws CayenneException {
         ByteBuffer bb = ByteBuffer.wrap(data);
+        int channel = 0;
         while (bb.hasRemaining()) {
-            CayenneItem item = CayenneItem.parse(bb);
-            message.add(item);
+            CayenneItem item;
+            switch (format) {
+            case DYNAMIC_SENSOR_PAYLOAD:
+                item = CayenneItem.parse(bb);
+                break;
+            case PACKED_SENSOR_PAYLOAD:
+                item = CayenneItem.parsePacked(bb, channel);
+                channel++;
+                break;
+            default:
+                throw new IllegalStateException("Unsupported cayenne payload: " + format);
+            }
+            add(item);
         }
-        return message;
     }
-    
+
     /**
      * Adds a cayenne measurement item to the message.
      * 
@@ -39,29 +69,31 @@ public final class CayenneMessage {
     public void add(CayenneItem item) {
         items.add(item);
     }
-    
+
     /**
      * Encodes the cayenne message into a byte array.
      * 
      * @param maxSize the maximum size of the cayenne message
      * @return the byte array.
-     * @throws CayenneException in case something went wrong during encoding (e.g. message too big)
+     * @throws CayenneException in case something went wrong during encoding (e.g.
+     *                          message too big)
      */
     public byte[] encode(int maxSize) throws CayenneException {
         ByteBuffer bb = ByteBuffer.allocate(maxSize).order(ByteOrder.LITTLE_ENDIAN);
         for (CayenneItem item : items) {
-        	item.encode(bb);
+            item.encode(bb);
         }
         return Arrays.copyOfRange(bb.array(), 0, bb.position());
     }
-    
+
     /**
-     * @return an immutable list of measurement items in the order it appears in the raw data
+     * @return an immutable list of measurement items in the order it appears in the
+     *         raw data
      */
     public List<CayenneItem> getItems() {
         return Collections.unmodifiableList(items);
     }
-    
+
     /**
      * Finds an item by type.
      * 
@@ -71,7 +103,7 @@ public final class CayenneMessage {
     public CayenneItem ofType(ECayenneItem type) {
         return items.stream().filter(i -> (i.getType() == type)).findFirst().orElse(null);
     }
-    
+
     /**
      * Finds an item by channel.
      * 
@@ -86,5 +118,5 @@ public final class CayenneMessage {
     public String toString() {
         return Arrays.toString(items.toArray());
     }
-    
+
 }

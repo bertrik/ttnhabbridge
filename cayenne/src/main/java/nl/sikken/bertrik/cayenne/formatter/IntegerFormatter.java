@@ -3,7 +3,6 @@ package nl.sikken.bertrik.cayenne.formatter;
 import java.nio.ByteBuffer;
 import java.util.Locale;
 
-
 public final class IntegerFormatter extends BaseFormatter {
 
     private final int length;
@@ -22,7 +21,6 @@ public final class IntegerFormatter extends BaseFormatter {
         this.size = size;
         this.signed = signed;
     }
-
 
     @Override
     public Number[] parse(ByteBuffer bb) {

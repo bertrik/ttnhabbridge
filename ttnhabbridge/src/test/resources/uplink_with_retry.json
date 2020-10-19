@@ -1,0 +1,39 @@
+{
+  "app_id": "icss_lora_tracker",
+  "dev_id": "icspace22",
+  "hardware_serial": "00B76CF36C7CFA8A",
+  "port": 99,
+  "counter": 286,
+  "is_retry": true,
+  "payload_raw": "AHMJZwFn/4UCiAe5pgDdPxA6TAMCJyYEARM=",
+  "payload_fields": {
+    "analog_in_3": 100.22,
+    "barometric_pressure_0": 240.7,
+    "digital_out_4": 19,
+    "gps_2": {
+      "altitude": 10635,
+      "latitude": 50.6278,
+      "longitude": 5.6639
+    },
+    "temperature_1": -12.3
+  },
+  "metadata": {
+    "time": "2020-10-19T13:03:31.730922239Z",
+    "frequency": 868.3,
+    "modulation": "LORA",
+    "data_rate": "SF8BW125",
+    "airtime": 154112000,
+    "coding_rate": "4/5",
+    "gateways": [
+      {
+        "gtw_id": "eui-fcc23dfffe0f4c7b",
+        "timestamp": 2089330388,
+        "time": "2020-10-19T13:03:31.096209Z",
+        "channel": 1,
+        "rssi": -111,
+        "snr": -4.8,
+        "rf_chain": 0
+      }
+    ]
+  }
+}

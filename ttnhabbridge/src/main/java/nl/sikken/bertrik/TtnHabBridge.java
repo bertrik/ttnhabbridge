@@ -104,6 +104,11 @@ public final class TtnHabBridge {
         try {
             // decode from JSON
             TtnMessage message = mapper.readValue(textMessage, TtnMessage.class);
+            if (message.isRetry()) {
+                // skip "retry" messages, they contain duplicate data with a misleading time stamp
+                LOG.warn("Ignoring 'retry' message");
+                return;
+            }
             Sentence sentence = decoder.decode(message);
             String line = sentence.format();
             

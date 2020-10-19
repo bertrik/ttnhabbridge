@@ -27,6 +27,9 @@ public final class TtnMessage {
     @JsonProperty("counter")
     private int counter;
 
+    @JsonProperty("is_retry")
+    private boolean isRetry;
+    
     @JsonProperty("payload_raw")
     private byte[] payloadRaw = new byte[0];
 
@@ -63,6 +66,10 @@ public final class TtnMessage {
 
     public int getPort() {
         return port;
+    }
+    
+    public boolean isRetry() {
+        return isRetry;
     }
 
     public int getCounter() {

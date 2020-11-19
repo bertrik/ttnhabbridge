@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public final class ICSSPayloadTest {
 	
-    byte[] data = hexStringToByteArray("7e7a5167ca1712d3f200");
+    byte[] data = hexStringToByteArray("7e7a5167ca1712d3f200ca1712d3f20000c8ca1712d3f20000c800");
     ICSSPayload payload = ICSSPayload.parse(data); 
     
     /**

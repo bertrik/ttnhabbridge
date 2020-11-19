@@ -18,7 +18,8 @@ public final class ICSSPayload {
     private final double longitude;
     private final double altitude;
     private final int numSats;
-
+    private final int pressure;
+    
     /**
      * Constructor.
      * 
@@ -33,7 +34,7 @@ public final class ICSSPayload {
      * @param numSats number of satellites used in fix
      */
     public ICSSPayload(long timeStamp, double loadVoltage, double noloadVoltage, double boardTemp, double latitude, double longitude,
-            double altitude, int numSats) {
+            double altitude, int numSats, int pressure) {
         this.timeStamp = timeStamp;
         this.loadVoltage = loadVoltage;
         this.noloadVoltage = noloadVoltage;
@@ -42,6 +43,8 @@ public final class ICSSPayload {
         this.longitude = longitude;
         this.altitude = altitude;
         this.numSats = numSats;
+        this.pressure = pressure;
+
     }
 
     /**
@@ -60,8 +63,9 @@ public final class ICSSPayload {
         double longitude = bb.getInt() / 1e7;
         int altitude = bb.getShort();
         int numSats = bb.get();
+        int pressure = bb.get();
 
-        return new ICSSPayload(time, voltage, voltage, boardTemp, latitude, longitude, altitude,  numSats);
+        return new ICSSPayload(time, voltage, voltage, boardTemp, latitude, longitude, altitude,  numSats, pressure);
     }
 
     public long getTimeStamp() {
@@ -96,6 +100,10 @@ public final class ICSSPayload {
         return numSats;
     }
 
+    public int getPressure() {
+        return pressure;
+    }
+    
     @Override
     public String toString() {
         return String.format(Locale.ROOT, "ts=%d,batt=%.2f,temp=%.0f,lat=%f,lon=%f,alt=%.0f", timeStamp, loadVoltage,

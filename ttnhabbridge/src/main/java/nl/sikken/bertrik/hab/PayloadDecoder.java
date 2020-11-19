@@ -82,18 +82,20 @@ public final class PayloadDecoder {
         try {
             // CUSTOM_FORMAT_ICSS payload
             ICSSPayload icsspayload = ICSSPayload.parse(message.getPayloadRaw());
-            
             // construct a sentence
             double latitude = icsspayload.getLatitude();
             double longitude = icsspayload.getLongitude();
             double altitude = icsspayload.getAltitude();
-            Instant instant = Instant.ofEpochSecond(icsspayload.getTimeStamp());
-            Sentence sentence = new Sentence(callSign, counter, instant);
+            Instant time = message.getMetaData().getTime();
+            Sentence sentence = new Sentence(callSign, counter, time);
+            sentence.addField(String.format(Locale.ROOT, "%.0f", icsspayload.getPressure()));
+            sentence.addField(String.format(Locale.ROOT, "%.1f", icsspayload.getBoardTemp()));
             sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
             sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
             sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
-            sentence.addField(String.format(Locale.ROOT, "%.0f", icsspayload.getBoardTemp()));
-            sentence.addField(String.format(Locale.ROOT, "%.2f", icsspayload.getloadVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%.1f", icsspayload.getloadVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%.1f", icsspayload.getnoloadVoltage()));
+
             return sentence;
         } catch (BufferUnderflowException e) {
             throw new DecodeException("Error decoding CUSTOM_FORMAT_ICSS", e);

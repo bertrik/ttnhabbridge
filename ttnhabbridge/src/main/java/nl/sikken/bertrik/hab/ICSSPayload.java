@@ -81,11 +81,10 @@ public final class ICSSPayload {
         
         
         
-        float lat = (float) (bb.getShort() *  0xFFFF/1e7);
-        float longi = (float) (bb.getShort() *  0xFFFF/1e7);
-        int alt = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
+        float latitude = (float) (((long)bb.getShort() *  0xFFFF)/1e7);
+        float longitude = (float) (((long)bb.getShort() *  0xFFFF)/1e7);
+        int altitude = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
 
-        int altitude = 200;
         long ts = 1503518401;
         
 

@@ -81,19 +81,19 @@ public final class PayloadDecoder {
         
         try {
             // CUSTOM_FORMAT_ICSS payload
-            SodaqOnePayload sodaq = SodaqOnePayload.parse(message.getPayloadRaw());
+            ICSSPayload icsspayload = ICSSPayload.parse(message.getPayloadRaw());
             
             // construct a sentence
-            double latitude = sodaq.getLatitude();
-            double longitude = sodaq.getLongitude();
-            double altitude = sodaq.getAltitude();
-            Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
+            double latitude = icsspayload.getLatitude();
+            double longitude = icsspayload.getLongitude();
+            double altitude = icsspayload.getAltitude();
+            Instant instant = Instant.ofEpochSecond(icsspayload.getTimeStamp());
             Sentence sentence = new Sentence(callSign, counter, instant);
             sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
             sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
             sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
-            sentence.addField(String.format(Locale.ROOT, "%.0f", sodaq.getBoardTemp()));
-            sentence.addField(String.format(Locale.ROOT, "%.2f", sodaq.getBattVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%.0f", icsspayload.getBoardTemp()));
+            sentence.addField(String.format(Locale.ROOT, "%.2f", icsspayload.getBattVoltage()));
             return sentence;
         } catch (BufferUnderflowException e) {
             throw new DecodeException("Error decoding CUSTOM_FORMAT_ICSS", e);

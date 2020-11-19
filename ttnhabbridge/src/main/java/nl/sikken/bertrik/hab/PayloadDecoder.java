@@ -58,11 +58,46 @@ public final class PayloadDecoder {
         case CAYENNE:
             sentence = decodeCayenne(message, callSign, counter);
             break;
+        case CUSTOM_FORMAT_ICSS:
+            sentence = decodeCUSTOM_FORMAT_ICSS(message, callSign, counter);
+            break;
         default:
             throw new IllegalStateException("Unhandled encoding " + encoding);
         }
         
         return sentence;
+    }
+    /**
+     * Decodes a CUSTOM_FORMAT_ICSS encoded payload.
+     * 
+     * @param message the TTN message
+     * @param callSign the call sign
+     * @param counter the counter
+     * @return the UKHAS sentence
+     * @throws DecodeException in case of a problem decoding the message
+     */
+    private Sentence decodeCUSTOM_FORMAT_ICSS(TtnMessage message, String callSign, int counter) throws DecodeException {
+        LOG.info("Decoding 'CUSTOM_FORMAT_ICSS' message...");
+        
+        try {
+            // CUSTOM_FORMAT_ICSS payload
+            SodaqOnePayload sodaq = SodaqOnePayload.parse(message.getPayloadRaw());
+            
+            // construct a sentence
+            double latitude = sodaq.getLatitude();
+            double longitude = sodaq.getLongitude();
+            double altitude = sodaq.getAltitude();
+            Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
+            Sentence sentence = new Sentence(callSign, counter, instant);
+            sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
+            sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
+            sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
+            sentence.addField(String.format(Locale.ROOT, "%.0f", sodaq.getBoardTemp()));
+            sentence.addField(String.format(Locale.ROOT, "%.2f", sodaq.getBattVoltage()));
+            return sentence;
+        } catch (BufferUnderflowException e) {
+            throw new DecodeException("Error decoding CUSTOM_FORMAT_ICSS", e);
+        }
     }
     
     /**

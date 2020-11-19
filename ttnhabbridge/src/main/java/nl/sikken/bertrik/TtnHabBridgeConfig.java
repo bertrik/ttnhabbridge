@@ -19,7 +19,7 @@ final class TtnHabBridgeConfig extends BaseConfig implements ITtnHabBridgeConfig
         TTN_APP_KEY("ttn.app.key", "ttn-account-v2.Sh49WL90oQz-ZuxoDrS6yKuACL_jtAA0agdDfO_eVj4", "TTN Application key"),
         TTN_GW_CACHE_EXPIRY_SEC("ttn.gwcache.expiry", "600", "Gateway cache expiration time (seconds)"),
         TTN_PAYLOAD_ENCODING("ttn.payload.encoding", "cayenne",
-                "Payload format, allowed values: 'sodaqone','json','cayenne'"),
+                "Payload format, allowed values: 'sodaqone','json','cayenne','custom_format_icss'"),
         ;
         
         private final String key;

@@ -15,6 +15,8 @@ public enum EPayloadEncoding {
     JSON("json"),
     /** encoding using cayenne */
     CAYENNE("cayenne"),
+    /** encoding using custom_format_icss */
+    CUSTOM_FORMAT_ICSS("custom_format_icss"),
     ;
 
     // reverse lookup by name

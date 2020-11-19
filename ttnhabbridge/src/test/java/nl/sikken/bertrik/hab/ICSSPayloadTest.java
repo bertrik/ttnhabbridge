@@ -56,8 +56,8 @@ public final class ICSSPayloadTest {
     
     @Test
     public void test_long_lat() {
-        Assert.assertEquals(39.9121314, payload.getLatitude(),0.0001);
-        //Assert.assertEquals(-75.3780105, payload.getLongitude(),0.0001);
+        Assert.assertEquals(-75.378357, payload.getLongitude(),0.00001);
+        Assert.assertEquals(39.910815, payload.getLatitude(),0.00001);
 
     }
     

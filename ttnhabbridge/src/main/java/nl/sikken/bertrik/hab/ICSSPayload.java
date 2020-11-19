@@ -73,16 +73,9 @@ public final class ICSSPayload {
         int numSats = (byte3>>3) & 0b00011111;
         int reset_cnt = byte3 & 0b00000111;
         
-//        short raw_lat = bb.getShort();
-//        short raw_long = bb.getShort();
         
-        float latitude =  (float) (2/ 1e7);
-        float longitude = (float) (2/ 1e7);
-        
-        
-        
-        float latitude = (float) (((long)bb.getShort() *  0xFFFF)/1e7);
-        float longitude = (float) (((long)bb.getShort() *  0xFFFF)/1e7);
+        float latitude = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
+        float longitude = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
         int altitude = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
 
         long ts = 1503518401;

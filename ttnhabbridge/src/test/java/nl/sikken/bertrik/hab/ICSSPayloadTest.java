@@ -63,7 +63,7 @@ public final class ICSSPayloadTest {
     
     @Test
     public void test_getAltitude() {
-        Assert.assertEquals(61952, payload.getAltitude());
+        Assert.assertEquals(61, payload.getAltitude());
 
     }
     

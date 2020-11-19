@@ -64,7 +64,7 @@ public final class ICSSPayload {
 
         int noloadVoltage = ((byte0 >> 3) & 0b00011111)+18;
         int loadVoltage = (((byte0 << 2) & 0b00011100) | ((byte1 >> 6) & 0b00000011)) + 18;
-        byte boardTemp = (byte1 & 0b00111111) << 2;
+        byte boardTemp = (byte) ((byte1 & 0b00111111) << 2);
         int pressure = ((byte2 >> 1) & 0b01111111)*10;
         int data_received_flag = byte2 & 0b00000001;
         

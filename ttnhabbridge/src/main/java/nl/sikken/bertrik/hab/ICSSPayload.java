@@ -14,12 +14,13 @@ public final class ICSSPayload {
     private final int loadVoltage;
     private final int noloadVoltage;
     private final byte boardTemp;
-    private final double latitude;
-    private final double longitude;
-    private final double altitude;
+    private final float latitude;
+    private final float longitude;
+    private final int altitude;
     private final int numSats;
     private final int pressure;
     private final int data_received_flag;
+    private final int reset_cnt;
 
     /**
      * Constructor.
@@ -34,8 +35,8 @@ public final class ICSSPayload {
      * @param altitude the altitude (unit?)
      * @param numSats number of satellites used in fix
      */
-    public ICSSPayload(long timeStamp, int loadVoltage, int noloadVoltage, byte boardTemp, double latitude, double longitude,
-            double altitude, int numSats, int pressure, int data_received_flag) {
+    public ICSSPayload(long timeStamp, int loadVoltage, int noloadVoltage, byte boardTemp, float latitude, float longitude,
+            int altitude, int numSats, int pressure, int data_received_flag, int reset_cnt) {
         this.timeStamp = timeStamp;
         this.loadVoltage = loadVoltage;
         this.noloadVoltage = noloadVoltage;
@@ -46,7 +47,7 @@ public final class ICSSPayload {
         this.numSats = numSats;
         this.pressure = pressure;
         this.data_received_flag = data_received_flag;
-
+        this.reset_cnt = reset_cnt;
     }
 
     /**
@@ -61,6 +62,7 @@ public final class ICSSPayload {
         byte byte0  = bb.get();
         byte byte1  = bb.get();
         byte byte2  = bb.get();
+        byte byte3  = bb.get();
 
         int noloadVoltage = ((byte0 >> 3) & 0b00011111)+18;
         int loadVoltage = (((byte0 << 2) & 0b00011100) | ((byte1 >> 6) & 0b00000011)) + 18;
@@ -68,13 +70,32 @@ public final class ICSSPayload {
         int pressure = ((byte2 >> 1) & 0b01111111)*10;
         int data_received_flag = byte2 & 0b00000001;
         
-        double latitude = bb.getInt() / 1e7;
-        double longitude = bb.getInt() / 1e7;
-        int altitude = bb.getShort();
-        int numSats = bb.get();
-        long ts = 1503518401;
+        int numSats = (byte3>>3) & 0b00011111;
+        int reset_cnt = byte3 & 0b00000111;
+        
+//        short raw_lat = bb.getShort();
+//        short raw_long = bb.getShort();
+        
+        float latitude =  (float) (2/ 1e7);
+        float longitude = (float) (2/ 1e7);
+        
+        
+        byte a = bb.get();
+        byte b = bb.get();
+        byte c = bb.get();
+        byte d = bb.get();
+        
+        byte e = bb.get();
+        byte f = bb.get();
+        
+        int test_alt = (e<<8 | f) & 0xff;
 
-        return new ICSSPayload(ts, loadVoltage, noloadVoltage, boardTemp, latitude, longitude, altitude,  numSats, pressure, data_received_flag);
+        int altitude = 200;
+        long ts = 1503518401;
+        
+
+        return new ICSSPayload(ts, loadVoltage, noloadVoltage, boardTemp, latitude, longitude, altitude,  numSats,
+        		pressure, data_received_flag, reset_cnt);
     }
 
     public long getTimeStamp() {
@@ -93,15 +114,15 @@ public final class ICSSPayload {
         return boardTemp;
     }
 
-    public double getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public double getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public double getAltitude() {
+    public int getAltitude() {
         return altitude;
     }
 
@@ -117,9 +138,13 @@ public final class ICSSPayload {
         return data_received_flag;
     }
     
+    public int getReset_cnt() {
+        return reset_cnt;
+    }
+    
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "ts=%d,batt=%d,temp=%d,lat=%f,lon=%f,alt=%.0f", timeStamp, loadVoltage,
+        return String.format(Locale.ROOT, "ts=%d,batt=%d,temp=%d,lat=%f,lon=%f,alt=%d", timeStamp, loadVoltage,
                 boardTemp, latitude, longitude, altitude);
     }
 

@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public final class ICSSPayloadTest {
 	
-    byte[] data = hexStringToByteArray("7e7a516717cad3120f217cad3120f20c817cad3120f20c817cad3120f20c817cad3120f20c817cad3120f20c817cad3120f20c817cad3120f20c817cad3120f20c80");
+    byte[] data = hexStringToByteArray("7e7a516717cad31200f2000000");
     ICSSPayload payload = ICSSPayload.parse(data); 
     
     /**
@@ -44,7 +44,29 @@ public final class ICSSPayloadTest {
         Assert.assertEquals(1, payload.getData_received_flag());
     }
     
-   
+    @Test
+    public void test_getNumSats() {
+        Assert.assertEquals(12, payload.getNumSats());
+    }
+    
+    @Test
+    public void test_getReset_cnt() {
+        Assert.assertEquals(7, payload.getReset_cnt());
+    }
+    
+    @Test
+    public void test_long_lat() {
+        Assert.assertEquals(39.9121314, payload.getLatitude(),0.0001);
+        //Assert.assertEquals(-75.3780105, payload.getLongitude(),0.0001);
+
+    }
+    
+    @Test
+    public void test_getAltitude() {
+        Assert.assertEquals(61952, payload.getAltitude());
+
+    }
+    
     
     public byte[] hexStringToByteArray(String s) {
         int len = s.length();

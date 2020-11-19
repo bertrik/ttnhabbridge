@@ -93,7 +93,7 @@ public final class PayloadDecoder {
             sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
             sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
             sentence.addField(String.format(Locale.ROOT, "%.0f", icsspayload.getBoardTemp()));
-            sentence.addField(String.format(Locale.ROOT, "%.2f", icsspayload.getBattVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%.2f", icsspayload.getloadVoltage()));
             return sentence;
         } catch (BufferUnderflowException e) {
             throw new DecodeException("Error decoding CUSTOM_FORMAT_ICSS", e);

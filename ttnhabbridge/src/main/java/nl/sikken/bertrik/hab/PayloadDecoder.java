@@ -85,16 +85,19 @@ public final class PayloadDecoder {
             // construct a sentence
             double latitude = icsspayload.getLatitude();
             double longitude = icsspayload.getLongitude();
-            double altitude = icsspayload.getAltitude();
+            int altitude = icsspayload.getAltitude();
             Instant time = message.getMetaData().getTime();
             Sentence sentence = new Sentence(callSign, counter, time);
-            sentence.addField(String.format(Locale.ROOT, "%.0f", icsspayload.getPressure()));
-            sentence.addField(String.format(Locale.ROOT, "%.1f", icsspayload.getBoardTemp()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getPressure()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getBoardTemp()));
             sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
             sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
-            sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
-            sentence.addField(String.format(Locale.ROOT, "%.1f", icsspayload.getloadVoltage()));
-            sentence.addField(String.format(Locale.ROOT, "%.1f", icsspayload.getnoloadVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%d", altitude));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getloadVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getnoloadVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getData_received_flag()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getReset_cnt()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getNumSats()));
 
             return sentence;
         } catch (BufferUnderflowException e) {

@@ -82,6 +82,36 @@ public final class PayloadDecoderTest {
         Assert.assertEquals("$$mapper2,4,07:11:18,52.022064,4.693023,30.0,19,4.10*81FD", sentence.format().trim());
     }
     
+    
+    
+    /**
+     * Verifies decoding of some actual MQTT data, in RAW format.
+     * 
+     * @throws IOException in case of a parse exception
+     * @throws DecodeException in case of a decode exception
+     */
+    @Test
+    public void testDecodeICSS_custom() throws IOException, DecodeException {
+		String data = "{\"app_id\":\"icss_lora_tracker\",\"dev_id\":\"icspace23\",\"hardware_serial\":"
+				+ "\"0093BECA9134091B\",\"port\":99,\"counter\":6,\"payload_raw\":"
+				+ "\"e4AAAgAAAAAAAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAA==\","
+				+ "\"metadata\":{\"time\":\"2020-11-21T22:08:11.990143204Z\",\"frequency\":868.5,\"modulation\":"
+				+ "\"LORA\",\"data_rate\":\"SF7BW125\",\"airtime\":164096000,\"coding_rate\":\"4/5\",\"gateways\":"
+				+ "[{\"gtw_id\":\"eui-58a0cbfffe800f4d\",\"timestamp\":2282497891,\"time\":\"2020-11-21T22:08:11.949599027Z\","
+				+ "\"channel\":0,\"rssi\":-31,\"snr\":7.5,\"rf_chain\":0}]}}";
+ 
+        TtnMessage message = mapper.readValue(data, TtnMessage.class);
+
+        // check gateway field
+        Assert.assertEquals("eui-58a0cbfffe800f4d", message.getMetaData().getMqttGateways().get(0).getId());
+        
+        // decode payload
+        PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CUSTOM_FORMAT_ICSS);
+        Sentence sentence = decoder.decode(message);
+        
+        Assert.assertEquals("$$icspace23,6,22:08:11,0,1,0.000000,0.000000,0,32,33,0,2,0*D6CB", sentence.format().trim());
+    }
+    
     /**
      * Verifies decoding of some actual MQTT data, in cayenne format (fix applied to analog input).
      * 

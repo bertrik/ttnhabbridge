@@ -80,6 +80,8 @@ public final class ICSSPayload {
 
         long ts = 1503518401;
         
+        // tips for parsing 3 bytes; https://stackoverflow.com/a/13154859
+        //long ts = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + 1577840461;
 
         return new ICSSPayload(ts, loadVoltage, noloadVoltage, boardTemp, latitude, longitude, altitude,  numSats,
         		pressure, data_received_flag, reset_cnt);

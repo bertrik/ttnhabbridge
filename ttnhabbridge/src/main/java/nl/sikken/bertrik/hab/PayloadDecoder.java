@@ -58,11 +58,52 @@ public final class PayloadDecoder {
         case CAYENNE:
             sentence = decodeCayenne(message, callSign, counter);
             break;
+        case CUSTOM_FORMAT_ICSS:
+            sentence = decodeCUSTOM_FORMAT_ICSS(message, callSign, counter);
+            break;
         default:
             throw new IllegalStateException("Unhandled encoding " + encoding);
         }
         
         return sentence;
+    }
+    /**
+     * Decodes a CUSTOM_FORMAT_ICSS encoded payload.
+     * 
+     * @param message the TTN message
+     * @param callSign the call sign
+     * @param counter the counter
+     * @return the UKHAS sentence
+     * @throws DecodeException in case of a problem decoding the message
+     */
+    private Sentence decodeCUSTOM_FORMAT_ICSS(TtnMessage message, String callSign, int counter) throws DecodeException {
+        LOG.info("Decoding 'CUSTOM_FORMAT_ICSS' message...");
+        
+        try {
+            // CUSTOM_FORMAT_ICSS payload
+            ICSSPayload icsspayload = ICSSPayload.parse(message.getPayloadRaw());
+            // construct a sentence
+            double latitude = icsspayload.getLatitude();
+            double longitude = icsspayload.getLongitude();
+            int altitude = icsspayload.getAltitude();
+            Instant time = message.getMetaData().getTime();
+            //Instant time = Instant.ofEpochSecond(icsspayload.getTimeStamp());
+            Sentence sentence = new Sentence(callSign, counter, time);
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getPressure()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getBoardTemp()));
+            sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
+            sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
+            sentence.addField(String.format(Locale.ROOT, "%d", altitude));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getloadVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getnoloadVoltage()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getData_received_flag()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getReset_cnt()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getNumSats()));
+
+            return sentence;
+        } catch (BufferUnderflowException e) {
+            throw new DecodeException("Error decoding CUSTOM_FORMAT_ICSS", e);
+        }
     }
     
     /**

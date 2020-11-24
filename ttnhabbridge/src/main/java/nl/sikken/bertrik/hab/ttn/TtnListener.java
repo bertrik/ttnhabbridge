@@ -99,6 +99,8 @@ public final class TtnListener {
             try {
                 Instant now = Instant.now();
                 String message = new String(mqttMessage.getPayload(), StandardCharsets.US_ASCII);
+                LOG.info("Message received: {}",message);
+
                 listener.messageReceived(now, topic, message);
             } catch (Exception e) {
                 LOG.trace("Caught exception", e);

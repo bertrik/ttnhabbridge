@@ -2,9 +2,7 @@ package nl.sikken.bertrik.hab;
 
 public final class past_postion_time {
 
-	public long getUnix_time() {
-		return unix_time;
-	}
+
 	private final float longitude;
     private final float latitude;
     private final int altitude;
@@ -26,6 +24,9 @@ public final class past_postion_time {
 	}
 	public int getAltitude() {
 		return altitude;
+	}
+	public long getUnix_time() {
+		return unix_time;
 	}
 
 }

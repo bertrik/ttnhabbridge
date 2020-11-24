@@ -54,7 +54,7 @@ public final class ICSSPayload {
     }
 
 	/**
-     * Parses a raw buffer into a Sodaq payload object.
+     * Parses a raw buffer into a ICSS custom payload object.
      * 
      * @param raw the raw buffer
      * @return a parsed object

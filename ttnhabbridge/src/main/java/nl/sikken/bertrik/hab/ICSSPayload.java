@@ -81,7 +81,6 @@ public final class ICSSPayload {
         float longitude = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
         int altitude = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
 
-        long ts = 1503518401;
         
         
         

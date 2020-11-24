@@ -93,7 +93,7 @@ public final class ICSSPayload {
         
 
         
-        return new ICSSPayload(ts, loadVoltage, noloadVoltage, boardTemp, latitude, longitude, altitude,  numSats,
+        return new ICSSPayload(loadVoltage, noloadVoltage, boardTemp, latitude, longitude, altitude,  numSats,
         		pressure, data_received_flag, reset_cnt, past_position_times);
     }
 

@@ -61,6 +61,9 @@ public final class ICSSPayload {
      * @throws BufferUnderflowException in case of a buffer underflow
      */
     public static ICSSPayload parse(byte[] raw) throws BufferUnderflowException {
+    	int payload_size = raw.length;
+    	int n_past_positions = (payload_size - 10)/9;
+    	
         ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
         byte byte0  = bb.get();
         byte byte1  = bb.get();
@@ -83,12 +86,23 @@ public final class ICSSPayload {
 
         
         
-        
-        // tips for parsing 3 bytes; https://stackoverflow.com/a/13154859
-        //long ts = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + 1577840461;
-
-        
+                
         List<past_postion_time> past_position_times = new ArrayList<past_postion_time>();
+        
+        
+        for(int i=0;i<n_past_positions;i++){  
+        	
+            float latitude_temp = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
+            float longitude_temp = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
+            int altitude_temp = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
+            long ts_temp = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + 1577840461;
+        	
+            past_postion_time a = new past_postion_time(longitude_temp, latitude_temp, altitude_temp, ts_temp);
+            past_position_times.add(a);
+            
+        }
+        
+
         
 
         

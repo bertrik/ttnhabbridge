@@ -3,7 +3,10 @@ package nl.sikken.bertrik.hab;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import nl.sikken.bertrik.hab.past_postion_time;
 
 /**
  * Decoding according to "custom_format_icss" format, as used in (for example):
@@ -21,6 +24,7 @@ public final class ICSSPayload {
     private final int pressure;
     private final int data_received_flag;
     private final int reset_cnt;
+    private final List<past_postion_time> past_position_times;
 
     /**
      * Constructor.
@@ -34,23 +38,26 @@ public final class ICSSPayload {
      * @param longitude the longitude (units of 1E-7)
      * @param altitude the altitude (unit?)
      * @param numSats number of satellites used in fix
-     */
-    public ICSSPayload(long timeStamp, int loadVoltage, int noloadVoltage, byte boardTemp, float latitude, float longitude,
-            int altitude, int numSats, int pressure, int data_received_flag, int reset_cnt) {
-        this.timeStamp = timeStamp;
-        this.loadVoltage = loadVoltage;
-        this.noloadVoltage = noloadVoltage;
-        this.boardTemp = boardTemp;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.altitude = altitude;
-        this.numSats = numSats;
-        this.pressure = pressure;
-        this.data_received_flag = data_received_flag;
-        this.reset_cnt = reset_cnt;
+	 * @param past_position_times
+	 */
+    public ICSSPayload(long timeStamp, int loadVoltage, int noloadVoltage, byte boardTemp, float latitude,
+    		float longitude, int altitude, int numSats, int pressure, int data_received_flag, int reset_cnt,
+    		List<past_postion_time> past_position_times) {
+    	this.timeStamp = timeStamp;
+    	this.loadVoltage = loadVoltage;
+    	this.noloadVoltage = noloadVoltage;
+    	this.boardTemp = boardTemp;
+    	this.latitude = latitude;
+    	this.longitude = longitude;
+    	this.altitude = altitude;
+    	this.numSats = numSats;
+    	this.pressure = pressure;
+    	this.data_received_flag = data_received_flag;
+    	this.reset_cnt = reset_cnt;
+    	this.past_position_times = past_position_times;
     }
 
-    /**
+	/**
      * Parses a raw buffer into a Sodaq payload object.
      * 
      * @param raw the raw buffer
@@ -80,11 +87,18 @@ public final class ICSSPayload {
 
         long ts = 1503518401;
         
+        
+        
         // tips for parsing 3 bytes; https://stackoverflow.com/a/13154859
         //long ts = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + 1577840461;
 
+        
+        List<past_postion_time> past_position_times = new ArrayList<past_postion_time>();
+        
+
+        
         return new ICSSPayload(ts, loadVoltage, noloadVoltage, boardTemp, latitude, longitude, altitude,  numSats,
-        		pressure, data_received_flag, reset_cnt);
+        		pressure, data_received_flag, reset_cnt, past_position_times);
     }
 
     public long getTimeStamp() {
@@ -137,4 +151,9 @@ public final class ICSSPayload {
                 boardTemp, latitude, longitude, altitude);
     }
 
+	public List<past_postion_time> getPast_position_times() {
+		return past_position_times;
+	}
+
 }
+

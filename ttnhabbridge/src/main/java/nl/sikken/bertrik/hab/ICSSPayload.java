@@ -6,14 +6,12 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import nl.sikken.bertrik.hab.past_postion_time;
 
 /**
  * Decoding according to "custom_format_icss" format, as used in (for example):
  */
 public final class ICSSPayload {
 
-    private final long timeStamp;
     private final int loadVoltage;
     private final int noloadVoltage;
     private final byte boardTemp;
@@ -29,7 +27,6 @@ public final class ICSSPayload {
     /**
      * Constructor.
      * 
-     * @param timeStamp the time stamp (UTC seconds)
      * @param loadVoltage the solar voltage under GPS load (volts)
      * @param noloadVoltage the solar voltage NOT under GPS load (volts)
      * @param boardTemp the board temperature (degrees celcius)
@@ -40,10 +37,9 @@ public final class ICSSPayload {
      * @param numSats number of satellites used in fix
 	 * @param past_position_times
 	 */
-    public ICSSPayload(long timeStamp, int loadVoltage, int noloadVoltage, byte boardTemp, float latitude,
+    public ICSSPayload( int loadVoltage, int noloadVoltage, byte boardTemp, float latitude,
     		float longitude, int altitude, int numSats, int pressure, int data_received_flag, int reset_cnt,
     		List<past_postion_time> past_position_times) {
-    	this.timeStamp = timeStamp;
     	this.loadVoltage = loadVoltage;
     	this.noloadVoltage = noloadVoltage;
     	this.boardTemp = boardTemp;
@@ -101,9 +97,6 @@ public final class ICSSPayload {
         		pressure, data_received_flag, reset_cnt, past_position_times);
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
-    }
 
     public int getloadVoltage() {
         return loadVoltage;

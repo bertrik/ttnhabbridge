@@ -18,7 +18,6 @@ public final class ICSSPayloadTest {
      */
     @Test
     public void testParse() {
-        Assert.assertEquals(1503518401, payload.getTimeStamp());
         Assert.assertNotNull(payload.toString());
     }
     

@@ -139,6 +139,21 @@ public final class ICSSPayloadTest {
     	Assert.assertEquals(1608825961, payload.getPast_position_times().get(2).getUnix_time());
     }
     
+    @Test
+    public void test_getPast_unix_time_3() {
+    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(3).getUnix_time());
+    }
+    
+    @Test
+    public void test_getPast_unix_time_4() {
+    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(4).getUnix_time());
+    }
+    
+    @Test
+    public void test_getPast_unix_time_5() {
+    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(5).getUnix_time());
+    }
+    
     public byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];

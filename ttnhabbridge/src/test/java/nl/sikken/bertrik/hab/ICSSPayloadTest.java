@@ -74,14 +74,70 @@ public final class ICSSPayloadTest {
     
     
     @Test
-    public void test_getPast_position_times() {
-   	
+    public void test_getPast_lat_0() {
     	Assert.assertEquals(51.53017044, payload.getPast_position_times().get(0).getLatitude(),0.00001);
+    }
+    
+    
+    @Test
+    public void test_getPast_long_0() {
     	Assert.assertEquals(-0.209711998, payload.getPast_position_times().get(0).getLongitude(),0.00001);
+    }
+    
+    @Test
+    public void test_getPast_alt_0() {
     	Assert.assertEquals(82, payload.getPast_position_times().get(0).getAltitude());
+    }
+    
+    @Test
+    public void test_getPast_unix_time_0() {
     	Assert.assertEquals(1608825961, payload.getPast_position_times().get(0).getUnix_time());
     }
  
+    
+    
+    @Test
+    public void test_getPast_lat_1() {
+    	Assert.assertEquals(51.53017044, payload.getPast_position_times().get(1).getLatitude(),0.00001);
+    }
+    
+    
+    @Test
+    public void test_getPast_long_1() {
+    	Assert.assertEquals(-0.209711998, payload.getPast_position_times().get(1).getLongitude(),0.00001);
+    }
+    
+    @Test
+    public void test_getPast_alt_1() {
+    	Assert.assertEquals(82, payload.getPast_position_times().get(1).getAltitude());
+    }
+    
+    @Test
+    public void test_getPast_unix_time_1() {
+    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(1).getUnix_time());
+    }
+    
+    
+    @Test
+    public void test_getPast_lat_2() {
+    	Assert.assertEquals(51.53017044, payload.getPast_position_times().get(2).getLatitude(),0.00001);
+    }
+    
+    
+    @Test
+    public void test_getPast_long_2() {
+    	Assert.assertEquals(-0.209711998, payload.getPast_position_times().get(2).getLongitude(),0.00001);
+    }
+    
+    @Test
+    public void test_getPast_alt_2() {
+    	Assert.assertEquals(82, payload.getPast_position_times().get(2).getAltitude());
+    }
+    
+    @Test
+    public void test_getPast_unix_time_2() {
+    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(2).getUnix_time());
+    }
     
     public byte[] hexStringToByteArray(String s) {
         int len = s.length();

@@ -75,16 +75,18 @@ public final class ICSSPayload {
         byte byte1  = bb.get();
         byte byte2  = bb.get();
         byte byte3  = bb.get();
+        byte byte4  = bb.get();
 
         int noloadVoltage = ((byte0 >> 3) & 0b00011111)+18;
         int loadVoltage = (((byte0 << 2) & 0b00011100) | ((byte1 >> 6) & 0b00000011)) + 18;
-        byte boardTemp = (byte) ((byte) ((byte1 & 0b00111111) << 2)+1);
         int pressure = ((byte2 >> 1) & 0b01111111)*10;
         int data_received_flag = byte2 & 0b00000001;
         
         int numSats = (byte3>>3) & 0b00011111;
         int reset_cnt = byte3 & 0b00000111;
         
+        byte boardTemp = byte4;
+
         
         float latitude = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
         float longitude = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);

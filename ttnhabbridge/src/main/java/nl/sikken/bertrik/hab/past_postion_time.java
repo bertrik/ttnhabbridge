@@ -1,5 +1,7 @@
 package nl.sikken.bertrik.hab;
 
+import java.util.Locale;
+
 public final class past_postion_time {
 
 
@@ -28,5 +30,10 @@ public final class past_postion_time {
 	public long getUnix_time() {
 		return unix_time;
 	}
+	
+    @Override
+    public String toString() {
+        return String.format(Locale.ROOT, "Lon=%f,Lat=%f,alt=%d,ts=%dl",longitude,latitude, altitude, unix_time);
+    }
 
 }

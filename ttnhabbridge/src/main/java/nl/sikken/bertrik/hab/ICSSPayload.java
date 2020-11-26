@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Decoding according to "custom_format_icss" format, as used in (for example):
  */
@@ -23,6 +26,9 @@ public final class ICSSPayload {
     private final int data_received_flag;
     private final int reset_cnt;
     private final List<past_postion_time> past_position_times;
+    
+    private static final Logger LOG = LoggerFactory.getLogger(ICSSPayload.class);
+
 
     /**
      * Constructor.
@@ -99,8 +105,12 @@ public final class ICSSPayload {
         	
             past_postion_time a = new past_postion_time(longitude_temp, latitude_temp, altitude_temp, ts_temp);
             past_position_times.add(a);
+            LOG.info(a.toString());
+
             
         }
+        
+        LOG.info(System.lineSeparator());
         
 
         

@@ -170,7 +170,7 @@ public final class ICSSPayload {
     
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "error=%d,batt=%d,temp=%d,lat=%f,lon=%f,alt=%d", data_received_flag,loadVoltage,
+        return String.format(Locale.ROOT, "error=%d,playback_days=%d,batt=%d,temp=%d,lat=%f,lon=%f,alt=%d", data_received_flag,days_of_playback,loadVoltage,
                 boardTemp, latitude, longitude, altitude);
     }
 

@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public final class ICSSPayloadTest {
 	
-    byte[] data = hexStringToByteArray("7e405067e9ca1712d3f200ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407");
+    byte[] data = hexStringToByteArray("7e7f5067e9ca1712d3f200ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407");
     ICSSPayload payload = ICSSPayload.parse(data); 
     
     /**
@@ -66,6 +66,11 @@ public final class ICSSPayloadTest {
 
     }
     
+    @Test
+    public void test_get_playback_days() {
+        Assert.assertEquals(63, payload.getDays_of_playback());
+
+    }
     
     @Test
     public void test_getPast_position_times_size() {

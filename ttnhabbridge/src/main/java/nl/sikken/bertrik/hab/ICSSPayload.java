@@ -26,7 +26,8 @@ public final class ICSSPayload {
     private final int data_received_flag;
     private final int reset_cnt;
     private final List<past_postion_time> past_position_times;
-    
+    private final int days_of_playback;
+
     private static final Logger LOG = LoggerFactory.getLogger(ICSSPayload.class);
 
 
@@ -45,7 +46,7 @@ public final class ICSSPayload {
 	 */
     public ICSSPayload( int loadVoltage, int noloadVoltage, byte boardTemp, float latitude,
     		float longitude, int altitude, int numSats, int pressure, int data_received_flag, int reset_cnt,
-    		List<past_postion_time> past_position_times) {
+    		List<past_postion_time> past_position_times, int days_of_playback) {
     	this.loadVoltage = loadVoltage;
     	this.noloadVoltage = noloadVoltage;
     	this.boardTemp = boardTemp;
@@ -57,6 +58,7 @@ public final class ICSSPayload {
     	this.data_received_flag = data_received_flag;
     	this.reset_cnt = reset_cnt;
     	this.past_position_times = past_position_times;
+    	this.days_of_playback = days_of_playback;
     }
 
 	/**
@@ -79,6 +81,7 @@ public final class ICSSPayload {
 
         int noloadVoltage = ((byte0 >> 3) & 0b00011111)+18;
         int loadVoltage = (((byte0 << 2) & 0b00011100) | ((byte1 >> 6) & 0b00000011)) + 18;
+        int days_of_playback = (byte1 & 0b00111111);
         int pressure = ((byte2 >> 1) & 0b01111111)*10;
         int data_received_flag = byte2 & 0b00000001;
         
@@ -96,7 +99,7 @@ public final class ICSSPayload {
         
                 
         List<past_postion_time> past_position_times = new ArrayList<past_postion_time>();
-        
+        StringBuilder past_pos_str = new StringBuilder();
         
         for(int i=0;i<n_past_positions;i++){  
         	
@@ -107,19 +110,21 @@ public final class ICSSPayload {
         	
             past_postion_time a = new past_postion_time(longitude_temp, latitude_temp, altitude_temp, ts_temp);
             past_position_times.add(a);
-            LOG.info(a.toString());
+            past_pos_str.append(a.toString());
+            past_pos_str.append(System.lineSeparator());
+
 
             
         }
         
-        LOG.info(System.lineSeparator());
+        LOG.info(System.lineSeparator()+past_pos_str+System.lineSeparator());
         
 
         
 
         
         return new ICSSPayload(loadVoltage, noloadVoltage, boardTemp, latitude, longitude, altitude,  numSats,
-        		pressure, data_received_flag, reset_cnt, past_position_times);
+        		pressure, data_received_flag, reset_cnt, past_position_times,days_of_playback);
     }
 
 
@@ -165,12 +170,16 @@ public final class ICSSPayload {
     
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "batt=%d,temp=%d,lat=%f,lon=%f,alt=%d", loadVoltage,
+        return String.format(Locale.ROOT, "error=%d,batt=%d,temp=%d,lat=%f,lon=%f,alt=%d", data_received_flag,loadVoltage,
                 boardTemp, latitude, longitude, altitude);
     }
 
 	public List<past_postion_time> getPast_position_times() {
 		return past_position_times;
+	}
+
+	public int getDays_of_playback() {
+		return days_of_playback;
 	}
 
 }

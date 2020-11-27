@@ -1,5 +1,8 @@
 package nl.sikken.bertrik.hab;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public final class past_postion_time {
@@ -9,6 +12,7 @@ public final class past_postion_time {
     private final float latitude;
     private final int altitude;
     private final long unix_time;
+	final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
     public past_postion_time(float longitude, float latitude, int altitude, long unix_time) {
@@ -33,7 +37,10 @@ public final class past_postion_time {
 	
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "Lon=%f,Lat=%f,alt=%d,ts=%dl",longitude,latitude, altitude, unix_time);
+    	
+		final String formattedDtm = Instant.ofEpochSecond(unix_time).atZone(ZoneId.of("GMT-0")).format(formatter);
+		
+		return String.format(Locale.ROOT, "Lon=%f,Lat=%f,alt=%d,ts=%s",longitude,latitude, altitude, formattedDtm);
     }
 
 }

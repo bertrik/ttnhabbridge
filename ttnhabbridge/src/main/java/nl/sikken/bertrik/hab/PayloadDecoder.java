@@ -82,6 +82,9 @@ public final class PayloadDecoder {
         try {
             // CUSTOM_FORMAT_ICSS payload
             ICSSPayload icsspayload = ICSSPayload.parse(message.getPayloadRaw());
+            LOG.info("ICSS payload:"+icsspayload.toString());
+
+            
             // construct a sentence
             double latitude = icsspayload.getLatitude();
             double longitude = icsspayload.getLongitude();

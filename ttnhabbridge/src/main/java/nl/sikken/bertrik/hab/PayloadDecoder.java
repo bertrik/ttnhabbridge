@@ -82,6 +82,9 @@ public final class PayloadDecoder {
         try {
             // CUSTOM_FORMAT_ICSS payload
             ICSSPayload icsspayload = ICSSPayload.parse(message.getPayloadRaw());
+            LOG.info("ICSS payload:"+icsspayload.toString());
+
+            
             // construct a sentence
             double latitude = icsspayload.getLatitude();
             double longitude = icsspayload.getLongitude();
@@ -99,6 +102,7 @@ public final class PayloadDecoder {
             sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getData_received_flag()));
             sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getReset_cnt()));
             sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getNumSats()));
+            sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getDays_of_playback()));
 
             return sentence;
         } catch (BufferUnderflowException e) {

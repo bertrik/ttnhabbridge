@@ -29,7 +29,8 @@ public final class ICSSPayload {
     private final int days_of_playback;
 
     private static final Logger LOG = LoggerFactory.getLogger(ICSSPayload.class);
-
+    
+    private static final int current_data_size = 11;
 
     /**
      * Constructor.
@@ -70,7 +71,7 @@ public final class ICSSPayload {
      */
     public static ICSSPayload parse(byte[] raw) throws BufferUnderflowException {
     	int payload_size = raw.length;
-    	int n_past_positions = (payload_size - 10)/9;
+    	int n_past_positions = (payload_size - current_data_size)/9;
     	
         ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
         byte byte0  = bb.get();

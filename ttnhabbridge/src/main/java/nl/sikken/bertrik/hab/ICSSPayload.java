@@ -119,7 +119,7 @@ public final class ICSSPayload {
             
         }
         
-        LOG.info(System.lineSeparator()+past_pos_str+System.lineSeparator());
+        LOG.info(System.lineSeparator()+past_pos_str);
         
 
         

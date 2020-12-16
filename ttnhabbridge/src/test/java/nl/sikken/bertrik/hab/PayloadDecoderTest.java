@@ -92,7 +92,15 @@ public final class PayloadDecoderTest {
      */
     @Test
     public void testDecodeICSS_custom() throws IOException, DecodeException {
-		String data = "{\"app_id\":\"icss_lora_tracker\",\"dev_id\":\"icspace23\",\"hardware_serial\":\"0093BECA9134091B\",\"port\":99,\"counter\":41,\"payload_raw\":\"a03IKRX5Hs4ARgH6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIRfQf6HtEA6QAErgf6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIRfQf6HtEA6QAErgf6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIRfQf6HtEA6QAErgc=\",\"metadata\":{\"time\":\"2020-12-15T13:32:30.644741305Z\",\"frequency\":868.1,\"modulation\":\"LORA\",\"data_rate\":\"SF8BW125\",\"airtime\":389632000,\"coding_rate\":\"4/5\",\"gateways\":[{\"gtw_id\":\"eui-0000024b0b03046b\",\"timestamp\":2834815476,\"time\":\"2020-12-15T13:32:30.62244Z\",\"channel\":0,\"rssi\":-66,\"snr\":11.2,\"rf_chain\":0,\"latitude\":51.96731,\"longitude\":1.35357,\"altitude\":32}]}}";
+    	String data = "{\"app_id\":\"icss_lora_tracker\",\"dev_id\":\"icspace23\",\"hardware_serial\":\"0093BECA9134091B\""
+    			+ ",\"port\":99,\"counter\":41,\"payload_raw\":"
+    			+ "\"a03IKRX5Hs4ARgH6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIRfQf6HtEA6QAErgf6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIR"
+    			+ "fQf6HtEA6QAErgf6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIRfQf6HtEA6QAErgc=\","
+    			+ "\"metadata\":{\"time\":\"2020-12-15T13:32:30.644741305Z\",\"frequency\":868.1,\"modulation\":"
+    			+ "\"LORA\",\"data_rate\":\"SF8BW125\",\"airtime\":389632000,\"coding_rate\":"
+    			+ "\"4/5\",\"gateways\":[{\"gtw_id\":\"eui-0000024b0b03046b\",\"timestamp\":2834815476,\"time\":"
+    			+ "\"2020-12-15T13:32:30.62244Z\",\"channel\":0,\"rssi\":-66,"
+    			+ "\"snr\":11.2,\"rf_chain\":0,\"latitude\":51.96731,\"longitude\":1.35357,\"altitude\":32}]}}";
  
         TtnMessage message = mapper.readValue(data, TtnMessage.class);
 

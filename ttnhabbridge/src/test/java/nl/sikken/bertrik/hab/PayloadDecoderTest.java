@@ -92,24 +92,18 @@ public final class PayloadDecoderTest {
      */
     @Test
     public void testDecodeICSS_custom() throws IOException, DecodeException {
-		String data = "{\"app_id\":\"icss_lora_tracker\",\"dev_id\":\"icspace23\",\"hardware_serial\":"
-				+ "\"0093BECA9134091B\",\"port\":99,\"counter\":6,\"payload_raw\":"
-				+ "\"e4AAAgAAAAAAAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAAAAABoGAEdaAA==\","
-				+ "\"metadata\":{\"time\":\"2020-11-21T22:08:11.990143204Z\",\"frequency\":868.5,\"modulation\":"
-				+ "\"LORA\",\"data_rate\":\"SF7BW125\",\"airtime\":164096000,\"coding_rate\":\"4/5\",\"gateways\":"
-				+ "[{\"gtw_id\":\"eui-58a0cbfffe800f4d\",\"timestamp\":2282497891,\"time\":\"2020-11-21T22:08:11.949599027Z\","
-				+ "\"channel\":0,\"rssi\":-31,\"snr\":7.5,\"rf_chain\":0}]}}";
+		String data = "{\"app_id\":\"icss_lora_tracker\",\"dev_id\":\"icspace23\",\"hardware_serial\":\"0093BECA9134091B\",\"port\":99,\"counter\":41,\"payload_raw\":\"a03IKRX5Hs4ARgH6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIRfQf6HtEA6QAErgf6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIRfQf6HtEA6QAErgf6HtEA4wBCYQf6HtEACQFmYQf6HtEAhgIRfQf6HtEA6QAErgc=\",\"metadata\":{\"time\":\"2020-12-15T13:32:30.644741305Z\",\"frequency\":868.1,\"modulation\":\"LORA\",\"data_rate\":\"SF8BW125\",\"airtime\":389632000,\"coding_rate\":\"4/5\",\"gateways\":[{\"gtw_id\":\"eui-0000024b0b03046b\",\"timestamp\":2834815476,\"time\":\"2020-12-15T13:32:30.62244Z\",\"channel\":0,\"rssi\":-66,\"snr\":11.2,\"rf_chain\":0,\"latitude\":51.96731,\"longitude\":1.35357,\"altitude\":32}]}}";
  
         TtnMessage message = mapper.readValue(data, TtnMessage.class);
 
         // check gateway field
-        Assert.assertEquals("eui-58a0cbfffe800f4d", message.getMetaData().getMqttGateways().get(0).getId());
+        Assert.assertEquals("eui-0000024b0b03046b", message.getMetaData().getMqttGateways().get(0).getId());
         
         // decode payload
         PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CUSTOM_FORMAT_ICSS);
         Sentence sentence = decoder.decode(message);
         
-        Assert.assertEquals("$$icspace23,6,22:08:11,0,1,0.000000,0.000000,0,32,33,0,2,0*D6CB", sentence.format().trim());
+        Assert.assertEquals("$$icspace23,41,13:32:30,1000,21,51.962700,1.350021,83,31,31,0,1,5,13*C2CC", sentence.format().trim());
     }
     
     /**

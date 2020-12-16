@@ -172,8 +172,9 @@ public final class ICSSPayload {
     
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "error=%d,playback_days=%d,batt=%d,temp=%d,lat=%f,lon=%f,alt=%d", data_received_flag,days_of_playback,loadVoltage,
-                boardTemp, latitude, longitude, altitude);
+        return String.format(Locale.ROOT, "playback_days=%d, load_voltage=%d, no_load_voltage=%d, temp=%d, lat=%f, lon=%f, alt=%d, request_error=%d, reset_cnt=%d, pressure=%d, numsats=%d",
+        		days_of_playback,loadVoltage, noloadVoltage, boardTemp, latitude, longitude, 
+        		altitude, data_received_flag, reset_cnt, pressure, numSats);
     }
 
 	public List<past_postion_time> getPast_position_times() {

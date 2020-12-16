@@ -30,8 +30,9 @@ public final class ICSSPayload {
 
     private static final Logger LOG = LoggerFactory.getLogger(ICSSPayload.class);
     
-    private static final int current_data_size = 11;
-
+    private static final int current_data_size = 11;  // Number of bytes to store the current position and temperature/sensor info
+    private static final int unix_time_of_our_special_epoch = 1577840461;  // The tracker uses an epoch of 1/1/2020 so we have to add this to the
+    																		// value sent by the tracker to convert to unix time.
     /**
      * Constructor.
      * 
@@ -44,6 +45,7 @@ public final class ICSSPayload {
      * @param altitude the altitude (unit?)
      * @param numSats number of satellites used in fix
 	 * @param past_position_times
+	 * @param days_of_playback Number of days of playback stored on the tracker
 	 */
     public ICSSPayload( int loadVoltage, int noloadVoltage, byte boardTemp, float latitude,
     		float longitude, int altitude, int numSats, int pressure, int data_received_flag, int reset_cnt,
@@ -78,22 +80,21 @@ public final class ICSSPayload {
         byte byte1  = bb.get();
         byte byte2  = bb.get();
         byte byte3  = bb.get();
-        byte byte4  = bb.get();
 
-        int noloadVoltage = ((byte0 >> 3) & 0b00011111)+18;
+        int noloadVoltage = ((byte0 >> 3) & 0b00011111) + 18;
         int loadVoltage = (((byte0 << 2) & 0b00011100) | ((byte1 >> 6) & 0b00000011)) + 18;
         int days_of_playback = (byte1 & 0b00111111);
-        int pressure = ((byte2 >> 1) & 0b01111111)*10;
+        int pressure = ((byte2 >> 1) & 0b01111111) * 10;
         int data_received_flag = byte2 & 0b00000001;
         
         int numSats = (byte3>>3) & 0b00011111;
         int reset_cnt = byte3 & 0b00000111;
         
-        byte boardTemp = byte4;
+        byte boardTemp = bb.get();
 
         
-        float latitude = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
-        float longitude = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
+        float latitude = (float) ((bb.getShort() * 0xFFFF)/1e7);
+        float longitude = (float) ((bb.getShort() * 0xFFFF)/1e7);
         int altitude = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
 
         
@@ -104,10 +105,10 @@ public final class ICSSPayload {
         
         for(int i=0;i<n_past_positions;i++){  
         	
-            float latitude_temp = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
-            float longitude_temp = (float) ((double)((long)bb.getShort() * (long) 0xFFFF)/1e7);
+            float latitude_temp = (float) ((bb.getShort() *  0xFFFF)/1e7);
+            float longitude_temp = (float) ((bb.getShort() *  0xFFFF)/1e7);
             int altitude_temp = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
-            long ts_temp = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + 1577840461;
+            long ts_temp = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + unix_time_of_our_special_epoch;
         	
             past_postion_time a = new past_postion_time(longitude_temp, latitude_temp, altitude_temp, ts_temp);
             past_position_times.add(a);

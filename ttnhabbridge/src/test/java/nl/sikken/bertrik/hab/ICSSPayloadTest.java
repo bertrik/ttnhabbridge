@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public final class ICSSPayloadTest {
 	
-    byte[] data = hexStringToByteArray("7e7f5067e9ca1712d3f200ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407ca1712d3f2002e3407");
+    byte[] data = hexStringToByteArray("6b4dc82915f91ece004601fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07");
     ICSSPayload payload = ICSSPayload.parse(data); 
     
     /**
@@ -24,13 +24,13 @@ public final class ICSSPayloadTest {
     
     @Test
     public void testParseVoltage() {
-        Assert.assertEquals(30, payload.getloadVoltage());
-        Assert.assertEquals(30, payload.getnoloadVoltage());
+        Assert.assertEquals(31, payload.getloadVoltage());
+        Assert.assertEquals(31, payload.getnoloadVoltage());
     }
     
     @Test
     public void testParsetemp() {
-        Assert.assertEquals(13, payload.getBoardTemp());
+        Assert.assertEquals(21, payload.getBoardTemp());
     }
     
     @Test
@@ -45,30 +45,30 @@ public final class ICSSPayloadTest {
     
     @Test
     public void test_getNumSats() {
-        Assert.assertEquals(8, payload.getNumSats());
+        Assert.assertEquals(5, payload.getNumSats());
     }
     
     @Test
     public void test_getReset_cnt() {
-        Assert.assertEquals(5, payload.getReset_cnt());
+        Assert.assertEquals(1, payload.getReset_cnt());
     }
     
     @Test
     public void test_long_lat() {
-        Assert.assertEquals(-0.20971199, payload.getLongitude(),0.00001);
-        Assert.assertEquals(51.53017044, payload.getLatitude(),0.00001);
+        Assert.assertEquals(1.350021004, payload.getLongitude(),0.00001);
+        Assert.assertEquals(51.96269989, payload.getLatitude(),0.00001);
 
     }
     
     @Test
     public void test_getAltitude() {
-        Assert.assertEquals(81, payload.getAltitude());
+        Assert.assertEquals(83, payload.getAltitude());
 
     }
     
     @Test
     public void test_get_playback_days() {
-        Assert.assertEquals(63, payload.getDays_of_playback());
+        Assert.assertEquals(13, payload.getDays_of_playback());
 
     }
     
@@ -80,83 +80,83 @@ public final class ICSSPayloadTest {
     
     @Test
     public void test_getPast_lat_0() {
-    	Assert.assertEquals(51.53017044, payload.getPast_position_times().get(0).getLatitude(),0.00001);
+    	Assert.assertEquals(51.9692535400, payload.getPast_position_times().get(0).getLatitude(),0.00001);
     }
     
     
     @Test
     public void test_getPast_long_0() {
-    	Assert.assertEquals(-0.209711998, payload.getPast_position_times().get(0).getLongitude(),0.00001);
+    	Assert.assertEquals(1.3696814775, payload.getPast_position_times().get(0).getLongitude(),0.00001);
     }
     
     @Test
     public void test_getPast_alt_0() {
-    	Assert.assertEquals(82, payload.getPast_position_times().get(0).getAltitude());
+    	Assert.assertEquals(57, payload.getPast_position_times().get(0).getAltitude());
     }
     
     @Test
     public void test_getPast_unix_time_0() {
-    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(0).getUnix_time());
+    	Assert.assertEquals(1606859461, payload.getPast_position_times().get(0).getUnix_time());
     }
  
     
     
     @Test
     public void test_getPast_lat_1() {
-    	Assert.assertEquals(51.53017044, payload.getPast_position_times().get(1).getLatitude(),0.00001);
+    	Assert.assertEquals(51.969253540, payload.getPast_position_times().get(1).getLatitude(),0.00001);
     }
     
     
     @Test
     public void test_getPast_long_1() {
-    	Assert.assertEquals(-0.209711998, payload.getPast_position_times().get(1).getLongitude(),0.00001);
+    	Assert.assertEquals(1.3696814775, payload.getPast_position_times().get(1).getLongitude(),0.00001);
     }
     
     @Test
     public void test_getPast_alt_1() {
-    	Assert.assertEquals(82, payload.getPast_position_times().get(1).getAltitude());
+    	Assert.assertEquals(67, payload.getPast_position_times().get(1).getAltitude());
     }
     
     @Test
     public void test_getPast_unix_time_1() {
-    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(1).getUnix_time());
+    	Assert.assertEquals(1606861621, payload.getPast_position_times().get(1).getUnix_time());
     }
     
     
     @Test
     public void test_getPast_lat_2() {
-    	Assert.assertEquals(51.53017044, payload.getPast_position_times().get(2).getLatitude(),0.00001);
+    	Assert.assertEquals(51.9692535400, payload.getPast_position_times().get(2).getLatitude(),0.00001);
     }
     
     
     @Test
     public void test_getPast_long_2() {
-    	Assert.assertEquals(-0.209711998, payload.getPast_position_times().get(2).getLongitude(),0.00001);
+    	Assert.assertEquals(1.3696814775, payload.getPast_position_times().get(2).getLongitude(),0.00001);
     }
     
     @Test
     public void test_getPast_alt_2() {
-    	Assert.assertEquals(82, payload.getPast_position_times().get(2).getAltitude());
+    	Assert.assertEquals(164, payload.getPast_position_times().get(2).getAltitude());
     }
     
     @Test
     public void test_getPast_unix_time_2() {
-    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(2).getUnix_time());
+    	Assert.assertEquals(1607286601, payload.getPast_position_times().get(2).getUnix_time());
     }
     
     @Test
     public void test_getPast_unix_time_3() {
-    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(3).getUnix_time());
+    	Assert.assertEquals(1608038461, payload.getPast_position_times().get(3).getUnix_time());
     }
     
     @Test
     public void test_getPast_unix_time_4() {
-    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(4).getUnix_time());
+    	Assert.assertEquals(1606859461, payload.getPast_position_times().get(4).getUnix_time());
     }
     
     @Test
     public void test_getPast_unix_time_5() {
-    	Assert.assertEquals(1608825961, payload.getPast_position_times().get(5).getUnix_time());
+    	Assert.assertEquals(1606861621, payload.getPast_position_times().get(5).getUnix_time());
     }
     
     public byte[] hexStringToByteArray(String s) {

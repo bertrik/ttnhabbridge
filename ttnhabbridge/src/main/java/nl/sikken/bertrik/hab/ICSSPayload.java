@@ -93,9 +93,9 @@ public final class ICSSPayload {
         byte boardTemp = bb.get();
 
         
-        float latitude = (float) ((bb.getShort() * 0xFFFF)/1e7);
-        float longitude = (float) ((bb.getShort() * 0xFFFF)/1e7);
-        int altitude = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
+        float latitude = (float) ((bb.getShort() * 0xFFFF) / 1e7);
+        float longitude = (float) ((bb.getShort() * 0xFFFF) / 1e7);
+        int altitude = ((bb.getShort() & 0xFFFF) * 0xFF) / 1000;
 
         
         
@@ -105,9 +105,9 @@ public final class ICSSPayload {
         
         for(int i=0;i<n_past_positions;i++){  
         	
-            float latitude_temp = (float) ((bb.getShort() *  0xFFFF)/1e7);
-            float longitude_temp = (float) ((bb.getShort() *  0xFFFF)/1e7);
-            int altitude_temp = ((bb.getShort() & 0xFFFF) * 0xFF)/1000;
+            float latitude_temp = (float) ((bb.getShort() *  0xFFFF) / 1e7);
+            float longitude_temp = (float) ((bb.getShort() *  0xFFFF) / 1e7);
+            int altitude_temp = ((bb.getShort() & 0xFFFF) * 0xFF) / 1000;
             long ts_temp = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + unix_time_of_our_special_epoch;
         	
             past_postion_time a = new past_postion_time(longitude_temp, latitude_temp, altitude_temp, ts_temp);

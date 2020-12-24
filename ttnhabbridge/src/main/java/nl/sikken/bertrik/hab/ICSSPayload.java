@@ -110,9 +110,9 @@ public final class ICSSPayload {
             int altitude_temp = ((bb.getShort() & 0xFFFF) * 0xFF) / 1000;
             long ts_temp = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + unix_time_of_our_special_epoch;
         	
-            past_postion_time a = new past_postion_time(longitude_temp, latitude_temp, altitude_temp, ts_temp);
-            past_position_times.add(a);
-            past_pos_str.append(a.toString());
+            past_postion_time ppt = new past_postion_time(longitude_temp, latitude_temp, altitude_temp, ts_temp);
+            past_position_times.add(ppt);
+            past_pos_str.append(ppt.toString());
             past_pos_str.append(System.lineSeparator());
 
 

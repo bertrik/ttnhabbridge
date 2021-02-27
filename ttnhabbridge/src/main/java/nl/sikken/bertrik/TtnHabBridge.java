@@ -13,8 +13,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import nl.sikken.bertrik.hab.DecodeException;
 import nl.sikken.bertrik.hab.EPayloadEncoding;
 import nl.sikken.bertrik.hab.ExpiringCache;
@@ -25,8 +23,8 @@ import nl.sikken.bertrik.hab.habitat.HabitatUploader;
 import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
 import nl.sikken.bertrik.hab.habitat.Location;
 import nl.sikken.bertrik.hab.ttn.TtnListener;
-import nl.sikken.bertrik.hab.ttn.TtnMessage;
-import nl.sikken.bertrik.hab.ttn.TtnMessageGateway;
+import nl.sikken.bertrik.hab.ttn.TtnUplinkMessage;
+import nl.sikken.bertrik.hab.ttn.TtnUplinkMessage.GatewayInfo;
 
 /**
  * Bridge between the-things-network and the habhub network.
@@ -40,7 +38,6 @@ public final class TtnHabBridge {
     private final TtnListener ttnListener;
     private final HabitatUploader habUploader;
     private final PayloadDecoder decoder;
-    private final ObjectMapper mapper;
     private final ExpiringCache gwCache;
 
     /**
@@ -73,7 +70,6 @@ public final class TtnHabBridge {
         IHabitatRestApi restApi = 
                 HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
         this.habUploader = new HabitatUploader(restApi);
-        this.mapper = new ObjectMapper();
         this.decoder = new PayloadDecoder(EPayloadEncoding.parse(config.getTtnPayloadEncoding()));
         this.gwCache = new ExpiringCache(config.getTtnGwCacheExpiry());
     }
@@ -95,15 +91,13 @@ public final class TtnHabBridge {
 
     /**
      * Handles an incoming TTN message
-     * 
-     * @param now message arrival time
-     * @param topic the topic on which the message was received
      * @param textMessage the message contents
+     * @param now message arrival time
      */
-    private void handleTTNMessage(Instant now, String topic, String textMessage) {
+    private void handleTTNMessage(TtnUplinkMessage message) {
+        Instant now = Instant.now();
         try {
             // decode from JSON
-            TtnMessage message = mapper.readValue(textMessage, TtnMessage.class);
             if (message.isRetry()) {
                 // skip "retry" messages, they contain duplicate data with a misleading time stamp
                 LOG.warn("Ignoring 'retry' message");
@@ -114,7 +108,7 @@ public final class TtnHabBridge {
             
             // collect list of listeners 
             List<HabReceiver> receivers = new ArrayList<>();
-            for (TtnMessageGateway gw : message.getMetaData().getMqttGateways()) {
+            for (GatewayInfo gw : message.getGateways()) {
                 String gwName = gw.getId();
                 Location gwLocation = gw.getLocation();
                 HabReceiver receiver = new HabReceiver(gwName, gwLocation);
@@ -128,8 +122,6 @@ public final class TtnHabBridge {
 
             // send payload telemetry data
             habUploader.schedulePayloadTelemetryUpload(line, receivers, now);
-        } catch (IOException e) {
-            LOG.warn("JSON unmarshalling exception '{}' for {}", e.getMessage(), textMessage);
         } catch (DecodeException e) {
             LOG.warn("Payload decoding exception: {}", e.getMessage());
         } catch (Exception e) {

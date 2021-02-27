@@ -26,7 +26,7 @@ public final class TtnMessageTest {
     @Test
     public void testUplink() throws JsonParseException, JsonMappingException, IOException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("uplink_nominal.json");
-        TtnMessage message = mapper.readValue(is, TtnMessage.class);
+        Ttnv2UplinkMessage message = mapper.readValue(is, Ttnv2UplinkMessage.class);
         Assert.assertEquals(false, message.isRetry());
     }
     
@@ -36,7 +36,7 @@ public final class TtnMessageTest {
     @Test
     public void testUplinkWithRetry() throws JsonParseException, JsonMappingException, IOException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("uplink_with_retry.json");
-        TtnMessage message = mapper.readValue(is, TtnMessage.class);
+        Ttnv2UplinkMessage message = mapper.readValue(is, Ttnv2UplinkMessage.class);
         Assert.assertEquals(true, message.isRetry());
     }
     

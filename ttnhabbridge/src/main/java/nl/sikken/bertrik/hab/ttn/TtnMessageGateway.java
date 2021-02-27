@@ -22,13 +22,13 @@ public final class TtnMessageGateway {
     private String time;
     
     @JsonProperty("latitude")
-    private Double latitude;
+    private Double latitude = Double.NaN;
     
     @JsonProperty("longitude")
-    private Double longitude;
+    private Double longitude = Double.NaN;
     
     @JsonProperty("altitude")
-    private Double altitude;
+    private Double altitude = Double.NaN;
 
     private TtnMessageGateway() {
         // jackson constructor

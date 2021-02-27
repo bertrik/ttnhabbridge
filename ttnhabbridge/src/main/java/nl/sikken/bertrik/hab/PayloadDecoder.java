@@ -13,7 +13,7 @@ import nl.sikken.bertrik.cayenne.CayenneException;
 import nl.sikken.bertrik.cayenne.CayenneItem;
 import nl.sikken.bertrik.cayenne.CayenneMessage;
 import nl.sikken.bertrik.cayenne.ECayennePayloadFormat;
-import nl.sikken.bertrik.hab.ttn.TtnMessage;
+import nl.sikken.bertrik.hab.ttn.TtnUplinkMessage;
 
 /**
  * Decodes a payload and encodes it into a UKHAS sentence.
@@ -41,7 +41,7 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException in case of a problem decoding the message
      */
-    public Sentence decode(TtnMessage message) throws DecodeException {
+    public Sentence decode(TtnUplinkMessage message) throws DecodeException {
         // common fields
         String callSign = message.getDevId();
         int counter = message.getCounter();
@@ -74,7 +74,7 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException in case of a problem decoding the message
      */
-    private Sentence decodeSodaqOne(TtnMessage message, String callSign, int counter) throws DecodeException {
+    private Sentence decodeSodaqOne(TtnUplinkMessage message, String callSign, int counter) throws DecodeException {
         LOG.info("Decoding 'sodaqone' message...");
         
         try {
@@ -107,11 +107,11 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException in case of a problem decoding the message
      */
-    private Sentence decodeJson(TtnMessage message, String callSign, int counter) throws DecodeException {
+    private Sentence decodeJson(TtnUplinkMessage message, String callSign, int counter) throws DecodeException {
         LOG.info("Decoding 'json' message...");
     
         try {
-            Instant time = message.getMetaData().getTime();
+            Instant time = message.getTime();
             Map<String, Object> fields = message.getPayloadFields();
             double latitude = parseDouble(fields.get("lat"));
             double longitude = parseDouble(fields.get("lon"));
@@ -154,11 +154,11 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException
      */
-    private Sentence decodeCayenne(TtnMessage message, String callSign, int counter) throws DecodeException {
+    private Sentence decodeCayenne(TtnUplinkMessage message, String callSign, int counter) throws DecodeException {
         LOG.info("Decoding 'cayenne' message...");
         
         try {
-            Instant time = message.getMetaData().getTime();
+            Instant time = message.getTime();
             Sentence sentence = new Sentence(callSign, counter, time);
             ECayennePayloadFormat cayenneFormat = ECayennePayloadFormat.fromPort(message.getPort());
             CayenneMessage cayenne = new CayenneMessage(cayenneFormat);

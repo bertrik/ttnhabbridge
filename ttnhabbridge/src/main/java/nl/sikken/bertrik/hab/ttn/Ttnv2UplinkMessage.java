@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Representation of a message received from the TTN MQTT stream.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class TtnMessage {
+public final class Ttnv2UplinkMessage {
 
     @JsonProperty("app_id")
     private String appId;
@@ -29,29 +29,29 @@ public final class TtnMessage {
 
     @JsonProperty("is_retry")
     private boolean isRetry;
-    
+
     @JsonProperty("payload_raw")
     private byte[] payloadRaw = new byte[0];
 
     @JsonProperty("payload_fields")
     private Map<String, Object> payloadFields = new HashMap<>();
-    
+
     @JsonProperty("metadata")
     private TtnMessageMetaData metaData;
 
-    private TtnMessage() {
-    	// Jackson constructor
+    private Ttnv2UplinkMessage() {
+        // Jackson constructor
     }
-    
+
     // constructor for testing
-    public TtnMessage(String devId, int counter, TtnMessageMetaData metaData, byte[] payloadRaw) {
-    	this();
-    	this.devId = devId;
-    	this.counter = counter;
-    	this.metaData = metaData;
-    	this.payloadRaw = payloadRaw.clone();
+    public Ttnv2UplinkMessage(String devId, int counter, TtnMessageMetaData metaData, byte[] payloadRaw) {
+        this();
+        this.devId = devId;
+        this.counter = counter;
+        this.metaData = metaData;
+        this.payloadRaw = payloadRaw.clone();
     }
-    
+
     public String getAppId() {
         return appId;
     }
@@ -67,7 +67,7 @@ public final class TtnMessage {
     public int getPort() {
         return port;
     }
-    
+
     public boolean isRetry() {
         return isRetry;
     }
@@ -86,6 +86,14 @@ public final class TtnMessage {
 
     public TtnMessageMetaData getMetaData() {
         return metaData;
+    }
+
+    public TtnUplinkMessage toUplinkMessage() {
+        TtnUplinkMessage message = new TtnUplinkMessage(metaData.getTime(), appId, devId, counter, payloadRaw, isRetry);
+        for (TtnMessageGateway gw : metaData.getMqttGateways()) {
+            message.addGateway(gw.getId(), gw.getLatitude(), gw.getLongitude(), gw.getAltitude());
+        }
+        return message;
     }
 
 }

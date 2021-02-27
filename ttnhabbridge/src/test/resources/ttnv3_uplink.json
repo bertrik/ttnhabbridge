@@ -1,0 +1,63 @@
+{
+  "end_device_ids": {
+    "device_id": "v3demo1",
+    "application_ids": {
+      "application_id": "test2id"
+    },
+    "dev_eui": "008000000000A0B6",
+    "join_eui": "0000000000000000",
+    "dev_addr": "260B850F"
+  },
+  "correlation_ids": [
+    "as:up:01EY5RKC5HCVMCVAHPN8EMZQQC",
+    "gs:conn:01EY5NK2FWERHS4M75W8QSANK9",
+    "gs:up:host:01EY5NK2G2MCRVMKG9015JJ0GT",
+    "gs:uplink:01EY5RKBZ1XJJA112CDY5BSQKQ",
+    "ns:uplink:01EY5RKBZ3YRCCCPRQCAY2YQ4Y",
+    "rpc:/ttn.lorawan.v3.GsNs/HandleUplink:01EY5RKBZ2DW9HCP0AZ6XQ1C4V",
+    "rpc:/ttn.lorawan.v3.NsAs/HandleUplink:01EY5RKC5GT79XR6EXRZ4HBYXK"
+  ],
+  "received_at": "2021-02-10T10:43:12.689616958Z",
+  "uplink_message": {
+    "session_key_id": "AXeLWcyXpwXNMEKFxfTSqQ==",
+    "f_port": 1,
+    "f_cnt": 84,
+    "frm_payload": "eyJ0IjoyNC40fQ==",
+    "rx_metadata": [
+      {
+        "gateway_ids": {
+          "gateway_id": "eui-024b08fefe040083",
+          "eui": "E024B08FEFE04008"
+        },
+        "time": "2021-02-10T10:43:12.461088Z",
+        "timestamp": 3157838364,
+        "rssi": -113,
+        "channel_rssi": -113,
+        "snr": -3,
+        "location": {
+          "latitude": 52.00996862975038,
+          "longitude": 4.716007411479951,
+          "source": "SOURCE_REGISTRY"
+        },
+        "uplink_token": "CiIKIAoUZXVpLTAyNGIwOGZlZmUwNDAwODMSCOAksI/v4EAIEJyU4+ELGgwIwPGOgQYQ97bR5QEg4PrV7vNb",
+        "channel_index": 5
+      }
+    ],
+    "settings": {
+      "data_rate": {
+        "lora": {
+          "bandwidth": 125000,
+          "spreading_factor": 7
+        }
+      },
+      "data_rate_index": 5,
+      "coding_rate": "4/5",
+      "frequency": "867500000",
+      "timestamp": 3157838364,
+      "time": "2021-02-10T10:43:12.461088Z"
+    },
+    "received_at": "2021-02-10T10:43:12.483085362Z",
+    "consumed_airtime": "0.061696s"
+  }
+}
+

@@ -22,13 +22,13 @@ public final class TtnMessageGateway {
     private String time;
     
     @JsonProperty("latitude")
-    private Double latitude = Double.NaN;
+    private double latitude = Double.NaN;
     
     @JsonProperty("longitude")
-    private Double longitude = Double.NaN;
+    private double longitude = Double.NaN;
     
     @JsonProperty("altitude")
-    private Double altitude = Double.NaN;
+    private double altitude = Double.NaN;
 
     private TtnMessageGateway() {
         // jackson constructor
@@ -44,7 +44,7 @@ public final class TtnMessageGateway {
      * @param lon the longitude (degrees)
      * @param alt the altitude (meters)
      */
-    public TtnMessageGateway(String id, boolean trusted, String time, Double lat, Double lon, Double alt) {
+    public TtnMessageGateway(String id, boolean trusted, String time, double lat, double lon, double alt) {
         this();
         this.id = id;
         this.trusted = trusted;

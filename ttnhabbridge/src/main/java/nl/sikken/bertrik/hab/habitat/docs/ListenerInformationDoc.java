@@ -36,8 +36,11 @@ public final class ListenerInformationDoc extends ListenerDoc {
         ObjectNode node = factory().objectNode();
         node.set("callsign", factory().textNode(receiver.getCallsign()));
         node.set("radio", factory().textNode("TheThingsNetwork"));
-        String antenna = String.format(Locale.US, "%.0f m", receiver.getLocation().getAlt());
-        node.set("antenna", factory().textNode(antenna));
+        double altitude = receiver.getLocation().getAlt();
+        if (Double.isFinite(altitude)) {
+            String antenna = String.format(Locale.ROOT, "%.0f m", altitude);
+            node.set("antenna", factory().textNode(antenna));
+        }
         return node;
     }
 

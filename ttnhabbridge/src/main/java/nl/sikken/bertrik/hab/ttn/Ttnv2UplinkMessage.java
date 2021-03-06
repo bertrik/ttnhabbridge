@@ -89,7 +89,7 @@ public final class Ttnv2UplinkMessage {
     }
 
     public TtnUplinkMessage toUplinkMessage() {
-        TtnUplinkMessage message = new TtnUplinkMessage(metaData.getTime(), appId, devId, counter, payloadRaw, isRetry);
+        TtnUplinkMessage message = new TtnUplinkMessage(metaData.getTime(), appId, devId, counter, port, payloadRaw, isRetry);
         for (TtnMessageGateway gw : metaData.getMqttGateways()) {
             message.addGateway(gw.getId(), gw.getLatitude(), gw.getLongitude(), gw.getAltitude());
         }

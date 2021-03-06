@@ -42,7 +42,7 @@ public final class PayloadDecoderTest {
         TtnUplinkMessage uplink = message.toUplinkMessage();
 
         // check gateway field
-        Assert.assertEquals(27, message.getMetaData().getMqttGateways().get(0).getAltitude(), 0.1);
+        Assert.assertEquals(27, uplink.getGateways().get(0).getLocation().getAlt(), 0.1);
 
         // decode payload
         PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.SODAQ_ONE);

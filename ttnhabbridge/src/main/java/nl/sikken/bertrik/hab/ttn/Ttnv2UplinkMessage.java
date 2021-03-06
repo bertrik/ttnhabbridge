@@ -1,7 +1,8 @@
 package nl.sikken.bertrik.hab.ttn;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,28 +14,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class Ttnv2UplinkMessage {
 
     @JsonProperty("app_id")
-    private String appId;
+    private String appId = "";
 
     @JsonProperty("dev_id")
-    private String devId;
+    private String devId = "";
 
     @JsonProperty("hardware_serial")
-    private String hardwareSerial;
+    private String hardwareSerial = "";
 
     @JsonProperty("port")
-    private int port;
+    private int port = 0;
 
     @JsonProperty("counter")
-    private int counter;
+    private int counter = 0;
 
     @JsonProperty("is_retry")
-    private boolean isRetry;
+    private boolean isRetry = false;
 
     @JsonProperty("payload_raw")
     private byte[] payloadRaw = new byte[0];
-
-    @JsonProperty("payload_fields")
-    private Map<String, Object> payloadFields = new HashMap<>();
 
     @JsonProperty("metadata")
     private TtnMessageMetaData metaData;
@@ -43,55 +41,41 @@ public final class Ttnv2UplinkMessage {
         // Jackson constructor
     }
 
-    // constructor for testing
-    public Ttnv2UplinkMessage(String devId, int counter, TtnMessageMetaData metaData, byte[] payloadRaw) {
-        this();
-        this.devId = devId;
-        this.counter = counter;
-        this.metaData = metaData;
-        this.payloadRaw = payloadRaw.clone();
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    final static class TtnMessageMetaData {
+
+        @JsonProperty("time")
+        private String time = "";
+
+        @JsonProperty("gateways")
+        private List<TtnMessageGateway> gateways = new ArrayList<>();
+
+        private TtnMessageMetaData() {
+            // empty jackson constructor
+        }
     }
 
-    public String getAppId() {
-        return appId;
-    }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    final static class TtnMessageGateway {
 
-    public String getDevId() {
-        return devId;
-    }
+        @JsonProperty("gtw_id")
+        private String id = "";
 
-    public String getHardwareSerial() {
-        return hardwareSerial;
-    }
+        @JsonProperty("latitude")
+        private double latitude = Double.NaN;
 
-    public int getPort() {
-        return port;
-    }
+        @JsonProperty("longitude")
+        private double longitude = Double.NaN;
 
-    public boolean isRetry() {
-        return isRetry;
-    }
-
-    public int getCounter() {
-        return counter;
-    }
-
-    public byte[] getPayloadRaw() {
-        return payloadRaw.clone();
-    }
-
-    public Map<String, Object> getPayloadFields() {
-        return payloadFields;
-    }
-
-    public TtnMessageMetaData getMetaData() {
-        return metaData;
+        @JsonProperty("altitude")
+        private double altitude = Double.NaN;
     }
 
     public TtnUplinkMessage toUplinkMessage() {
-        TtnUplinkMessage message = new TtnUplinkMessage(metaData.getTime(), appId, devId, counter, port, payloadRaw, isRetry);
-        for (TtnMessageGateway gw : metaData.getMqttGateways()) {
-            message.addGateway(gw.getId(), gw.getLatitude(), gw.getLongitude(), gw.getAltitude());
+        TtnUplinkMessage message = new TtnUplinkMessage(Instant.parse(metaData.time), appId, devId, counter, port,
+                payloadRaw, isRetry);
+        for (TtnMessageGateway gw : metaData.gateways) {
+            message.addGateway(gw.id, gw.latitude, gw.longitude, gw.altitude);
         }
         return message;
     }

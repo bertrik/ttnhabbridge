@@ -36,7 +36,7 @@ public final class TtnListener {
      * @param appId    the user name
      * @param appKey   the password
      */
-    public TtnListener(IMessageReceived callback, String url, String appId, String appKey) {
+    public TtnListener(IMessageReceived callback, String url, ETtnStackVersion version, String appId, String appKey) {
         LOG.info("Creating client for MQTT server '{}' for app '{}'", url, appId);
         try {
             this.mqttClient = new MqttClient(url, MqttClient.generateClientId(), new MemoryPersistence());
@@ -44,7 +44,8 @@ public final class TtnListener {
             throw new IllegalArgumentException(e);
         }
         this.callback = callback;
-        mqttClient.setCallback(new MqttCallbackHandler(mqttClient, "+/devices/+/up", this::handleMessage));
+        mqttClient.setCallback(
+                new MqttCallbackHandler(mqttClient, version.getPrefix() + "+/devices/+/up", this::handleMessage));
 
         // create connect options
         options = new MqttConnectOptions();
@@ -145,7 +146,7 @@ public final class TtnListener {
             try {
                 client.subscribe(topic);
             } catch (MqttException e) {
-                LOG.error("Caught exception while subscribing!");
+                LOG.error("Caught exception while subscribing!", e);
             }
         }
     }

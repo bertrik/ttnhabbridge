@@ -44,7 +44,7 @@ public final class TtnHabBridge {
      * Main application entry point.
      * 
      * @param arguments application arguments (none taken)
-     * @throws IOException in case of a problem reading a config file
+     * @throws IOException   in case of a problem reading a config file
      * @throws MqttException in case of a problem starting MQTT client
      */
     public static void main(String[] arguments) throws IOException, MqttException {
@@ -65,10 +65,9 @@ public final class TtnHabBridge {
      * @param config the application configuration
      */
     private TtnHabBridge(ITtnHabBridgeConfig config) {
-        this.ttnListener = new TtnListener(this::handleTTNMessage, 
-                                           config.getTtnMqttUrl(), config.getTtnAppId(), config.getTtnAppKey());
-        IHabitatRestApi restApi = 
-                HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
+        this.ttnListener = new TtnListener(this::handleTTNMessage, config.getTtnMqttUrl(), config.getTtnStackVersion(),
+                config.getTtnAppId(), config.getTtnAppKey());
+        IHabitatRestApi restApi = HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
         this.habUploader = new HabitatUploader(restApi);
         this.decoder = new PayloadDecoder(EPayloadEncoding.parse(config.getTtnPayloadEncoding()));
         this.gwCache = new ExpiringCache(config.getTtnGwCacheExpiry());
@@ -91,22 +90,24 @@ public final class TtnHabBridge {
 
     /**
      * Handles an incoming TTN message
+     * 
      * @param textMessage the message contents
-     * @param now message arrival time
+     * @param now         message arrival time
      */
     private void handleTTNMessage(TtnUplinkMessage message) {
         Instant now = Instant.now();
         try {
             // decode from JSON
             if (message.isRetry()) {
-                // skip "retry" messages, they contain duplicate data with a misleading time stamp
+                // skip "retry" messages, they contain duplicate data with a misleading time
+                // stamp
                 LOG.warn("Ignoring 'retry' message");
                 return;
             }
             Sentence sentence = decoder.decode(message);
             String line = sentence.format();
-            
-            // collect list of listeners 
+
+            // collect list of listeners
             List<HabReceiver> receivers = new ArrayList<>();
             for (GatewayInfo gw : message.getGateways()) {
                 String gwName = gw.getId();
@@ -114,7 +115,8 @@ public final class TtnHabBridge {
                 HabReceiver receiver = new HabReceiver(gwName, gwLocation);
                 receivers.add(receiver);
 
-                // send listener data only if it has a valid location and hasn't been sent recently
+                // send listener data only if it has a valid location and hasn't been sent
+                // recently
                 if (gwLocation.isValid() && gwCache.add(gwName, now)) {
                     habUploader.scheduleListenerDataUpload(receiver, now);
                 }
@@ -125,8 +127,8 @@ public final class TtnHabBridge {
         } catch (DecodeException e) {
             LOG.warn("Payload decoding exception: {}", e.getMessage());
         } catch (Exception e) {
-        	LOG.trace("Caught unhandled exception", e);
-        	LOG.error("Caught unhandled exception:" + e.getMessage());
+            LOG.trace("Caught unhandled exception", e);
+            LOG.error("Caught unhandled exception:" + e.getMessage());
         }
     }
 
@@ -141,7 +143,7 @@ public final class TtnHabBridge {
         habUploader.stop();
         LOG.info("Stopped TTN HAB bridge application");
     }
-    
+
     /**
      * Handles uncaught exceptions: log it and stop the application.
      * 
@@ -152,7 +154,7 @@ public final class TtnHabBridge {
         LOG.error("Caught unhandled exception, application will be stopped ...", e);
         stop();
     }
-    
+
     private static ITtnHabBridgeConfig readConfig(File file) throws IOException {
         TtnHabBridgeConfig config = new TtnHabBridgeConfig();
         try (FileInputStream fis = new FileInputStream(file)) {

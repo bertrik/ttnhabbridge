@@ -91,8 +91,8 @@ public final class Ttnv3UplinkMessage {
                 endDeviceIds.applicationIds.applicationId, endDeviceIds.deviceId, uplinkMessage.fcnt,
                 uplinkMessage.fport, uplinkMessage.payload, false);
         for (RxMetadata metadata : uplinkMessage.rxMetadata) {
-            String id = metadata.gatewayIds.gatewayId;
-            if (id.isBlank()) {
+            String id = metadata.gatewayIds.gatewayId.trim();
+            if (id.isEmpty()) {
                 id = metadata.gatewayIds.eui;
             }
             uplink.addGateway(id, metadata.location.latitude, metadata.location.longitude, metadata.location.altitude);

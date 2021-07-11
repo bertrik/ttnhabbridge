@@ -16,10 +16,10 @@ final class TtnHabBridgeConfig extends BaseConfig implements ITtnHabBridgeConfig
         HABITAT_URL("habitat.url", "http://habitat.habhub.org", "URL of the habitat server"),
         HABITAT_TIMEOUT_MS("habitat.timeout", "5000", "Timeout in milliseconds"),
 
-        TTN_MQTT_URL("ttn.mqtt.url", "tcp://eu.thethings.network", "URL of the TTN MQTT server"),
-        TTN_VERSION("ttn.version", "V2", "TTN stack version, V2 or V3"),
+        TTN_MQTT_URL("ttn.mqtt.url", "tcp://eu1.cloud.thethings.network", "URL of the TTN MQTT server"),
+        TTN_VERSION("ttn.version", "V3", "TTN stack version, V2 or V3"),
         TTN_APP_ID("ttn.app.id", "habhub", "TTN Application Id (e.g. habhub, ttnmapper, etc.)"),
-        TTN_APP_KEY("ttn.app.key", "ttn-account-v2.Sh49WL90oQz-ZuxoDrS6yKuACL_jtAA0agdDfO_eVj4", "TTN Application key"),
+        TTN_APP_KEY("ttn.app.key", "NNSXS.SIY7VBOR2KTIDBJY7QVTILSORMGIEQ63YNDNBIY.SECRET", "TTN Application key"),
         TTN_GW_CACHE_EXPIRY_SEC("ttn.gwcache.expiry", "600", "Gateway cache expiration time (seconds)"),
         TTN_PAYLOAD_ENCODING("ttn.payload.encoding", "cayenne",
                 "Payload format, allowed values: 'sodaqone','json','cayenne'"),

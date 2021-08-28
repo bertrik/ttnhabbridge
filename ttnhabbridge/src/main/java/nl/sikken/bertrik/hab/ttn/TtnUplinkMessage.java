@@ -2,6 +2,7 @@ package nl.sikken.bertrik.hab.ttn;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public final class TtnUplinkMessage {
 
     public TtnUplinkMessage(Instant time, String appId, String deviceId, int counter, int port, byte[] payloadRaw,
             boolean isRetry) {
-        this.time = time;
+        this.time = Instant.from(time);
         this.appId = appId;
         this.deviceId = deviceId;
         this.counter = counter;
@@ -40,7 +41,7 @@ public final class TtnUplinkMessage {
     }
 
     public Instant getTime() {
-        return time;
+        return Instant.from(time);
     }
 
     public String getAppId() {
@@ -76,7 +77,7 @@ public final class TtnUplinkMessage {
     }
 
     public List<GatewayInfo> getGateways() {
-        return gateways;
+        return Collections.unmodifiableList(gateways);
     }
 
     public static final class GatewayInfo {

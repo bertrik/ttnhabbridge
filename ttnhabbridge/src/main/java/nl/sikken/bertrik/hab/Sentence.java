@@ -1,6 +1,7 @@
 package nl.sikken.bertrik.hab;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,7 +35,7 @@ public final class Sentence {
     public Sentence(String callSign, int id, Instant time) {
         this.callSign = callSign;
         this.id = id;
-        this.time = time;
+        this.time = Instant.from(time);
     }
 
     /**

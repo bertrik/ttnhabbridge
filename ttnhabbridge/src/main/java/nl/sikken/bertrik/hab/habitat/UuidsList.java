@@ -2,6 +2,7 @@ package nl.sikken.bertrik.hab.habitat;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,7 +30,7 @@ public final class UuidsList {
     }
 
     public List<String> getUuids() {
-        return uuids;
+        return Collections.unmodifiableList(uuids);
     }
     
 }

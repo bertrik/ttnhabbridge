@@ -19,7 +19,7 @@ public final class ExpiringCache {
      * @param expiryTime the expiry time
      */
     public ExpiringCache(Duration expiryTime) {
-        this.expiryTime = expiryTime;
+        this.expiryTime = Duration.from(expiryTime);
     }
     
     /**
@@ -42,11 +42,7 @@ public final class ExpiringCache {
      */
     private void cleanUp(Instant now) {
         Instant limit = now.minus(expiryTime);
-        map.forEach((k,v) -> {
-            if (v.isBefore(limit)) {
-                map.remove(k, v);
-            }
-        });
+        map.values().removeIf(v -> v.isBefore(limit));
     }
     
 }

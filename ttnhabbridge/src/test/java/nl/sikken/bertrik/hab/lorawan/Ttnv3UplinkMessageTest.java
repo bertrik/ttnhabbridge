@@ -1,4 +1,4 @@
-package nl.sikken.bertrik.hab.ttn;
+package nl.sikken.bertrik.hab.lorawan;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,9 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import nl.sikken.bertrik.hab.ttn.TtnUplinkMessage.GatewayInfo;
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage;
+import nl.sikken.bertrik.hab.lorawan.Ttnv3UplinkMessage;
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.GatewayInfo;
 
 public final class Ttnv3UplinkMessageTest {
 
@@ -20,7 +22,7 @@ public final class Ttnv3UplinkMessageTest {
         InputStream is = getClass().getClassLoader().getResourceAsStream("ttnv3_uplink.json");
         Ttnv3UplinkMessage message = MAPPER.readValue(is, Ttnv3UplinkMessage.class);
 
-        TtnUplinkMessage uplinkMessage = message.toUplinkMessage();
+        LoraWanUplinkMessage uplinkMessage = message.toUplinkMessage();
         
         Assert.assertEquals("test2id", uplinkMessage.getAppId());
         Assert.assertEquals("v3demo1", uplinkMessage.getDevId());

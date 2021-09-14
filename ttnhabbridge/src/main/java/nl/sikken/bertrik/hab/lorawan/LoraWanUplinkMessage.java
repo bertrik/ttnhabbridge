@@ -1,4 +1,4 @@
-package nl.sikken.bertrik.hab.ttn;
+package nl.sikken.bertrik.hab.lorawan;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import java.util.Map;
 import nl.sikken.bertrik.hab.habitat.Location;
 
 /**
- * Uplink message, TTN stack version independent, containing all information
- * needed to create a habhub sentence
+ * LoRaWAN uplink message, stack independent, containing all information needed
+ * to create a habhub sentence
  */
-public final class TtnUplinkMessage {
+public final class LoraWanUplinkMessage {
 
     private final Instant time;
     private final String appId;
@@ -25,7 +25,7 @@ public final class TtnUplinkMessage {
     private final boolean isRetry;
     private final List<GatewayInfo> gateways = new ArrayList<>();
 
-    public TtnUplinkMessage(Instant time, String appId, String deviceId, int counter, int port, byte[] payloadRaw,
+    public LoraWanUplinkMessage(Instant time, String appId, String deviceId, int counter, int port, byte[] payloadRaw,
             boolean isRetry) {
         this.time = Instant.from(time);
         this.appId = appId;

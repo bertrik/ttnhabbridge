@@ -22,9 +22,9 @@ import nl.sikken.bertrik.hab.habitat.HabReceiver;
 import nl.sikken.bertrik.hab.habitat.HabitatUploader;
 import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
 import nl.sikken.bertrik.hab.habitat.Location;
-import nl.sikken.bertrik.hab.ttn.TtnListener;
-import nl.sikken.bertrik.hab.ttn.TtnUplinkMessage;
-import nl.sikken.bertrik.hab.ttn.TtnUplinkMessage.GatewayInfo;
+import nl.sikken.bertrik.hab.lorawan.MqttListener;
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage;
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.GatewayInfo;
 
 /**
  * Bridge between the-things-network and the habhub network.
@@ -35,7 +35,7 @@ public final class TtnHabBridge {
     private static final Logger LOG = LoggerFactory.getLogger(TtnHabBridge.class);
     private static final String CONFIG_FILE = "ttnhabbridge.properties";
 
-    private final TtnListener ttnListener;
+    private final MqttListener ttnListener;
     private final HabitatUploader habUploader;
     private final PayloadDecoder decoder;
     private final ExpiringCache gwCache;
@@ -65,7 +65,7 @@ public final class TtnHabBridge {
      * @param config the application configuration
      */
     private TtnHabBridge(ITtnHabBridgeConfig config) {
-        this.ttnListener = new TtnListener(this::handleTTNMessage, config.getTtnMqttUrl(), config.getTtnAppId(),
+        this.ttnListener = new MqttListener(this::handleTTNMessage, config.getTtnMqttUrl(), config.getTtnAppId(),
                 config.getTtnAppKey());
         IHabitatRestApi restApi = HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
         this.habUploader = new HabitatUploader(restApi);
@@ -94,7 +94,7 @@ public final class TtnHabBridge {
      * @param textMessage the message contents
      * @param now         message arrival time
      */
-    private void handleTTNMessage(TtnUplinkMessage message) {
+    private void handleTTNMessage(LoraWanUplinkMessage message) {
         Instant now = Instant.now();
         try {
             // decode from JSON

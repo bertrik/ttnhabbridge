@@ -1,4 +1,4 @@
-package nl.sikken.bertrik.hab.ttn;
+package nl.sikken.bertrik.hab.lorawan;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -86,8 +86,8 @@ public final class Ttnv3UplinkMessage {
         private double altitude = Double.NaN;
     }
 
-    public TtnUplinkMessage toUplinkMessage() {
-        TtnUplinkMessage uplink = new TtnUplinkMessage(Instant.parse(receivedAt),
+    public LoraWanUplinkMessage toUplinkMessage() {
+        LoraWanUplinkMessage uplink = new LoraWanUplinkMessage(Instant.parse(receivedAt),
                 endDeviceIds.applicationIds.applicationId, endDeviceIds.deviceId, uplinkMessage.fcnt,
                 uplinkMessage.fport, uplinkMessage.payload, false);
         for (RxMetadata metadata : uplinkMessage.rxMetadata) {

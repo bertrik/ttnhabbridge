@@ -6,7 +6,7 @@ import java.util.Base64;
 import org.junit.Assert;
 import org.junit.Test;
 
-import nl.sikken.bertrik.hab.ttn.TtnUplinkMessage;
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage;
 
 /**
  * Unit tests for PayloadDecoder.
@@ -29,7 +29,7 @@ public final class PayloadDecoderTest {
      */
     @Test
     public void testCayenne2() throws DecodeException {
-        TtnUplinkMessage message = new TtnUplinkMessage(Instant.parse("2020-02-05T22:00:58.930936Z"), "test", "test",
+        LoraWanUplinkMessage message = new LoraWanUplinkMessage(Instant.parse("2020-02-05T22:00:58.930936Z"), "test", "test",
                 123, 1, Base64.getDecoder().decode("AYgH1ecAzV4AC7gCZwArAwIBhg=="), false);
         // decode payload
         PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CAYENNE);

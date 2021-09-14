@@ -1,4 +1,4 @@
-package nl.sikken.bertrik.hab.ttn;
+package nl.sikken.bertrik.hab.lorawan;
 
 import java.nio.charset.StandardCharsets;
 
@@ -16,11 +16,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Listener process for receiving data from the TTN.
+ * Listener process for receiving data from an MQTT server.
  */
-public final class TtnListener {
+public final class MqttListener {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TtnListener.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MqttListener.class);
     private static final long DISCONNECT_TIMEOUT_MS = 3000;
 
     private final IMessageReceived callback;
@@ -36,7 +36,7 @@ public final class TtnListener {
      * @param appId    the user name
      * @param appKey   the password
      */
-    public TtnListener(IMessageReceived callback, String url, String appId, String appKey) {
+    public MqttListener(IMessageReceived callback, String url, String appId, String appKey) {
         LOG.info("Creating client for MQTT server '{}' for app '{}'", url, appId);
         try {
             this.mqttClient = new MqttClient(url, MqttClient.generateClientId(), new MemoryPersistence());
@@ -57,7 +57,7 @@ public final class TtnListener {
     // notify our caller in a thread safe manner
     private void handleMessage(String topic, String payload) {
         try {
-            TtnUplinkMessage uplinkMessage = convertMessage(topic, payload);
+            LoraWanUplinkMessage uplinkMessage = convertMessage(topic, payload);
             callback.messageReceived(uplinkMessage);
         } catch (JsonProcessingException e) {
             LOG.warn("Caught {}", e.getMessage());
@@ -68,7 +68,7 @@ public final class TtnListener {
     }
 
     // package private for testing
-    TtnUplinkMessage convertMessage(String topic, String payload) throws JsonProcessingException {
+    LoraWanUplinkMessage convertMessage(String topic, String payload) throws JsonProcessingException {
         Ttnv3UplinkMessage v3message = objectMapper.readValue(payload, Ttnv3UplinkMessage.class);
         return v3message.toUplinkMessage();
     }

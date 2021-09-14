@@ -13,7 +13,7 @@ import nl.sikken.bertrik.cayenne.CayenneException;
 import nl.sikken.bertrik.cayenne.CayenneItem;
 import nl.sikken.bertrik.cayenne.CayenneMessage;
 import nl.sikken.bertrik.cayenne.ECayennePayloadFormat;
-import nl.sikken.bertrik.hab.ttn.TtnUplinkMessage;
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage;
 
 /**
  * Decodes a payload and encodes it into a UKHAS sentence.
@@ -41,7 +41,7 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException in case of a problem decoding the message
      */
-    public Sentence decode(TtnUplinkMessage message) throws DecodeException {
+    public Sentence decode(LoraWanUplinkMessage message) throws DecodeException {
         // common fields
         String callSign = message.getDevId();
         int counter = message.getCounter();
@@ -74,7 +74,7 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException in case of a problem decoding the message
      */
-    private Sentence decodeSodaqOne(TtnUplinkMessage message, String callSign, int counter) throws DecodeException {
+    private Sentence decodeSodaqOne(LoraWanUplinkMessage message, String callSign, int counter) throws DecodeException {
         LOG.info("Decoding 'sodaqone' message...");
         
         try {
@@ -107,7 +107,7 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException in case of a problem decoding the message
      */
-    private Sentence decodeJson(TtnUplinkMessage message, String callSign, int counter) throws DecodeException {
+    private Sentence decodeJson(LoraWanUplinkMessage message, String callSign, int counter) throws DecodeException {
         LOG.info("Decoding 'json' message...");
     
         try {
@@ -154,7 +154,7 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException
      */
-    private Sentence decodeCayenne(TtnUplinkMessage message, String callSign, int counter) throws DecodeException {
+    private Sentence decodeCayenne(LoraWanUplinkMessage message, String callSign, int counter) throws DecodeException {
         LOG.info("Decoding 'cayenne' message...");
         
         try {

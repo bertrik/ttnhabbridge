@@ -69,13 +69,8 @@ public final class TtnListener {
 
     // package private for testing
     TtnUplinkMessage convertMessage(String topic, String payload) throws JsonProcessingException {
-        if (topic.startsWith("v3/")) {
-            Ttnv3UplinkMessage v3message = objectMapper.readValue(payload, Ttnv3UplinkMessage.class);
-            return v3message.toUplinkMessage();
-        } else {
-            Ttnv2UplinkMessage v2message = objectMapper.readValue(payload, Ttnv2UplinkMessage.class);
-            return v2message.toUplinkMessage();
-        }
+        Ttnv3UplinkMessage v3message = objectMapper.readValue(payload, Ttnv3UplinkMessage.class);
+        return v3message.toUplinkMessage();
     }
 
     /**

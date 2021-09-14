@@ -2,8 +2,6 @@ package nl.sikken.bertrik;
 
 import java.time.Duration;
 
-import nl.sikken.bertrik.hab.ttn.ETtnStackVersion;
-
 /**
  * Configuration interface for the application.
  */
@@ -23,11 +21,6 @@ public interface ITtnHabBridgeConfig {
      * @return the URL of the TTN MQTT server
      */
     String getTtnMqttUrl();
-    
-    /**
-     * @return the version of the TTN stack, either v2 or v3
-     */
-    ETtnStackVersion getTtnStackVersion();
     
     /**
      * @return the application id of the TTN application

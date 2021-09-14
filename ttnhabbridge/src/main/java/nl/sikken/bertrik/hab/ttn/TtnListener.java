@@ -36,7 +36,7 @@ public final class TtnListener {
      * @param appId    the user name
      * @param appKey   the password
      */
-    public TtnListener(IMessageReceived callback, String url, ETtnStackVersion version, String appId, String appKey) {
+    public TtnListener(IMessageReceived callback, String url, String appId, String appKey) {
         LOG.info("Creating client for MQTT server '{}' for app '{}'", url, appId);
         try {
             this.mqttClient = new MqttClient(url, MqttClient.generateClientId(), new MemoryPersistence());
@@ -45,7 +45,7 @@ public final class TtnListener {
         }
         this.callback = callback;
         mqttClient.setCallback(
-                new MqttCallbackHandler(mqttClient, version.getPrefix() + "+/devices/+/up", this::handleMessage));
+                new MqttCallbackHandler(mqttClient, "v3/+/devices/+/up", this::handleMessage));
 
         // create connect options
         options = new MqttConnectOptions();

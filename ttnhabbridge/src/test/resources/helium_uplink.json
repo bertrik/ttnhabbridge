@@ -1,0 +1,35 @@
+{
+  "app_eui": "6081F9D16837130E",
+  "dev_eui": "0004A30B001F21FA",
+  "devaddr": "5A010048",
+  "fcnt": 0,
+  "hotspots": [
+    {
+      "channel": 3,
+      "frequency": 867.0999755859375,
+      "hold_time": 934,
+      "id": "112BYHxn9Z8MJRDpJ67zbd647MGiD5xhAYQdvdq5aNjfZ8C5rkPF",
+      "lat": 52.01744965806703,
+      "long": 4.729875754358667,
+      "name": "melted-quartz-antelope",
+      "reported_at": 1631457565832,
+      "rssi": -120,
+      "snr": -7.5,
+      "spreading": "SF7BW125",
+      "status": "success"
+    }
+  ],
+  "id": "ecace44e-3cd9-46f0-b7ad-9da592534d82",
+  "metadata": {
+    "adr_allowed": true,
+    "cf_list_enabled": false,
+    "multi_buy": 1,
+    "organization_id": "990da1fe-506d-41f5-961a-d774196e4c6f"
+  },
+  "name": "kissmapper",
+  "payload": "Aw==",
+  "payload_size": 1,
+  "port": 1,
+  "reported_at": 1631457565832,
+  "uuid": "a44f811b-cf3c-4bb2-95fc-d5ce59400c29"
+}

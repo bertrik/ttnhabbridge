@@ -1,5 +1,6 @@
 package nl.sikken.bertrik.hab.lorawan;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +12,6 @@ public final class HeliumUplinkMessage {
 
     @JsonProperty("app_eui")
     String appEui = "";
-
-    @JsonProperty("dev_eui")
-    String devEui = "";
-
-    // device address with bytes in reverse order
-    @JsonProperty("devaddr")
-    String devAddr = "";
 
     @JsonProperty("fcnt")
     int fcnt;
@@ -54,6 +48,16 @@ public final class HeliumUplinkMessage {
 
         @JsonProperty("snr")
         double snr;
+    }
+
+    // convert this message to the common LoRaWAN uplink message
+    public LoraWanUplinkMessage toUplinkMessage() {
+        LoraWanUplinkMessage uplink = new LoraWanUplinkMessage(Instant.ofEpochMilli(reportedAt), appEui, name, fcnt,
+                port, payload);
+        for (HotSpot hotSpot : hotSpots) {
+            uplink.addGateway(hotSpot.name.trim(), hotSpot.latitude, hotSpot.longitude, 0.0);
+        }
+        return uplink;
     }
 
 }

@@ -9,8 +9,6 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage;
-import nl.sikken.bertrik.hab.lorawan.Ttnv3UplinkMessage;
 import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.GatewayInfo;
 
 public final class Ttnv3UplinkMessageTest {

@@ -89,7 +89,7 @@ public final class Ttnv3UplinkMessage {
     public LoraWanUplinkMessage toUplinkMessage() {
         LoraWanUplinkMessage uplink = new LoraWanUplinkMessage(Instant.parse(receivedAt),
                 endDeviceIds.applicationIds.applicationId, endDeviceIds.deviceId, uplinkMessage.fcnt,
-                uplinkMessage.fport, uplinkMessage.payload, false);
+                uplinkMessage.fport, uplinkMessage.payload);
         for (RxMetadata metadata : uplinkMessage.rxMetadata) {
             String id = metadata.gatewayIds.gatewayId.trim();
             if (id.isEmpty()) {

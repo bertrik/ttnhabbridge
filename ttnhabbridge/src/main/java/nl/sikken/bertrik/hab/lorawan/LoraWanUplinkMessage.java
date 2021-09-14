@@ -22,18 +22,15 @@ public final class LoraWanUplinkMessage {
     private final int port;
     private final Map<String, Object> payloadFields = new HashMap<>();
     private final byte[] payloadRaw;
-    private final boolean isRetry;
     private final List<GatewayInfo> gateways = new ArrayList<>();
 
-    public LoraWanUplinkMessage(Instant time, String appId, String deviceId, int counter, int port, byte[] payloadRaw,
-            boolean isRetry) {
+    public LoraWanUplinkMessage(Instant time, String appId, String deviceId, int counter, int port, byte[] payloadRaw) {
         this.time = Instant.from(time);
         this.appId = appId;
         this.deviceId = deviceId;
         this.counter = counter;
         this.port = port;
         this.payloadRaw = payloadRaw.clone();
-        this.isRetry = isRetry;
     }
 
     public void addField(String name, Object value) {
@@ -62,10 +59,6 @@ public final class LoraWanUplinkMessage {
 
     public Map<String, Object> getPayloadFields() {
         return new HashMap<>(payloadFields);
-    }
-
-    public boolean isRetry() {
-        return isRetry;
     }
 
     public int getPort() {

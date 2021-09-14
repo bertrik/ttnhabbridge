@@ -97,13 +97,6 @@ public final class TtnHabBridge {
     private void handleTTNMessage(LoraWanUplinkMessage message) {
         Instant now = Instant.now();
         try {
-            // decode from JSON
-            if (message.isRetry()) {
-                // skip "retry" messages, they contain duplicate data with a misleading time
-                // stamp
-                LOG.warn("Ignoring 'retry' message");
-                return;
-            }
             Sentence sentence = decoder.decode(message);
             String line = sentence.format();
 

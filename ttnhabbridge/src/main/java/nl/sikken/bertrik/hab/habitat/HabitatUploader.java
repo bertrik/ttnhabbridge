@@ -44,20 +44,19 @@ public final class HabitatUploader {
     private final IHabitatRestApi restClient;
 
     /**
-     * Creates an actual REST client. Can be used in the constructor.
+     * Creates a new habitat uploader.
      * 
-     * @param url     the URL to connect to
-     * @param timeout the connect and read timeout (ms)
-     * @return a new REST client
+     * @param config the configuration
+     * @return the habitat uploader
      */
-    public static IHabitatRestApi newRestClient(String url, Duration timeout) {
-        // create the REST client
-        LOG.info("Creating new habitat REST client with timeout {} for {}", timeout, url);
+    public static HabitatUploader create(HabitatConfig config) {
+        LOG.info("Creating new habitat REST client with timeout {} for {}", config.getTimeout(), config.getUrl());
+        Duration timeout = Duration.ofSeconds(config.getTimeout());
         OkHttpClient client = new OkHttpClient().newBuilder().callTimeout(timeout).build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(ScalarsConverterFactory.create())
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(config.getUrl()).addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create()).client(client).build();
-
-        return retrofit.create(IHabitatRestApi.class);
+        IHabitatRestApi restClient = retrofit.create(IHabitatRestApi.class);
+        return new HabitatUploader(restClient);
     }
 
     /**
@@ -65,7 +64,7 @@ public final class HabitatUploader {
      * 
      * @param restClient the REST client used for uploading
      */
-    public HabitatUploader(IHabitatRestApi restClient) {
+    HabitatUploader(IHabitatRestApi restClient) {
         try {
             this.sha256 = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {

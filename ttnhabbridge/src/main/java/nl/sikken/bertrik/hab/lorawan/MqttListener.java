@@ -28,6 +28,10 @@ public final class MqttListener {
     private final MqttConnectOptions options;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    public MqttListener(IMessageReceived callback, MqttConfig config) {
+        this(callback, config.getUrl(), config.getUser(), config.getPass(), config.getTopic());
+    }
+
     /**
      * Constructor.
      * 
@@ -35,8 +39,9 @@ public final class MqttListener {
      * @param url      the URL of the MQTT server
      * @param appId    the user name
      * @param appKey   the password
+     * @param topic the MQTT topic
      */
-    public MqttListener(IMessageReceived callback, String url, String appId, String appKey) {
+    public MqttListener(IMessageReceived callback, String url, String appId, String appKey, String topic) {
         LOG.info("Creating client for MQTT server '{}' for app '{}'", url, appId);
         try {
             this.mqttClient = new MqttClient(url, MqttClient.generateClientId(), new MemoryPersistence());
@@ -44,8 +49,7 @@ public final class MqttListener {
             throw new IllegalArgumentException(e);
         }
         this.callback = callback;
-        mqttClient.setCallback(
-                new MqttCallbackHandler(mqttClient, "v3/+/devices/+/up", this::handleMessage));
+        mqttClient.setCallback(new MqttCallbackHandler(mqttClient, topic, this::handleMessage));
 
         // create connect options
         options = new MqttConnectOptions();

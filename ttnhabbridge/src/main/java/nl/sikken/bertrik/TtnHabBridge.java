@@ -2,8 +2,8 @@ package nl.sikken.bertrik;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,9 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import nl.sikken.bertrik.hab.DecodeException;
 import nl.sikken.bertrik.hab.EPayloadEncoding;
 import nl.sikken.bertrik.hab.ExpiringCache;
@@ -20,11 +23,10 @@ import nl.sikken.bertrik.hab.PayloadDecoder;
 import nl.sikken.bertrik.hab.Sentence;
 import nl.sikken.bertrik.hab.habitat.HabReceiver;
 import nl.sikken.bertrik.hab.habitat.HabitatUploader;
-import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
 import nl.sikken.bertrik.hab.habitat.Location;
-import nl.sikken.bertrik.hab.lorawan.MqttListener;
 import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage;
 import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.GatewayInfo;
+import nl.sikken.bertrik.hab.lorawan.MqttListener;
 
 /**
  * Bridge between the-things-network and the habhub network.
@@ -33,7 +35,7 @@ import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.GatewayInfo;
 public final class TtnHabBridge {
 
     private static final Logger LOG = LoggerFactory.getLogger(TtnHabBridge.class);
-    private static final String CONFIG_FILE = "ttnhabbridge.properties";
+    private static final String CONFIG_FILE = "ttnhabbridge.yaml";
 
     private final MqttListener ttnListener;
     private final HabitatUploader habUploader;
@@ -50,7 +52,7 @@ public final class TtnHabBridge {
     public static void main(String[] arguments) throws IOException, MqttException {
         PropertyConfigurator.configure("log4j.properties");
 
-        ITtnHabBridgeConfig config = readConfig(new File(CONFIG_FILE));
+        TtnHabBridgeConfig config = readConfig(new File(CONFIG_FILE));
         TtnHabBridge app = new TtnHabBridge(config);
 
         Thread.setDefaultUncaughtExceptionHandler(app::handleUncaughtException);
@@ -59,18 +61,28 @@ public final class TtnHabBridge {
         Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
     }
 
+    private static TtnHabBridgeConfig readConfig(File file) throws IOException {
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        try (FileInputStream fis = new FileInputStream(file)) {
+            return mapper.readValue(fis, TtnHabBridgeConfig.class);
+        } catch (IOException e) {
+            LOG.warn("Failed to load config {}, writing defaults", file.getAbsoluteFile());
+            TtnHabBridgeConfig config = new TtnHabBridgeConfig();
+            mapper.writeValue(file, config);
+            return config;
+        }
+    }
+    
     /**
      * Constructor.
      * 
      * @param config the application configuration
      */
-    private TtnHabBridge(ITtnHabBridgeConfig config) {
-        this.ttnListener = new MqttListener(this::handleTTNMessage, config.getTtnMqttUrl(), config.getTtnAppId(),
-                config.getTtnAppKey());
-        IHabitatRestApi restApi = HabitatUploader.newRestClient(config.getHabitatUrl(), config.getHabitatTimeout());
-        this.habUploader = new HabitatUploader(restApi);
-        this.decoder = new PayloadDecoder(EPayloadEncoding.parse(config.getTtnPayloadEncoding()));
-        this.gwCache = new ExpiringCache(config.getTtnGwCacheExpiry());
+    private TtnHabBridge(TtnHabBridgeConfig config) {
+        this.ttnListener = new MqttListener(this::handleTTNMessage, config.getTtnConfig());
+        this.habUploader = HabitatUploader.create(config.getHabitatConfig());
+        this.decoder = new PayloadDecoder(EPayloadEncoding.parse(config.getPayloadEncoding()));
+        this.gwCache = new ExpiringCache(Duration.ofSeconds(config.getGwCacheExpirationTime()));
     }
 
     /**
@@ -146,19 +158,6 @@ public final class TtnHabBridge {
     private void handleUncaughtException(Thread t, Throwable e) {
         LOG.error("Caught unhandled exception, application will be stopped ...", e);
         stop();
-    }
-
-    private static ITtnHabBridgeConfig readConfig(File file) throws IOException {
-        TtnHabBridgeConfig config = new TtnHabBridgeConfig();
-        try (FileInputStream fis = new FileInputStream(file)) {
-            config.load(fis);
-        } catch (IOException e) {
-            LOG.warn("Failed to load config {}, writing defaults", file.getAbsoluteFile());
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                config.save(fos);
-            }
-        }
-        return config;
     }
 
 }

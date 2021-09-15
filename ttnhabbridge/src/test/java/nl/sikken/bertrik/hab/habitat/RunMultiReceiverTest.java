@@ -1,6 +1,5 @@
 package nl.sikken.bertrik.hab.habitat;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 
@@ -14,9 +13,8 @@ public final class RunMultiReceiverTest {
     }
 
     private void run() {
-        String url = "http://habitat.habhub.org";
-        Duration timeout = Duration.ofSeconds(30);
-        HabitatUploader uploader = new HabitatUploader(HabitatUploader.newRestClient(url, timeout));
+        HabitatConfig config = new HabitatConfig("http://habitat.habhub.org", 30);
+        HabitatUploader uploader = HabitatUploader.create(config);
         uploader.start();
         try {
             Instant now = Instant.now();

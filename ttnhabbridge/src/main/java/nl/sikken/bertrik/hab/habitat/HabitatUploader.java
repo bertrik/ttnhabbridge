@@ -79,8 +79,6 @@ public final class HabitatUploader {
      */
     public void start() {
         LOG.info("Starting habitat uploader");
-
-        LOG.info("Started habitat uploader");
     }
 
     /**
@@ -89,7 +87,6 @@ public final class HabitatUploader {
     public void stop() {
         LOG.info("Stopping habitat uploader");
         executor.shutdown();
-        LOG.info("Stopped habitat uploader");
     }
 
     /**

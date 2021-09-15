@@ -7,6 +7,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.ILoraWanUplink;
+
 /**
  * Representation of the TTNv3 uplink message.<br>
  * <br>
@@ -14,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * All sub-structures are contained in this file too.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Ttnv3UplinkMessage {
+public final class Ttnv3UplinkMessage implements ILoraWanUplink {
 
     @JsonProperty("end_device_ids")
     EndDeviceIds endDeviceIds = new EndDeviceIds();
@@ -86,8 +88,9 @@ public final class Ttnv3UplinkMessage {
         private double altitude = Double.NaN;
     }
 
-    public LoraWanUplinkMessage toUplinkMessage() {
-        LoraWanUplinkMessage uplink = new LoraWanUplinkMessage(Instant.parse(receivedAt),
+    @Override
+    public LoraWanUplinkMessage toLoraWanUplinkMessage() {
+        LoraWanUplinkMessage uplink = new LoraWanUplinkMessage("TheThingsNetwork", Instant.parse(receivedAt),
                 endDeviceIds.applicationIds.applicationId, endDeviceIds.deviceId, uplinkMessage.fcnt,
                 uplinkMessage.fport, uplinkMessage.payload);
         for (RxMetadata metadata : uplinkMessage.rxMetadata) {

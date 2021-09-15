@@ -20,7 +20,7 @@ public final class Ttnv3UplinkMessageTest {
         InputStream is = getClass().getClassLoader().getResourceAsStream("ttnv3_uplink.json");
         Ttnv3UplinkMessage message = MAPPER.readValue(is, Ttnv3UplinkMessage.class);
 
-        LoraWanUplinkMessage uplinkMessage = message.toUplinkMessage();
+        LoraWanUplinkMessage uplinkMessage = message.toLoraWanUplinkMessage();
         
         Assert.assertEquals("test2id", uplinkMessage.getAppId());
         Assert.assertEquals("v3demo1", uplinkMessage.getDevId());

@@ -15,6 +15,7 @@ import nl.sikken.bertrik.hab.habitat.Location;
  */
 public final class LoraWanUplinkMessage {
 
+    private final String network;
     private final Instant time;
     private final String appId;
     private final String deviceId;
@@ -24,7 +25,8 @@ public final class LoraWanUplinkMessage {
     private final byte[] payloadRaw;
     private final List<GatewayInfo> gateways = new ArrayList<>();
 
-    public LoraWanUplinkMessage(Instant time, String appId, String deviceId, int fcnt, int port, byte[] payloadRaw) {
+    public LoraWanUplinkMessage(String network, Instant time, String appId, String deviceId, int fcnt, int port, byte[] payloadRaw) {
+        this.network = network;
         this.time = Instant.from(time);
         this.appId = appId;
         this.deviceId = deviceId;
@@ -37,6 +39,10 @@ public final class LoraWanUplinkMessage {
         payloadFields.put(name, value);
     }
 
+    public String getNetwork() {
+        return network;
+    }
+    
     public Instant getTime() {
         return Instant.from(time);
     }
@@ -93,4 +99,9 @@ public final class LoraWanUplinkMessage {
 
     }
 
+    // interface for messages that can convert themselves to a LoraWanUplinkMessage
+    public interface ILoraWanUplink {
+        LoraWanUplinkMessage toLoraWanUplinkMessage();
+    }
+    
 }

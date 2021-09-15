@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.ILoraWanUplink;
+
 /**
  * Listener process for receiving data from an MQTT server.
  */
@@ -24,44 +27,44 @@ public final class MqttListener {
     private static final long DISCONNECT_TIMEOUT_MS = 3000;
 
     private final IMessageReceived callback;
+    private final Class<? extends ILoraWanUplink> clazz;
+
     private final MqttClient mqttClient;
     private final MqttConnectOptions options;
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    public MqttListener(IMessageReceived callback, MqttConfig config) {
-        this(callback, config.getUrl(), config.getUser(), config.getPass(), config.getTopic());
-    }
 
     /**
      * Constructor.
      * 
      * @param callback the listener for a received message.
-     * @param url      the URL of the MQTT server
-     * @param appId    the user name
-     * @param appKey   the password
-     * @param topic the MQTT topic
+     * @param config the MQTT configuration
+     * @param clazz the JSON class sent over MQTT
      */
-    public MqttListener(IMessageReceived callback, String url, String appId, String appKey, String topic) {
-        LOG.info("Creating client for MQTT server '{}' for app '{}'", url, appId);
+    @SuppressFBWarnings({"EI_EXPOSE_REP2"})
+    public MqttListener(IMessageReceived callback, MqttConfig config, Class<? extends ILoraWanUplink> clazz) {
+        LOG.info("Creating client for MQTT server '{}' for app '{}'", config.getUrl(), config.getUser());
         try {
-            this.mqttClient = new MqttClient(url, MqttClient.generateClientId(), new MemoryPersistence());
+            this.mqttClient = new MqttClient(config.getUrl(), MqttClient.generateClientId(), new MemoryPersistence());
         } catch (MqttException e) {
             throw new IllegalArgumentException(e);
         }
         this.callback = callback;
-        mqttClient.setCallback(new MqttCallbackHandler(mqttClient, topic, this::handleMessage));
+        this.clazz = clazz;
+        
+        mqttClient.setCallback(new MqttCallbackHandler(mqttClient, config.getTopic(), this::handleMessage));
 
         // create connect options
         options = new MqttConnectOptions();
-        options.setUserName(appId);
-        options.setPassword(appKey.toCharArray());
+        options.setUserName(config.getUser());
+        options.setPassword(config.getPass().toCharArray());
         options.setAutomaticReconnect(true);
     }
 
     // notify our caller in a thread safe manner
     private void handleMessage(String topic, String payload) {
         try {
-            LoraWanUplinkMessage uplinkMessage = convertMessage(topic, payload);
+            ILoraWanUplink uplink = objectMapper.readValue(payload, clazz);
+            LoraWanUplinkMessage uplinkMessage = uplink.toLoraWanUplinkMessage();
             callback.messageReceived(uplinkMessage);
         } catch (JsonProcessingException e) {
             LOG.warn("Caught {}", e.getMessage());
@@ -71,21 +74,13 @@ public final class MqttListener {
         }
     }
 
-    // package private for testing
-    LoraWanUplinkMessage convertMessage(String topic, String payload) throws JsonProcessingException {
-        Ttnv3UplinkMessage v3message = objectMapper.readValue(payload, Ttnv3UplinkMessage.class);
-        return v3message.toUplinkMessage();
-    }
-
     /**
      * Starts this module.
      * 
      * @throws MqttException in case something went wrong with MQTT
      */
     public void start() throws MqttException {
-        LOG.info("Starting MQTT listener");
-
-        LOG.info("Connecting to MQTT server");
+        LOG.info("Starting MQTT listener {}", mqttClient.getServerURI());
         mqttClient.connect(options);
     }
 

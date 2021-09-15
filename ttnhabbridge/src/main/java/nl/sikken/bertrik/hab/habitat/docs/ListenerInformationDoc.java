@@ -35,7 +35,7 @@ public final class ListenerInformationDoc extends ListenerDoc {
     protected JsonNode createDataNode() {
         ObjectNode node = factory().objectNode();
         node.set("callsign", factory().textNode(receiver.getCallsign()));
-        node.set("radio", factory().textNode("TheThingsNetwork"));
+        node.set("radio", factory().textNode(receiver.getNetwork()));
         double altitude = receiver.getLocation().getAlt();
         if (Double.isFinite(altitude)) {
             String antenna = String.format(Locale.ROOT, "%.0f m", altitude);

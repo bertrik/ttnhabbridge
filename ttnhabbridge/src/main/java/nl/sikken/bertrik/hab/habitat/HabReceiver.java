@@ -7,6 +7,7 @@ public final class HabReceiver {
     
     private final String callSign;
     private final Location location;
+    private final String network;
     
     /**
      * Constructor.
@@ -15,8 +16,13 @@ public final class HabReceiver {
      * @param location the location
      */
     public HabReceiver(String callSign, Location location) {
+        this(callSign, location, "LoRaWAN");
+    }
+
+    public HabReceiver(String callSign, Location location, String network) {
         this.callSign = callSign;
         this.location = location;
+        this.network = network;
     }
     
     public String getCallsign() {
@@ -25,6 +31,10 @@ public final class HabReceiver {
 
     public Location getLocation() {
         return location;
+    }
+    
+    public String getNetwork() {
+        return network;
     }
 
     @Override

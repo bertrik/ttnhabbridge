@@ -7,8 +7,10 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.ILoraWanUplink;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class HeliumUplinkMessage {
+public final class HeliumUplinkMessage implements ILoraWanUplink {
 
     @JsonProperty("app_eui")
     String appEui = "";
@@ -50,10 +52,10 @@ public final class HeliumUplinkMessage {
         double snr;
     }
 
-    // convert this message to the common LoRaWAN uplink message
-    public LoraWanUplinkMessage toUplinkMessage() {
-        LoraWanUplinkMessage uplink = new LoraWanUplinkMessage(Instant.ofEpochMilli(reportedAt), appEui, name, fcnt,
-                port, payload);
+    @Override
+    public LoraWanUplinkMessage toLoraWanUplinkMessage() {
+        LoraWanUplinkMessage uplink = new LoraWanUplinkMessage("Helium", Instant.ofEpochMilli(reportedAt), appEui, name,
+                fcnt, port, payload);
         for (HotSpot hotSpot : hotSpots) {
             uplink.addGateway(hotSpot.name.trim(), hotSpot.latitude, hotSpot.longitude, Double.NaN);
         }

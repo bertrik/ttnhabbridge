@@ -24,9 +24,11 @@ import nl.sikken.bertrik.hab.Sentence;
 import nl.sikken.bertrik.hab.habitat.HabReceiver;
 import nl.sikken.bertrik.hab.habitat.HabitatUploader;
 import nl.sikken.bertrik.hab.habitat.Location;
+import nl.sikken.bertrik.hab.lorawan.HeliumUplinkMessage;
 import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage;
 import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.GatewayInfo;
 import nl.sikken.bertrik.hab.lorawan.MqttListener;
+import nl.sikken.bertrik.hab.lorawan.Ttnv3UplinkMessage;
 
 /**
  * Bridge between the-things-network and the habhub network.
@@ -37,7 +39,7 @@ public final class TtnHabBridge {
     private static final Logger LOG = LoggerFactory.getLogger(TtnHabBridge.class);
     private static final String CONFIG_FILE = "ttnhabbridge.yaml";
 
-    private final MqttListener ttnListener;
+    private final List<MqttListener> mqttListeners = new ArrayList<>();
     private final HabitatUploader habUploader;
     private final PayloadDecoder decoder;
     private final ExpiringCache gwCache;
@@ -72,14 +74,21 @@ public final class TtnHabBridge {
             return config;
         }
     }
-    
+
     /**
      * Constructor.
      * 
      * @param config the application configuration
      */
     private TtnHabBridge(TtnHabBridgeConfig config) {
-        this.ttnListener = new MqttListener(this::handleTTNMessage, config.getTtnConfig());
+        if (!config.getTtnConfig().getUrl().isEmpty()) {
+            this.mqttListeners
+                    .add(new MqttListener(this::handleMessage, config.getTtnConfig(), Ttnv3UplinkMessage.class));
+        }
+        if (!config.getHeliumConfig().getUrl().isEmpty()) {
+            this.mqttListeners
+                    .add(new MqttListener(this::handleMessage, config.getHeliumConfig(), HeliumUplinkMessage.class));
+        }
         this.habUploader = HabitatUploader.create(config.getHabitatConfig());
         this.decoder = new PayloadDecoder(EPayloadEncoding.parse(config.getPayloadEncoding()));
         this.gwCache = new ExpiringCache(Duration.ofSeconds(config.getGwCacheExpirationTime()));
@@ -95,18 +104,17 @@ public final class TtnHabBridge {
 
         // start sub-modules
         habUploader.start();
-        ttnListener.start();
+        for (MqttListener listener : mqttListeners) {
+            listener.start();
+        }
 
         LOG.info("Started TTN-HAB bridge application");
     }
 
     /**
-     * Handles an incoming TTN message
-     * 
-     * @param textMessage the message contents
-     * @param now         message arrival time
+     * Handles an incoming LoRaWAN message
      */
-    private void handleTTNMessage(LoraWanUplinkMessage message) {
+    private void handleMessage(LoraWanUplinkMessage message) {
         Instant now = Instant.now();
         try {
             Sentence sentence = decoder.decode(message);
@@ -117,7 +125,7 @@ public final class TtnHabBridge {
             for (GatewayInfo gw : message.getGateways()) {
                 String gwName = gw.getId();
                 Location gwLocation = gw.getLocation();
-                HabReceiver receiver = new HabReceiver(gwName, gwLocation);
+                HabReceiver receiver = new HabReceiver(gwName, gwLocation, message.getNetwork());
                 receivers.add(receiver);
 
                 // send listener data only if it has a valid location and hasn't been sent
@@ -144,7 +152,9 @@ public final class TtnHabBridge {
      */
     private void stop() {
         LOG.info("Stopping TTN HAB bridge application");
-        ttnListener.stop();
+        for (MqttListener listener : mqttListeners) {
+            listener.stop();
+        }
         habUploader.stop();
         LOG.info("Stopped TTN HAB bridge application");
     }

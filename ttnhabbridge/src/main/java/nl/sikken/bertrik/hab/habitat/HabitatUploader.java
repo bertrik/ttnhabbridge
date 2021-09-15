@@ -112,7 +112,7 @@ public final class HabitatUploader {
             String json = doc.format();
 
             // submit it to our processing thread
-            executor.submit(() -> uploadPayloadTelemetry(docId, json));
+            executor.execute(() -> uploadPayloadTelemetry(docId, json));
         }
     }
 
@@ -158,7 +158,7 @@ public final class HabitatUploader {
      * @param instant  the current date/time
      */
     public void scheduleListenerDataUpload(HabReceiver receiver, Instant instant) {
-        executor.submit(() -> uploadListener(receiver, instant));
+        executor.execute(() -> uploadListener(receiver, instant));
     }
 
     /**

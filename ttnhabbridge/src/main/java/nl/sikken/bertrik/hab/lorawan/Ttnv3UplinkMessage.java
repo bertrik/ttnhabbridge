@@ -31,14 +31,6 @@ public final class Ttnv3UplinkMessage implements ILoraWanUplink {
     final static class EndDeviceIds {
         @JsonProperty("device_id")
         String deviceId = "";
-
-        @JsonProperty("application_ids")
-        ApplicationIds applicationIds = new ApplicationIds();
-    }
-
-    final static class ApplicationIds {
-        @JsonProperty("application_id")
-        String applicationId = "";
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

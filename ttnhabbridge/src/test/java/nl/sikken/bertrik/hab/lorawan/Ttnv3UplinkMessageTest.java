@@ -22,7 +22,6 @@ public final class Ttnv3UplinkMessageTest {
 
         LoraWanUplinkMessage uplinkMessage = message.toLoraWanUplinkMessage();
         
-        Assert.assertEquals("test2id", uplinkMessage.getAppId());
         Assert.assertEquals("v3demo1", uplinkMessage.getDevId());
         Assert.assertEquals(1, uplinkMessage.getPort());
         Assert.assertEquals(84, uplinkMessage.getFcnt());

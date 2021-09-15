@@ -17,7 +17,6 @@ public final class LoraWanUplinkMessage {
 
     private final String network;
     private final Instant time;
-    private final String appId;
     private final String deviceId;
     private final int fcnt;
     private final int port;
@@ -25,10 +24,9 @@ public final class LoraWanUplinkMessage {
     private final byte[] payloadRaw;
     private final List<GatewayInfo> gateways = new ArrayList<>();
 
-    public LoraWanUplinkMessage(String network, Instant time, String appId, String deviceId, int fcnt, int port, byte[] payloadRaw) {
+    public LoraWanUplinkMessage(String network, Instant time, String deviceId, int fcnt, int port, byte[] payloadRaw) {
         this.network = network;
         this.time = Instant.from(time);
-        this.appId = appId;
         this.deviceId = deviceId;
         this.fcnt = fcnt;
         this.port = port;
@@ -45,10 +43,6 @@ public final class LoraWanUplinkMessage {
     
     public Instant getTime() {
         return Instant.from(time);
-    }
-
-    public String getAppId() {
-        return appId;
     }
 
     public String getDevId() {

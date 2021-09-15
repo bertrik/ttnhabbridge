@@ -25,7 +25,6 @@ public final class HeliumUplinkMessageTest {
         }
         Assert.assertNotNull(helium);
 
-        Assert.assertEquals("6081F9D16837130E", helium.appEui);
         Assert.assertEquals(0, helium.fcnt);
         Assert.assertEquals("kissmapper", helium.name);
         Assert.assertEquals(1, helium.port);
@@ -42,7 +41,6 @@ public final class HeliumUplinkMessageTest {
         // decode to LoRaWAN message
         LoraWanUplinkMessage lorawan = helium.toLoraWanUplinkMessage();
         Assert.assertEquals(Instant.parse("2021-09-12T14:39:25.832Z"), lorawan.getTime());
-        Assert.assertEquals("6081F9D16837130E", lorawan.getAppId());
         Assert.assertEquals("kissmapper", lorawan.getDevId());
         Assert.assertEquals(0, lorawan.getFcnt());
         Assert.assertEquals(1, lorawan.getPort());

@@ -91,8 +91,8 @@ public final class Ttnv3UplinkMessage implements ILoraWanUplink {
     @Override
     public LoraWanUplinkMessage toLoraWanUplinkMessage() {
         LoraWanUplinkMessage uplink = new LoraWanUplinkMessage("TheThingsNetwork", Instant.parse(receivedAt),
-                endDeviceIds.applicationIds.applicationId, endDeviceIds.deviceId, uplinkMessage.fcnt,
-                uplinkMessage.fport, uplinkMessage.payload);
+                endDeviceIds.deviceId, uplinkMessage.fcnt, uplinkMessage.fport,
+                uplinkMessage.payload);
         for (RxMetadata metadata : uplinkMessage.rxMetadata) {
             String id = metadata.gatewayIds.gatewayId.trim();
             if (id.isEmpty()) {

@@ -12,9 +12,6 @@ import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.ILoraWanUplink;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class HeliumUplinkMessage implements ILoraWanUplink {
 
-    @JsonProperty("app_eui")
-    String appEui = "";
-
     @JsonProperty("fcnt")
     int fcnt;
 
@@ -54,8 +51,8 @@ public final class HeliumUplinkMessage implements ILoraWanUplink {
 
     @Override
     public LoraWanUplinkMessage toLoraWanUplinkMessage() {
-        LoraWanUplinkMessage uplink = new LoraWanUplinkMessage("Helium", Instant.ofEpochMilli(reportedAt), appEui, name,
-                fcnt, port, payload);
+        LoraWanUplinkMessage uplink = new LoraWanUplinkMessage("Helium", Instant.ofEpochMilli(reportedAt), name, fcnt,
+                port, payload);
         for (HotSpot hotSpot : hotSpots) {
             uplink.addGateway(hotSpot.name.trim(), hotSpot.latitude, hotSpot.longitude, Double.NaN);
         }

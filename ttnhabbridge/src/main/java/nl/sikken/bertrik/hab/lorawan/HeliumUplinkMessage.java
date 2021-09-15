@@ -55,7 +55,7 @@ public final class HeliumUplinkMessage {
         LoraWanUplinkMessage uplink = new LoraWanUplinkMessage(Instant.ofEpochMilli(reportedAt), appEui, name, fcnt,
                 port, payload);
         for (HotSpot hotSpot : hotSpots) {
-            uplink.addGateway(hotSpot.name.trim(), hotSpot.latitude, hotSpot.longitude, 0.0);
+            uplink.addGateway(hotSpot.name.trim(), hotSpot.latitude, hotSpot.longitude, Double.NaN);
         }
         return uplink;
     }

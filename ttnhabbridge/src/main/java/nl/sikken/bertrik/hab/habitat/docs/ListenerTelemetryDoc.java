@@ -33,7 +33,9 @@ public final class ListenerTelemetryDoc extends ListenerDoc {
         node.set("callsign", factory().textNode(receiver.getCallsign()));
         node.set("latitude", factory().numberNode(receiver.getLocation().getLat()));
         node.set("longitude", factory().numberNode(receiver.getLocation().getLon()));
-        node.set("altitude", factory().numberNode(receiver.getLocation().getAlt()));
+        if (Double.isFinite(receiver.getLocation().getAlt())) {
+            node.set("altitude", factory().numberNode(receiver.getLocation().getAlt()));
+        }
         return node;
     }
 

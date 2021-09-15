@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import nl.sikken.bertrik.hab.lorawan.HeliumUplinkMessage.HotSpot;
+import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.GatewayInfo;
 
 public final class HeliumUplinkMessageTest {
 
@@ -46,6 +47,10 @@ public final class HeliumUplinkMessageTest {
         Assert.assertEquals(0, lorawan.getFcnt());
         Assert.assertEquals(1, lorawan.getPort());
         Assert.assertArrayEquals(new byte[] {3}, lorawan.getPayloadRaw());
+        GatewayInfo gw = lorawan.getGateways().get(0);
+        Assert.assertEquals(52.01745, gw.getLocation().getLat(), 0.00001);
+        Assert.assertEquals(4.729876, gw.getLocation().getLon(), 0.00001);
+        Assert.assertFalse(Double.isFinite(gw.getLocation().getAlt()));
     }
 
 }

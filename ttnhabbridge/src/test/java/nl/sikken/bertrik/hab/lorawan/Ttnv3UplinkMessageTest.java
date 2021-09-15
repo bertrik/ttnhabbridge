@@ -25,7 +25,7 @@ public final class Ttnv3UplinkMessageTest {
         Assert.assertEquals("test2id", uplinkMessage.getAppId());
         Assert.assertEquals("v3demo1", uplinkMessage.getDevId());
         Assert.assertEquals(1, uplinkMessage.getPort());
-        Assert.assertEquals(84, uplinkMessage.getCounter());
+        Assert.assertEquals(84, uplinkMessage.getFcnt());
         
         List<GatewayInfo> gateways = uplinkMessage.getGateways();
         GatewayInfo gw = gateways.get(0);

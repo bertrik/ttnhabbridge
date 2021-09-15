@@ -18,17 +18,17 @@ public final class LoraWanUplinkMessage {
     private final Instant time;
     private final String appId;
     private final String deviceId;
-    private final int counter;
+    private final int fcnt;
     private final int port;
     private final Map<String, Object> payloadFields = new HashMap<>();
     private final byte[] payloadRaw;
     private final List<GatewayInfo> gateways = new ArrayList<>();
 
-    public LoraWanUplinkMessage(Instant time, String appId, String deviceId, int counter, int port, byte[] payloadRaw) {
+    public LoraWanUplinkMessage(Instant time, String appId, String deviceId, int fcnt, int port, byte[] payloadRaw) {
         this.time = Instant.from(time);
         this.appId = appId;
         this.deviceId = deviceId;
-        this.counter = counter;
+        this.fcnt = fcnt;
         this.port = port;
         this.payloadRaw = payloadRaw.clone();
     }
@@ -49,8 +49,8 @@ public final class LoraWanUplinkMessage {
         return deviceId;
     }
 
-    public int getCounter() {
-        return counter;
+    public int getFcnt() {
+        return fcnt;
     }
 
     public byte[] getPayloadRaw() {

@@ -44,7 +44,7 @@ public final class PayloadDecoder {
     public Sentence decode(LoraWanUplinkMessage message) throws DecodeException {
         // common fields
         String callSign = message.getDevId();
-        int counter = message.getCounter();
+        int counter = message.getFcnt();
 
         // specific fields
         Sentence sentence;

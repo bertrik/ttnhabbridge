@@ -23,12 +23,12 @@ Steps to update source code from github:
 * in the top-level 'ttnhabbridge' directory, enter 'git pull'
 
 Steps to create the executable package:
-* enter the 'gradle' directory, then type './gradlew assemble' (or just 'gradlew assemble' on Windows)
-* the .tar (for Linux) or .zip (for Windows) file can be found under ttnhabbridge/build/distributions
+* in the root directory of the project,  type './gradlew assemble' (or just 'gradlew assemble' on Windows)
+* the .tar (for Linux) and .zip (for Windows) file can be found under ttnhabbridge/build/distributions
 
 # Deployment
 Steps to deploy the application:
 * unzip the .zip or .tar file
 * cd into the application directory
-* start the .bat or .sh file
+* start the .bat or .sh file, if no .yaml configuration file exists, a default one is generated
 * edit and install the systemd service file, if desired (instructions inside the .service file)

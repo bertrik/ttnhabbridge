@@ -1,6 +1,6 @@
 plugins {
-  id 'com.github.spotbugs' version '4.7.3'
-  id 'com.github.ben-manes.versions' version '0.39.0'
+  id 'com.github.spotbugs' version '5.0.5'
+  id 'com.github.ben-manes.versions' version '0.41.0'
 }
 
 def isNonStable = { String version ->
@@ -37,9 +37,9 @@ subprojects {
     // Standard libraries added to all projects
     dependencies {
         testImplementation libraries.junit
-	    testImplementation libraries.mockito
+        testImplementation libraries.mockito
 
-	    implementation libraries.slf4jlog4j
+        implementation libraries.slf4jlog4j
         implementation libraries.slf4j
     }
 

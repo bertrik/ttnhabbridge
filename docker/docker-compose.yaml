@@ -1,0 +1,11 @@
+version: "3"
+services:
+  java:
+    build: ..
+    image: ghcr.io/bertrik/ttnhabbridge
+    restart: always
+    volumes:
+      - "./ttnhabbridge.yaml:/opt/ttnhabbridge/ttnhabbridge.yaml:ro"
+      - "./log4j.properties:/opt/ttnhabbridge/log4j.properties:ro"
+      - "./log:/opt/ttnhabbridge/log:rw"
+

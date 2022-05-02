@@ -35,7 +35,7 @@ Steps to deploy the application:
 
 # Usage with Helium Network
 
-The key difference between using The Things Network and the Helium Network MQTT intergration is The Things Network hosts their  packet broker, while the helium network does not. Therefore, we have to setup our own packet broker, and get Helium to and TTNhabbridge to connect to it. Here a few steps on how to do it.
+The key difference between using The Things Network and the Helium Network MQTT intergration is The Things Network hosts their  packet broker, while the helium network does not. Therefore, we have to setup our own packet broker, and get Helium to and TTNhabbridge to connect to it. I have here a few steps on how to do it.
 
 1. Setup a MQTT packet broker on machine with port 1883 open to the internet. Docker is the simplest way to do it. Run the following command, changing the `<username>` and `<secret_password>` password fields to something secret : 
 ```
@@ -64,8 +64,7 @@ docker run \
 thethingsnetwork:
   url: "tcp://eu1.cloud.thethings.network"
   user: "icss-lora-tracker@ttn"
-  pass: "NNSXS.JDUJCMUYUNDVP
-  OZ53TN6GBTT2P74NBH5FZXYXQ.OCWSRRQ4E46M5OMNATY35GJ6lkaBH6MOWZ5QFP32DMLP823S6M2A"
+  pass: "NNSXS.JDUJCMUYUNDVPIOZ53TN6GBTT2P74NBH5FZXYXQ.OCWSRRQ4E46M5OMNATY35GJ6lkaBH6MOWZ5QFP32DMLP823S6M2A"
   topic: "v3/+/devices/+/up"
 helium:
   url: "tcp://beta.medadnewman.co.uk:1887"

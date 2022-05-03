@@ -55,7 +55,13 @@ docker run \
 3. Next in your integrations tab, make a new MQTT integration. Your endpoint address should be in the format ` mqtt://<username>:<secret_password>@your-ip-or-domain.com:1883`. Your  `<username>` and `<secret_password>` fields should be the same as the ones your set in step 1.
 ![image](https://user-images.githubusercontent.com/26815217/141028244-318307c4-d5bd-436d-ae7e-e7f85bc784db.png)
 
-4. Next, head over to the `flows` tab and connect the label box with the mqtt integrations box. You should immediately see some data appearing on your MQTT packet broker log. This will be log data from Helium servers connecting with your packet broker.
+4. Next, head over to the `flows` tab and connect the label box with the mqtt integrations box. You should immediately see some data appearing on your MQTT packet broker log. This will be log data from Helium servers connecting with your packet broker. The log entries would look like this:
+
+```
+mosquitto_1     | 1650374268: New connection from 52.8.80.146 on port 1883.
+mosquitto_1     | 1650374268: New client connected from 52.8.80.146 as 8fda71a3-be09-44b0-b3b0-611fb5a54de2 (p2, c0, k30, u'medad').
+```
+
 ![image](https://user-images.githubusercontent.com/26815217/141028680-b7133ea2-2627-4da0-9fd8-98f57c224d4e.png)
 
 5. Finally, update the `ttnhabbridge.yaml` with your MQTT packet broker's address and credentials.  Helium will publish incoming messages to your MQTT broker. TTNhabbridge will subscribe to your broker, repackage messages and post it on Habhub. An example `ttnhabridge.yaml` file looks like this:

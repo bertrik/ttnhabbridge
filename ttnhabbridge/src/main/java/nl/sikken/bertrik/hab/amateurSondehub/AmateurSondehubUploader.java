@@ -120,7 +120,7 @@ public final class AmateurSondehubUploader {
     private void uploadPayloadTelemetry(String json) {
         LOG.info("Upload payload telemetry: {}", json);
         try {
-            Response<String> response = restClient.updateListener(json).execute();
+            Response<UploadResult> response = restClient.uploadDocument(json).execute();
             if (response.isSuccessful()) {
                 LOG.info("Result payload telemetry: {}", response.body());
             } else {

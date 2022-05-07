@@ -107,7 +107,7 @@ public final class AmateurSondehubUploader {
             String json = doc.format();
 
             // submit it to our processing thread
-            executor.execute(() -> uploadPayloadTelemetry(docId, json));
+            executor.execute(() -> uploadPayloadTelemetry(json));
         }
     }
 

@@ -109,12 +109,10 @@ public final class AmateurSondehubUploader {
         // encode sentence as raw bytes
         byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
 
-        // determine docId
-        String docId = createDocId(bytes);
 
         for (HabReceiver receiver : receivers) {
             // create Json
-            HabitatPayloadTelemetryDoc doc = new HabitatPayloadTelemetryDoc(instant, bytes);
+            PayloadTelemetryDoc doc = new payloadTelemetryDoc(instant, bytes);
             doc.addCallSign(receiver.getCallsign());
             String json = doc.format();
 
@@ -127,17 +125,16 @@ public final class AmateurSondehubUploader {
      * Performs the actual payload telemetry upload as a REST-like call towards
      * amateurSondehub.
      * 
-     * @param docId the document id
      * @param json  the JSON payload
      */
-    private void uploadPayloadTelemetry(String docId, String json) {
-        LOG.info("Upload payload telemetry doc {}: {}", docId, json);
+    private void uploadPayloadTelemetry(String json) {
+        LOG.info("Upload payload telemetry: {}", json);
         try {
-            Response<String> response = restClient.updateListener(docId, json).execute();
+            Response<String> response = restClient.updateListener(json).execute();
             if (response.isSuccessful()) {
-                LOG.info("Result payload telemetry doc {}: {}", docId, response.body());
+                LOG.info("Result payload telemetry: {}", response.body());
             } else {
-                LOG.warn("Result payload telemetry doc {}: {}", docId, response.message());
+                LOG.warn("Result payload telemetry: {}", response.message());
             }
         } catch (IOException e) {
             LOG.warn("Caught IOException: {}", e.getMessage());
@@ -145,17 +142,4 @@ public final class AmateurSondehubUploader {
             LOG.error("Caught Exception: {}", e);
         }
     }
-
-    /**
-     * Creates the document id from the raw payload telemetry sentence.
-     * 
-     * @param bytes the raw sentence
-     * @return the document id
-     */
-    private String createDocId(byte[] bytes) {
-        byte[] base64 = base64Encoder.encode(bytes);
-        byte[] hash = sha256.digest(base64);
-        return DatatypeConverter.printHexBinary(hash).toLowerCase(Locale.ROOT);
-    }
-
 }

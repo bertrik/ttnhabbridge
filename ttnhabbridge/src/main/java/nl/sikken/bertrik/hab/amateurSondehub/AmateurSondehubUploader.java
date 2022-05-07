@@ -100,7 +100,6 @@ public final class AmateurSondehubUploader {
         // encode sentence as raw bytes
         byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
 
-
         for (HabReceiver receiver : receivers) {
             // create Json
             PayloadTelemetryDoc doc = new payloadTelemetryDoc(instant, bytes);
@@ -116,7 +115,7 @@ public final class AmateurSondehubUploader {
      * Performs the actual payload telemetry upload as a REST-like call towards
      * amateurSondehub.
      * 
-     * @param json  the JSON payload
+     * @param json the JSON payload
      */
     private void uploadPayloadTelemetry(String json) {
         LOG.info("Upload payload telemetry: {}", json);

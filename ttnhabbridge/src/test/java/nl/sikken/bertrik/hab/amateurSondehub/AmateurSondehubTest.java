@@ -51,7 +51,7 @@ public final class AmateurSondehubTest {
 			HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
 			Instant instant = Instant.now();
 			Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant);
-			sentence.addField("52.0182307,4.695772,1000");
+			sentence.addField("location", "52.0182307,4.695772,1000");
 
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
 			Mockito.verify(restClient, Mockito.timeout(3000).times(1)).uploadDocument(Mockito.anyString());

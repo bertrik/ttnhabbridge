@@ -17,9 +17,9 @@ public final class SentenceTest {
     public void testSentence() {
         Instant instant = Instant.ofEpochSecond(0);
         Sentence sentence = new Sentence("CALL", 1, instant);
-        sentence.addField("3.45");
-        sentence.addField("6.78");
-        sentence.addField("9.0");
+        sentence.addField("lon", "3.45");
+        sentence.addField("lat", "6.78");
+        sentence.addField("alt", "9.0");
         String s = sentence.format();
 
         Assert.assertEquals("$$CALL,1,00:00:00,3.45,6.78,9.0*906C\n", s);
@@ -32,7 +32,7 @@ public final class SentenceTest {
     @Test
     public void testSentenceExtras() {
         Sentence sentence = new Sentence("CALL", 1, Instant.now());
-        sentence.addField("hello");
+        sentence.addField("extra" ,"hello");
         String s = sentence.format();
 
         Assert.assertTrue(s.contains("hello"));

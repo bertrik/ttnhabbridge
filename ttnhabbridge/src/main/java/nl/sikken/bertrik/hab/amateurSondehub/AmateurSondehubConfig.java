@@ -13,7 +13,7 @@ public final class AmateurSondehubConfig {
     private final int timeout;
 
     public AmateurSondehubConfig() {
-        this("https://api.v2.sondehub.org/amateur/telemetry", 60);
+        this("https://api.v2.sondehub.org", 60);
     }
 
     public AmateurSondehubConfig(String url, int timeout) {

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * 
  * SEE http://habitat.habhub.org/jse/#schemas/payload_telemetry.json
  */
-public final class PayloadTelemetryDoc {
+public final class HabitatPayloadTelemetryDoc {
 
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
@@ -30,7 +30,7 @@ public final class PayloadTelemetryDoc {
      * @param instant  the creation/upload date/time
      * @param rawBytes the raw telemetry string as bytes
      */
-    public PayloadTelemetryDoc(Instant instant, byte[] rawBytes) {
+    public HabitatPayloadTelemetryDoc(Instant instant, byte[] rawBytes) {
         this.dateCreated = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
         this.dateUploaded = OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
         this.rawBytes = rawBytes.clone();

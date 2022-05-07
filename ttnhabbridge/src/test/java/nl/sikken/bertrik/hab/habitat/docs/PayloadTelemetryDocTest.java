@@ -16,7 +16,7 @@ public final class PayloadTelemetryDocTest {
 	@Test
 	public void testFormat() {
 		Instant instant = Instant.now();
-		PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, new byte[] {1, 2, 3});
+		HabitatPayloadTelemetryDoc doc = new HabitatPayloadTelemetryDoc(instant, new byte[] {1, 2, 3});
 		doc.addCallSign("BERTRIK");
 		String json = doc.format();
 		

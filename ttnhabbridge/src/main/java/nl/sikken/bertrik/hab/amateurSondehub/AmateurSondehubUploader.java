@@ -114,7 +114,7 @@ public final class AmateurSondehubUploader {
 
         for (HabReceiver receiver : receivers) {
             // create Json
-            PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, bytes);
+            HabitatPayloadTelemetryDoc doc = new HabitatPayloadTelemetryDoc(instant, bytes);
             doc.addCallSign(receiver.getCallsign());
             String json = doc.format();
 

@@ -18,11 +18,10 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nl.sikken.bertrik.hab.amateurSondehub.HabReceiver;
+import nl.sikken.bertrik.hab.HabReceiver;
 import nl.sikken.bertrik.hab.amateurSondehub.AmateurSondehubConfig;
 import nl.sikken.bertrik.hab.amateurSondehub.IAmateurSondehubRestApi;
-import nl.sikken.bertrik.hab.amateurSondehub.UploadResult;
-import nl.sikken.bertrik.hab.amateurSondehub.UuidsList;
+import nl.sikken.bertrik.hab.UploadResult;
 import nl.sikken.bertrik.hab.amateurSondehub.docs.ListenerInformationDoc;
 import nl.sikken.bertrik.hab.amateurSondehub.docs.ListenerTelemetryDoc;
 import nl.sikken.bertrik.hab.amateurSondehub.docs.PayloadTelemetryDoc;

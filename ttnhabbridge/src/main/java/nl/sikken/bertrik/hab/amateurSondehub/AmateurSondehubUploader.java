@@ -35,8 +35,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 /**
  * AmateurSondehub uploader.
  * 
- * Exchanges data with the amateurSondehub system. Call to ScheduleXXX methods are
- * non-blocking. All actions run on a single background thread for simplicity.
+ * Exchanges data with the amateurSondehub system. Call to ScheduleXXX methods
+ * are non-blocking. All actions run on a single background thread for
+ * simplicity.
  */
 public final class AmateurSondehubUploader {
 
@@ -55,7 +56,8 @@ public final class AmateurSondehubUploader {
      * @return the amateurSondehub uploader
      */
     public static AmateurSondehubUploader create(AmateurSondehubConfig config) {
-        LOG.info("Creating new amateurSondehub REST client with timeout {} for {}", config.getTimeout(), config.getUrl());
+        LOG.info("Creating new amateurSondehub REST client with timeout {} for {}", config.getTimeout(),
+                config.getUrl());
         Duration timeout = Duration.ofSeconds(config.getTimeout());
         OkHttpClient client = new OkHttpClient().newBuilder().callTimeout(timeout).build();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(config.getUrl())

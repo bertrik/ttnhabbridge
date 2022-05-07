@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nl.sikken.bertrik.hab.HabReceiver;
-import nl.sikken.bertrik.hab.amateurSondehub.AmateurSondehubConfig;
-import nl.sikken.bertrik.hab.amateurSondehub.IAmateurSondehubRestApi;
 import nl.sikken.bertrik.hab.UploadResult;
 import nl.sikken.bertrik.hab.amateurSondehub.docs.AmateurSondehubPayloadTelemetryDoc;
 import okhttp3.OkHttpClient;

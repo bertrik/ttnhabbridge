@@ -19,31 +19,32 @@ import retrofit2.mock.Calls;
  * Unit tests for AmateurSondehubUploader.
  */
 public final class AmateurSondehubTest {
-    
-    private static final Location LOCATION = new Location(52.0162, 4.4735, 5.0);
-    
-    /**
-     * Verifies creation of REST client.
-     */
-    @Test
-    public void testCreateRestClient() {
-        AmateurSondehubConfig config = new AmateurSondehubConfig();
-    	Assert.assertNotNull(AmateurSondehubUploader.create(config));
-    }
-    
+
+	private static final Location LOCATION = new Location(52.0162, 4.4735, 5.0);
+
+	/**
+	 * Verifies creation of REST client.
+	 */
+	@Test
+	public void testCreateRestClient() {
+		AmateurSondehubConfig config = new AmateurSondehubConfig();
+		Assert.assertNotNull(AmateurSondehubUploader.create(config));
+	}
+
 	/**
 	 * Happy flow scenario for payload upload.
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	@Test
 	public void testUploadPayload() throws IOException {
 		// create a mocked rest client
 		IAmateurSondehubRestApi restClient = Mockito.mock(IAmateurSondehubRestApi.class);
 		Mockito.when(restClient.updateListener(Mockito.anyString(), Mockito.anyString()))
-		        .thenReturn(Calls.response("OK"));
-		
+				.thenReturn(Calls.response("OK"));
+
 		AmateurSondehubUploader uploader = new AmateurSondehubUploader(restClient);
-		
+
 		// verify upload using the uploader
 		uploader.start();
 		try {
@@ -53,14 +54,11 @@ public final class AmateurSondehubTest {
 			sentence.addField("52.0182307,4.695772,1000");
 
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
-            Mockito.verify(restClient, Mockito.timeout(3000).times(1)).updateListener(Mockito.anyString(),
-                    Mockito.anyString());
+			Mockito.verify(restClient, Mockito.timeout(3000).times(1)).updateListener(Mockito.anyString(),
+					Mockito.anyString());
 		} finally {
 			uploader.stop();
 		}
 	}
 
-	
-
-	
 }

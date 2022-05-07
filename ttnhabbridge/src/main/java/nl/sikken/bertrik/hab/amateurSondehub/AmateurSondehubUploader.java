@@ -134,44 +134,4 @@ public final class AmateurSondehubUploader {
         }
     }
 
-    /**
-     * Schedules new listener data to be sent to habitat.
-     * 
-     * @param receiver the receiver data
-     * @param instant  the current date/time
-     */
-    public void scheduleListenerDataUpload(HabReceiver receiver, Instant instant) {
-        executor.execute(() -> uploadListener(receiver, instant));
-    }
-
-    /**
-     * Uploads listener data (information and telemetry)
-     * 
-     * @param receiver the receiver/listener
-     * @param instant  the current date/time
-     */
-    private void uploadListener(HabReceiver receiver, Instant instant) {
-        LOG.info("Upload listener data for {}", receiver);
-        try {
-            // get two uuids
-            LOG.info("Getting UUIDs for listener data upload...");
-            List<String> uuids = list.getUuids();
-            if ((uuids != null) && (uuids.size() >= 2)) {
-                LOG.info("Got {} UUIDs", uuids.size());
-
-                // upload payload telemetry
-                LOG.info("Upload listener telemetry using UUID {}...", uuids.get(1));
-                ListenerTelemetryDoc telem = new ListenerTelemetryDoc(instant, receiver);
-                UploadResult telemResult = restClient.uploadDocument(uuids.get(1), telem.format()).execute().body();
-                LOG.info("Result listener telemetry: {}", telemResult);
-            } else {
-                LOG.warn("Did not receive UUIDs for upload");
-            }
-        } catch (IOException e) {
-            LOG.warn("Caught IOException: {}", e.getMessage());
-        } catch (Exception e) {
-            LOG.error("Caught Exception: {}", e);
-        }
-    }
-
 }

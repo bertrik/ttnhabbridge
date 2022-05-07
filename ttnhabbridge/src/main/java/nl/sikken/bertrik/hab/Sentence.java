@@ -11,6 +11,9 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
@@ -74,6 +77,20 @@ public final class Sentence {
         byte[] bytes = basic.getBytes(StandardCharsets.US_ASCII);
         int crcValue = crc16.calculate(bytes, 0xFFFF);
         return String.format(Locale.ROOT, "$$%s*%04X\n", basic, crcValue);
+    }
+
+    public String amateurSondehubFormat() {
+
+        String json = new String();
+
+        try {
+            json = new ObjectMapper().writeValueAsString(fields);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            // LOG.trace("Caught unhandled exception", e);
+            // LOG.warn("Payload decoding exception: {}", e.getMessage());
+        }
+        return json;
     }
 
     @Override

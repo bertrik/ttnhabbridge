@@ -125,6 +125,7 @@ public final class TtnHabBridge {
         try {
             Sentence sentence = decoder.decode(message);
             String line = sentence.format();
+            String amateurSondehubJsonStr = sentence.amateurSondehubFormat();
 
             // collect list of listeners
             List<HabReceiver> receivers = new ArrayList<>();

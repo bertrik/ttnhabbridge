@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.AbstractMap.SimpleEntry;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -22,7 +24,7 @@ public final class Sentence {
 
     private final CrcCcitt16 crc16 = new CrcCcitt16();
 
-    private final List<String> fields = new ArrayList<>();
+    private final List<Entry<String, String>> fields = new ArrayList<>();
 
     /**
      * Constructor with the basic set of fields.
@@ -42,8 +44,9 @@ public final class Sentence {
      * 
      * @param value the pre-formatted value
      */
-    public void addField(String value) {
-        fields.add(value);
+    public void addField(String fieldName, String fieldValueStr) {
+        Entry<String, String> fieldPair = new SimpleEntry<>(fieldName, fieldValueStr);
+        fields.add(fieldPair);
     }
 
     /**

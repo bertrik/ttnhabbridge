@@ -1,22 +1,22 @@
-package nl.sikken.bertrik.hab.habitat;
+package nl.sikken.bertrik.hab.amateurSondehub;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class AmatuerSondehubConfig {
+public final class AmateurSondehubConfig {
 
     @JsonProperty("url")
-    private final String url; 
-    
+    private final String url;
+
     @JsonProperty("timeout")
     private final int timeout;
 
-    public AmatuerSondehubConfig() {
+    public AmateurSondehubConfig() {
         this("https://api.v2.sondehub.org/amateur/telemetry", 60);
     }
-    
-    public AmatuerSondehubConfig(String url, int timeout) {
+
+    public AmateurSondehubConfig(String url, int timeout) {
         this.url = url;
         this.timeout = timeout;
     }
@@ -28,5 +28,5 @@ public final class AmatuerSondehubConfig {
     public int getTimeout() {
         return timeout;
     }
-    
+
 }

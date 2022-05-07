@@ -1,4 +1,4 @@
-package nl.sikken.bertrik.hab.habitat;
+package nl.sikken.bertrik.hab.amateurSondehub;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,6 +18,11 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.sikken.bertrik.hab.habitat.HabReceiver;
+import nl.sikken.bertrik.hab.habitat.HabitatConfig;
+import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
+import nl.sikken.bertrik.hab.habitat.UploadResult;
+import nl.sikken.bertrik.hab.habitat.UuidsList;
 import nl.sikken.bertrik.hab.habitat.docs.ListenerInformationDoc;
 import nl.sikken.bertrik.hab.habitat.docs.ListenerTelemetryDoc;
 import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
@@ -53,7 +58,8 @@ public final class HabitatUploader {
         LOG.info("Creating new habitat REST client with timeout {} for {}", config.getTimeout(), config.getUrl());
         Duration timeout = Duration.ofSeconds(config.getTimeout());
         OkHttpClient client = new OkHttpClient().newBuilder().callTimeout(timeout).build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(config.getUrl()).addConverterFactory(ScalarsConverterFactory.create())
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(config.getUrl())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create()).client(client).build();
         IHabitatRestApi restClient = retrofit.create(IHabitatRestApi.class);
         return new HabitatUploader(restClient);

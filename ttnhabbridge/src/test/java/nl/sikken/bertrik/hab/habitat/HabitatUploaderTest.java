@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 import nl.sikken.bertrik.hab.Location;
 import nl.sikken.bertrik.hab.Sentence;
+import nl.sikken.bertrik.hab.UploadResult;
 import retrofit2.mock.Calls;
 
 /**

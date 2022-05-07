@@ -1,4 +1,4 @@
-package nl.sikken.bertrik.hab.habitat;
+package nl.sikken.bertrik.hab;
 
 import java.util.Locale;
 

@@ -1,0 +1,19 @@
+---
+thethingsnetwork:
+  url: "tcp://eu1.cloud.thethings.network"
+  user: "appname"
+  pass: "NNSXS.SIY7VBOR2KTIDBJY7QVTILSORMGIEQ63YNDNBIY.SECRET"
+  topic: "v3/+/devices/+/up"
+helium:
+  url: ""
+  user: "user"
+  pass: "pass"
+  topic: "helium/+/rx"
+habitat:
+  url: "http://habitat.habhub.org"
+  timeout: 60
+amateurSondehub:
+  url: "https://api.v2.sondehub.org/amateur/telemetry"
+  timeout: 60
+gwCacheExpirationTime: 600
+payloadEncoding: "cayenne"

@@ -18,14 +18,14 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nl.sikken.bertrik.hab.habitat.HabReceiver;
-import nl.sikken.bertrik.hab.habitat.HabitatConfig;
-import nl.sikken.bertrik.hab.habitat.IHabitatRestApi;
-import nl.sikken.bertrik.hab.habitat.UploadResult;
-import nl.sikken.bertrik.hab.habitat.UuidsList;
-import nl.sikken.bertrik.hab.habitat.docs.ListenerInformationDoc;
-import nl.sikken.bertrik.hab.habitat.docs.ListenerTelemetryDoc;
-import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
+import nl.sikken.bertrik.hab.amateurSondehub.HabReceiver;
+import nl.sikken.bertrik.hab.amateurSondehub.AmateurSondehubConfig;
+import nl.sikken.bertrik.hab.amateurSondehub.IAmateurSondehubRestApi;
+import nl.sikken.bertrik.hab.amateurSondehub.UploadResult;
+import nl.sikken.bertrik.hab.amateurSondehub.UuidsList;
+import nl.sikken.bertrik.hab.amateurSondehub.docs.ListenerInformationDoc;
+import nl.sikken.bertrik.hab.amateurSondehub.docs.ListenerTelemetryDoc;
+import nl.sikken.bertrik.hab.amateurSondehub.docs.PayloadTelemetryDoc;
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -33,36 +33,36 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * Habitat uploader.
+ * AmateurSondehub uploader.
  * 
- * Exchanges data with the habitat system. Call to ScheduleXXX methods are
+ * Exchanges data with the amateurSondehub system. Call to ScheduleXXX methods are
  * non-blocking. All actions run on a single background thread for simplicity.
  */
-public final class HabitatUploader {
+public final class AmateurSondehubUploader {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HabitatUploader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AmateurSondehubUploader.class);
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Encoder base64Encoder = Base64.getEncoder();
     private final MessageDigest sha256;
 
-    private final IHabitatRestApi restClient;
+    private final IAmateurSondehubRestApi restClient;
 
     /**
-     * Creates a new habitat uploader.
+     * Creates a new amateurSondehub uploader.
      * 
      * @param config the configuration
-     * @return the habitat uploader
+     * @return the amateurSondehub uploader
      */
-    public static HabitatUploader create(HabitatConfig config) {
-        LOG.info("Creating new habitat REST client with timeout {} for {}", config.getTimeout(), config.getUrl());
+    public static AmateurSondehubUploader create(AmateurSondehubConfig config) {
+        LOG.info("Creating new amateurSondehub REST client with timeout {} for {}", config.getTimeout(), config.getUrl());
         Duration timeout = Duration.ofSeconds(config.getTimeout());
         OkHttpClient client = new OkHttpClient().newBuilder().callTimeout(timeout).build();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(config.getUrl())
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create()).client(client).build();
-        IHabitatRestApi restClient = retrofit.create(IHabitatRestApi.class);
-        return new HabitatUploader(restClient);
+        IAmateurSondehubRestApi restClient = retrofit.create(IAmateurSondehubRestApi.class);
+        return new AmateurSondehubUploader(restClient);
     }
 
     /**
@@ -70,7 +70,7 @@ public final class HabitatUploader {
      * 
      * @param restClient the REST client used for uploading
      */
-    HabitatUploader(IHabitatRestApi restClient) {
+    AmateurSondehubUploader(IAmateurSondehubRestApi restClient) {
         try {
             this.sha256 = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
@@ -84,14 +84,14 @@ public final class HabitatUploader {
      * Starts the uploader process.
      */
     public void start() {
-        LOG.info("Starting habitat uploader");
+        LOG.info("Starting amateurSondehub uploader");
     }
 
     /**
      * Stops the uploader process.
      */
     public void stop() {
-        LOG.info("Stopping habitat uploader");
+        LOG.info("Stopping amateurSondehub uploader");
         executor.shutdown();
     }
 
@@ -124,7 +124,7 @@ public final class HabitatUploader {
 
     /**
      * Performs the actual payload telemetry upload as a REST-like call towards
-     * habitat.
+     * amateurSondehub.
      * 
      * @param docId the document id
      * @param json  the JSON payload
@@ -158,7 +158,7 @@ public final class HabitatUploader {
     }
 
     /**
-     * Schedules new listener data to be sent to habitat.
+     * Schedules new listener data to be sent to amateurSondehub.
      * 
      * @param receiver the receiver data
      * @param instant  the current date/time

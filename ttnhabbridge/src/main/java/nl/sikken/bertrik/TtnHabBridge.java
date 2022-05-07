@@ -144,6 +144,11 @@ public final class TtnHabBridge {
 
             // send payload telemetry data
             habUploader.schedulePayloadTelemetryUpload(line, receivers, now);
+
+
+            // send data to amateurSondehub
+
+
         } catch (DecodeException e) {
             LOG.warn("Payload decoding exception: {}", e.getMessage());
         } catch (Exception e) {

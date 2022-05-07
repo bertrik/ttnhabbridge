@@ -39,8 +39,6 @@ public final class AmateurSondehubTest {
 		IAmateurSondehubRestApi restClient = Mockito.mock(IAmateurSondehubRestApi.class);
 		Mockito.when(restClient.updateListener(Mockito.anyString(), Mockito.anyString()))
 		        .thenReturn(Calls.response("OK"));
-		Mockito.when(restClient.getUuids(Mockito.anyInt()))
-		        .thenReturn(Calls.response(new UuidsList(Arrays.asList("uuid1", "uuid2"))));
 		
 		AmateurSondehubUploader uploader = new AmateurSondehubUploader(restClient);
 		

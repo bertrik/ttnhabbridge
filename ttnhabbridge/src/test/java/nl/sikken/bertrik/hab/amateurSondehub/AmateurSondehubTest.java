@@ -40,8 +40,8 @@ public final class AmateurSondehubTest {
 	public void testUploadPayload() throws IOException {
 		// create a mocked rest client
 		IAmateurSondehubRestApi restClient = Mockito.mock(IAmateurSondehubRestApi.class);
-		Mockito.when(restClient.updateListener(Mockito.anyString(), Mockito.anyString()))
-				.thenReturn(Calls.response("OK"));
+		Mockito.when(restClient.uploadDocument(Mockito.anyString()))
+				.thenReturn(Calls.response(new UploadResult(true, "id", "rev")));
 
 		AmateurSondehubUploader uploader = new AmateurSondehubUploader(restClient);
 
@@ -54,8 +54,7 @@ public final class AmateurSondehubTest {
 			sentence.addField("52.0182307,4.695772,1000");
 
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
-			Mockito.verify(restClient, Mockito.timeout(3000).times(1)).updateListener(Mockito.anyString(),
-					Mockito.anyString());
+			Mockito.verify(restClient, Mockito.timeout(3000).times(1)).uploadDocument(Mockito.anyString());
 		} finally {
 			uploader.stop();
 		}

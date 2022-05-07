@@ -43,9 +43,6 @@ public final class AmateurSondehubUploader {
     private static final Logger LOG = LoggerFactory.getLogger(AmateurSondehubUploader.class);
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final Encoder base64Encoder = Base64.getEncoder();
-    private final MessageDigest sha256;
-
     private final IAmateurSondehubRestApi restClient;
 
     /**
@@ -72,12 +69,6 @@ public final class AmateurSondehubUploader {
      * @param restClient the REST client used for uploading
      */
     AmateurSondehubUploader(IAmateurSondehubRestApi restClient) {
-        try {
-            this.sha256 = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            // this is fatal
-            throw new IllegalStateException("No SHA-256 hash found", e);
-        }
         this.restClient = restClient;
     }
 
@@ -164,16 +155,9 @@ public final class AmateurSondehubUploader {
         try {
             // get two uuids
             LOG.info("Getting UUIDs for listener data upload...");
-            UuidsList list = restClient.getUuids(2).execute().body();
             List<String> uuids = list.getUuids();
             if ((uuids != null) && (uuids.size() >= 2)) {
                 LOG.info("Got {} UUIDs", uuids.size());
-
-                // upload payload listener info
-                LOG.info("Upload listener info using UUID {}...", uuids.get(0));
-                ListenerInformationDoc info = new ListenerInformationDoc(instant, receiver);
-                UploadResult infoResult = restClient.uploadDocument(uuids.get(0), info.format()).execute().body();
-                LOG.info("Result listener info: {}", infoResult);
 
                 // upload payload telemetry
                 LOG.info("Upload listener telemetry using UUID {}...", uuids.get(1));

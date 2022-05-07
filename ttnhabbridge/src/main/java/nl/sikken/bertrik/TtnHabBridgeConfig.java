@@ -2,7 +2,7 @@ package nl.sikken.bertrik;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import nl.sikken.bertrik.hab.habitat.AmateurSondehubConfig;
+import nl.sikken.bertrik.hab.amateurSondehub.AmateurSondehubConfig;
 import nl.sikken.bertrik.hab.habitat.HabitatConfig;
 import nl.sikken.bertrik.hab.lorawan.MqttConfig;
 

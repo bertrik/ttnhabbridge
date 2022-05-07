@@ -167,7 +167,7 @@ public final class PayloadDecoder {
             // add all items, in the order they appear in the cayenne message
             for (CayenneItem item : cayenne.getItems()) {
         		for (String s : item.format()) {
-        			sentence.addField(s);
+        			sentence.addField("", s);
         		}
             }
 			

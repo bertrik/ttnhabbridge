@@ -1,6 +1,4 @@
-package nl.sikken.bertrik.hab.habitat;
-
-import nl.sikken.bertrik.hab.Location;
+package nl.sikken.bertrik.hab;
 
 /**
  * Object describing a HAB receiver.

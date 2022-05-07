@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import nl.sikken.bertrik.hab.HabReceiver;
 import nl.sikken.bertrik.hab.Location;
 import nl.sikken.bertrik.hab.Sentence;
 import nl.sikken.bertrik.hab.UploadResult;

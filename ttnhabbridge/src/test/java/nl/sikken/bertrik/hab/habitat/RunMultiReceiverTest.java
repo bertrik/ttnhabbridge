@@ -3,6 +3,7 @@ package nl.sikken.bertrik.hab.habitat;
 import java.time.Instant;
 import java.util.Arrays;
 
+import nl.sikken.bertrik.hab.Location;
 import nl.sikken.bertrik.hab.Sentence;
 
 public final class RunMultiReceiverTest {

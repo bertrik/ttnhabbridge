@@ -26,6 +26,23 @@ public final class SentenceTest {
         Assert.assertNotNull(sentence.toString());
     }
 
+    
+    /**
+     * Verifies basic AmateurSonde json formatting.
+     */
+    @Test
+    public void testSentenceJson() {
+        Instant instant = Instant.ofEpochSecond(0);
+        Sentence sentence = new Sentence("CALL", 1, instant);
+        sentence.addField("lon", "3.45");
+        sentence.addField("lat", "6.78");
+        sentence.addField("alt", "9.0");
+        String s = sentence.amateurSondehubFormat();
+
+        Assert.assertEquals("$$CALL,1,00:00:00,3.45,6.78,9.0*906C\n", s);
+        Assert.assertNotNull(sentence.toString());
+    }
+
     /**
      * Verifies that extra fields are formatted too.
      */

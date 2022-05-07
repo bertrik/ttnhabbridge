@@ -24,6 +24,7 @@ import nl.sikken.bertrik.hab.Location;
 import nl.sikken.bertrik.hab.PayloadDecoder;
 import nl.sikken.bertrik.hab.Sentence;
 import nl.sikken.bertrik.hab.habitat.HabitatUploader;
+import nl.sikken.bertrik.hab.amateurSondehub.AmateurSondehubUploader;
 import nl.sikken.bertrik.hab.lorawan.HeliumUplinkMessage;
 import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage;
 import nl.sikken.bertrik.hab.lorawan.LoraWanUplinkMessage.GatewayInfo;
@@ -41,6 +42,8 @@ public final class TtnHabBridge {
 
     private final List<MqttListener> mqttListeners = new ArrayList<>();
     private final HabitatUploader habUploader;
+    private final AmateurSondehubUploader amateurSondehubUploader;
+
     private final PayloadDecoder decoder;
     private final ExpiringCache gwCache;
 
@@ -90,6 +93,8 @@ public final class TtnHabBridge {
                     .add(new MqttListener(this::handleMessage, config.getHeliumConfig(), HeliumUplinkMessage.class));
         }
         this.habUploader = HabitatUploader.create(config.getHabitatConfig());
+        this.amateurSondehubUploader = AmateurSondehubUploader.create(config.getAmateurSondehubConfig());
+        
         this.decoder = new PayloadDecoder(EPayloadEncoding.parse(config.getPayloadEncoding()));
         this.gwCache = new ExpiringCache(Duration.ofSeconds(config.getGwCacheExpirationTime()));
     }
@@ -104,6 +109,7 @@ public final class TtnHabBridge {
 
         // start sub-modules
         habUploader.start();
+        amateurSondehubUploader.start();
         for (MqttListener listener : mqttListeners) {
             listener.start();
         }
@@ -156,6 +162,7 @@ public final class TtnHabBridge {
             listener.stop();
         }
         habUploader.stop();
+        amateurSondehubUploader.stop();
         LOG.info("Stopped TTN HAB bridge application");
     }
 

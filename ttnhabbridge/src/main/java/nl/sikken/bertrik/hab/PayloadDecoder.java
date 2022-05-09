@@ -161,10 +161,35 @@ public final class PayloadDecoder {
         
         try {
             Instant time = message.getTime();
-            Sentence sentence = new Sentence(callSign, counter, time);
             ECayennePayloadFormat cayenneFormat = ECayennePayloadFormat.fromPort(message.getPort());
             CayenneMessage cayenne = new CayenneMessage(cayenneFormat);
             cayenne.parse(message.getPayloadRaw());
+
+            double latitude = 0;
+            double longitude = 0;
+            double altitude = 0;
+
+            // add all items, in the order they appear in the cayenne message
+            for (CayenneItem item : cayenne.getItems()) {
+                switch (item.getChannel()) {
+                    case 0x12: {
+                        latitude = item.getValue().doubleValue();
+                        break;
+                    }
+                    case 0x13: {
+                        longitude = item.getValue().doubleValue();
+                        break;
+                    }
+                    case 0x16: {
+                        altitude = item.getValue().doubleValue();
+                        break;
+                    }
+                    default:
+                }
+            }
+
+            Location location = new Location(latitude, longitude, altitude);
+            Sentence sentence = new Sentence(callSign, counter, time, location);
 
             // add all items, in the order they appear in the cayenne message
             for (CayenneItem item : cayenne.getItems()) {

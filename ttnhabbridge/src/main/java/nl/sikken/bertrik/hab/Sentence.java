@@ -82,6 +82,18 @@ public final class Sentence {
     }
 
     public String amateurSondehubFormat() {
+        // add mandatory fields
+
+        json.put("software_name", "ttnhabbridge");
+        json.put("software_version", "0.0.1");
+        json.put("uploader_callsign", "foobar");
+
+
+        json.put("time_received", this.time.toString());
+        json.put("datetime", this.time.toString());
+        json.put("payload_callsign", this.callSign);
+
+
         return json.toString();
     }
 

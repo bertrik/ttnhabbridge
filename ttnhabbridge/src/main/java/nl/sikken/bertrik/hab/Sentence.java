@@ -69,9 +69,9 @@ public final class Sentence {
         // format basic string
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.ROOT, "%s,%d,%s", callSign, id, timeString));
-        for (Entry<String, String> s : fields) {
+        for (String s : fields) {
             sb.append(',');
-            sb.append(s.getValue());
+            sb.append(s);
         }
         String basic = sb.toString();
 

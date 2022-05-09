@@ -39,7 +39,7 @@ public final class SentenceTest {
         sentence.addField("alt", "9.0");
         String s = sentence.amateurSondehubFormat();
 
-        Assert.assertEquals("{\"lon\":\"3.45\", \"lat\":\"6.78\", \"alt\":\"9.0\"}", s);
+        Assert.assertEquals("{\"lon\":\"3.45\",\"lat\":\"6.78\",\"alt\":\"9.0\"}", s);
         Assert.assertNotNull(sentence.toString());
     }
 

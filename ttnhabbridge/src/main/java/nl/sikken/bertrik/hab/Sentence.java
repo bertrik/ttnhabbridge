@@ -8,8 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map.Entry;
-import java.util.AbstractMap.SimpleEntry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +29,8 @@ public final class Sentence {
     ObjectMapper mapper = new ObjectMapper();
     ObjectNode json = mapper.createObjectNode();
   
+    private final List<String> fields = new ArrayList<>();
+
     /**
      * Constructor with the basic set of fields.
      * 
@@ -50,8 +50,8 @@ public final class Sentence {
      * @param value the pre-formatted value
      */
     public void addField(String fieldName, String fieldValueStr) {
-
         json.put(fieldName, fieldValueStr);
+        fields.add(fieldValueStr);
     }
 
     /**
@@ -82,17 +82,7 @@ public final class Sentence {
     }
 
     public String amateurSondehubFormat() {
-
-        String json = new String();
-
-        try {
-            json = new ObjectMapper().writeValueAsString(fields);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            // LOG.trace("Caught unhandled exception", e);
-            // LOG.warn("Payload decoding exception: {}", e.getMessage()); // TODO: use the loggging handler for this project
-        }
-        return json;
+        return json.toString();
     }
 
     @Override

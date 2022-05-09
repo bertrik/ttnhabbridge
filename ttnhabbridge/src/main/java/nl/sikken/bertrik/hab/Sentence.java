@@ -13,6 +13,7 @@ import java.util.AbstractMap.SimpleEntry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -27,8 +28,9 @@ public final class Sentence {
 
     private final CrcCcitt16 crc16 = new CrcCcitt16();
 
-    private final List<Entry<String, String>> fields = new ArrayList<>();
-
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode json = mapper.createObjectNode();
+  
     /**
      * Constructor with the basic set of fields.
      * 
@@ -48,8 +50,8 @@ public final class Sentence {
      * @param value the pre-formatted value
      */
     public void addField(String fieldName, String fieldValueStr) {
-        Entry<String, String> fieldPair = new SimpleEntry<>(fieldName, fieldValueStr);
-        fields.add(fieldPair);
+
+        json.put(fieldName, fieldValueStr);
     }
 
     /**

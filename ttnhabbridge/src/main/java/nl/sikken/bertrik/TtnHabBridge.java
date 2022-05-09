@@ -147,6 +147,7 @@ public final class TtnHabBridge {
 
 
             // send data to amateurSondehub
+            amateurSondehubUploader.schedulePayloadTelemetryUpload(amateurSondehubJsonStr, receivers, now);
 
 
         } catch (DecodeException e) {

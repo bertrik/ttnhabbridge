@@ -86,18 +86,9 @@ public final class AmateurSondehubUploader {
     public void schedulePayloadTelemetryUpload(String sentence, List<HabReceiver> receivers, Instant instant) {
         LOG.info("Uploading for {} receivers: {}", receivers.size(), sentence.trim());
 
-        // encode sentence as raw bytes
-        byte[] bytes = sentence.getBytes(StandardCharsets.US_ASCII);
-
-        for (HabReceiver receiver : receivers) {
-            // create Json
-            AmateurSondehubPayloadTelemetryDoc doc = new AmateurSondehubPayloadTelemetryDoc(instant, bytes);
-            doc.addCallSign(receiver.getCallsign());
-            String json = doc.format();
-
-            // submit it to our processing thread
-            executor.execute(() -> uploadPayloadTelemetry(json));
-        }
+        // todo: add receiver to sentence
+        // submit it to our processing thread
+        executor.execute(() -> uploadPayloadTelemetry(sentence));
     }
 
     /**

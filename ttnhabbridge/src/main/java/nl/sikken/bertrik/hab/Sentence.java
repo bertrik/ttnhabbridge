@@ -88,7 +88,7 @@ public final class Sentence {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             // LOG.trace("Caught unhandled exception", e);
-            // LOG.warn("Payload decoding exception: {}", e.getMessage());
+            // LOG.warn("Payload decoding exception: {}", e.getMessage()); // TODO: use the loggging handler for this project
         }
         return json;
     }

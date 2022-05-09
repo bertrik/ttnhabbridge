@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import nl.sikken.bertrik.hab.HabReceiver;
 import nl.sikken.bertrik.hab.UploadResult;
-import nl.sikken.bertrik.hab.amateurSondehub.docs.AmateurSondehubPayloadTelemetryDoc;
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
 import retrofit2.Retrofit;

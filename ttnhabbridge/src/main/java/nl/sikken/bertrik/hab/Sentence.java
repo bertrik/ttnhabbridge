@@ -23,6 +23,7 @@ public final class Sentence {
     private final String callSign;
     private final int id;
     private final Instant time;
+    private final Location location;
 
     private final CrcCcitt16 crc16 = new CrcCcitt16();
 
@@ -38,10 +39,11 @@ public final class Sentence {
      * @param id message sequence number
      * @param time the creation time
      */
-    public Sentence(String callSign, int id, Instant time) {
+    public Sentence(String callSign, int id, Instant time, Location location ) {
         this.callSign = callSign;
         this.id = id;
         this.time = Instant.from(time);
+        this.location = location;
     }
 
     /**

@@ -86,7 +86,8 @@ public final class PayloadDecoder {
             double longitude = sodaq.getLongitude();
             double altitude = sodaq.getAltitude();
             Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
-            Sentence sentence = new Sentence(callSign, counter, instant);
+            Location location = new Location(latitude, longitude, altitude);
+            Sentence sentence = new Sentence(callSign, counter, instant, location);
             sentence.addField("lat", String.format(Locale.ROOT, "%.6f", latitude));
             sentence.addField("lon", String.format(Locale.ROOT, "%.6f", longitude));
             sentence.addField("alt", String.format(Locale.ROOT, "%.1f", altitude));
@@ -116,7 +117,8 @@ public final class PayloadDecoder {
             double latitude = parseDouble(fields.get("lat"));
             double longitude = parseDouble(fields.get("lon"));
             double altitude = parseDouble(fields.get("gpsalt"));
-            Sentence sentence = new Sentence(callSign, counter, time);
+            Location location = new Location(latitude, longitude, altitude);
+            Sentence sentence = new Sentence(callSign, counter, time, location);
             sentence.addField("lat", String.format(Locale.ROOT, "%.6f", latitude));
             sentence.addField("lon", String.format(Locale.ROOT, "%.6f", longitude));
             sentence.addField("alt", String.format(Locale.ROOT, "%.1f", altitude));

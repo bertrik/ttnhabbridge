@@ -38,7 +38,7 @@ public final class SentenceTest {
         sentence.addField("lat", "6.78");
         sentence.addField("alt", "9.0");
         String s = sentence.amateurSondehubFormat();
-        Assert.assertEquals("{\"lon\":\"3.45\",\"lat\":\"6.78\",\"alt\":\"9.0\",\"software_name\":\"ttnhabbridge\",\"software_version\":\"0.0.1\",\"uploader_callsign\":\"foobar\",\"time_received\":\"2022-05-09T19:54:16.001Z\",\"datetime\":\"2022-05-09T19:54:16.001Z\",\"payload_callsign\":\"CALL\"}", s);
+        Assert.assertEquals("{\"lon\":\"3.45\",\"lat\":\"6.78\",\"alt\":\"9.0\",\"software_name\":\"ttnhabbridge\",\"software_version\":\"0.0.1\",\"uploader_callsign\":\"foobar\",\"modulation\":\"LoRaWAN\",\"time_received\":\"2022-05-09T19:54:16.001Z\",\"datetime\":\"2022-05-09T19:54:16.001Z\",\"payload_callsign\":\"CALL\"}", s);
         Assert.assertNotNull(sentence.toString());
     }
 

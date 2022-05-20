@@ -87,6 +87,7 @@ public final class Sentence {
         json.put("software_version", "0.0.1");
         json.put("uploader_callsign", "foobar");
 
+        json.put("modulation", "LoRaWAN");
 
         json.put("time_received", this.time.toString());
         json.put("datetime", this.time.toString());

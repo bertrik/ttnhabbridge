@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nl.sikken.bertrik.hab.habitat.Location;
+import nl.sikken.bertrik.hab.Location;
 
 /**
  * LoRaWAN uplink message, stack independent, containing all information needed

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
@@ -22,6 +25,9 @@ public final class Sentence {
 
     private final CrcCcitt16 crc16 = new CrcCcitt16();
 
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode json = mapper.createObjectNode();
+  
     private final List<String> fields = new ArrayList<>();
 
     /**
@@ -42,8 +48,9 @@ public final class Sentence {
      * 
      * @param value the pre-formatted value
      */
-    public void addField(String value) {
-        fields.add(value);
+    public void addField(String fieldName, String fieldValueStr) {
+        json.put(fieldName, fieldValueStr);
+        fields.add(fieldValueStr);
     }
 
     /**
@@ -71,6 +78,23 @@ public final class Sentence {
         byte[] bytes = basic.getBytes(StandardCharsets.US_ASCII);
         int crcValue = crc16.calculate(bytes, 0xFFFF);
         return String.format(Locale.ROOT, "$$%s*%04X\n", basic, crcValue);
+    }
+
+    public String amateurSondehubFormat() {
+        // add mandatory fields
+
+        json.put("software_name", "ttnhabbridge");
+        json.put("software_version", "0.0.1");
+        json.put("uploader_callsign", "foobar");
+
+        json.put("modulation", "LoRaWAN");
+
+        json.put("time_received", this.time.toString());
+        json.put("datetime", this.time.toString());
+        json.put("payload_callsign", this.callSign);
+
+
+        return json.toString();
     }
 
     @Override

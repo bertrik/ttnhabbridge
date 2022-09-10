@@ -9,7 +9,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import nl.sikken.bertrik.hab.HabReceiver;
+import nl.sikken.bertrik.hab.Location;
 import nl.sikken.bertrik.hab.Sentence;
+import nl.sikken.bertrik.hab.UploadResult;
 import retrofit2.mock.Calls;
 
 /**
@@ -49,7 +52,7 @@ public final class HabitatUploaderTest {
 			HabReceiver receiver = new HabReceiver("BERTRIK", LOCATION);
 			Instant instant = Instant.now();
 			Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant);
-			sentence.addField("52.0182307,4.695772,1000");
+			sentence.addField("location", "52.0182307,4.695772,1000");
 
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
             Mockito.verify(restClient, Mockito.timeout(3000).times(1)).updateListener(Mockito.anyString(),
@@ -102,7 +105,7 @@ public final class HabitatUploaderTest {
 		try {
 			Instant instant = Instant.now();
 			Sentence sentence = new Sentence("NOTAFLIGHT", 1, instant);
-			sentence.addField("52.0182307,4.695772,1000");
+			sentence.addField("location", "52.0182307,4.695772,1000");
 			HabReceiver receiver = new HabReceiver("BERTRIK", null);
 			uploader.schedulePayloadTelemetryUpload(sentence.format(), Arrays.asList(receiver), instant);
 			Thread.sleep(3000);

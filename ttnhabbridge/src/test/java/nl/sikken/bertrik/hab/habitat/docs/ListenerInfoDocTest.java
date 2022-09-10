@@ -5,8 +5,8 @@ import java.time.Instant;
 import org.junit.Assert;
 import org.junit.Test;
 
-import nl.sikken.bertrik.hab.habitat.HabReceiver;
-import nl.sikken.bertrik.hab.habitat.Location;
+import nl.sikken.bertrik.hab.HabReceiver;
+import nl.sikken.bertrik.hab.Location;
 
 /**
  * Unit tests for ListenerInfoDoc

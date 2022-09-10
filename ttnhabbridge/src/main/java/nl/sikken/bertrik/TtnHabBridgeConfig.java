@@ -2,6 +2,7 @@ package nl.sikken.bertrik;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import nl.sikken.bertrik.hab.amateurSondehub.AmateurSondehubConfig;
 import nl.sikken.bertrik.hab.habitat.HabitatConfig;
 import nl.sikken.bertrik.hab.lorawan.MqttConfig;
 
@@ -20,6 +21,9 @@ final class TtnHabBridgeConfig {
     @JsonProperty("habitat")
     private final HabitatConfig habitatConfig = new HabitatConfig();
 
+    @JsonProperty("amateurSondehub")
+    private final AmateurSondehubConfig amateurSondehubConfig = new AmateurSondehubConfig();
+
     @JsonProperty("gwCacheExpirationTime")
     private final int gwCacheExpirationTime = 600; // seconds
 
@@ -32,6 +36,10 @@ final class TtnHabBridgeConfig {
 
     public MqttConfig getHeliumConfig() {
         return heliumConfig;
+    }
+
+    public AmateurSondehubConfig getAmateurSondehubConfig() {
+        return amateurSondehubConfig;
     }
 
     public HabitatConfig getHabitatConfig() {

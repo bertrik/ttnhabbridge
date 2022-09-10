@@ -87,11 +87,11 @@ public final class PayloadDecoder {
             double altitude = sodaq.getAltitude();
             Instant instant = Instant.ofEpochSecond(sodaq.getTimeStamp());
             Sentence sentence = new Sentence(callSign, counter, instant);
-            sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
-            sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
-            sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
-            sentence.addField(String.format(Locale.ROOT, "%.0f", sodaq.getBoardTemp()));
-            sentence.addField(String.format(Locale.ROOT, "%.2f", sodaq.getBattVoltage()));
+            sentence.addField("lat", String.format(Locale.ROOT, "%.6f", latitude));
+            sentence.addField("lon", String.format(Locale.ROOT, "%.6f", longitude));
+            sentence.addField("alt", String.format(Locale.ROOT, "%.1f", altitude));
+            sentence.addField("temp", String.format(Locale.ROOT, "%.0f", sodaq.getBoardTemp()));
+            sentence.addField("batt", String.format(Locale.ROOT, "%.2f", sodaq.getBattVoltage()));
             return sentence;
         } catch (BufferUnderflowException e) {
             throw new DecodeException("Error decoding sodaqone", e);
@@ -117,15 +117,15 @@ public final class PayloadDecoder {
             double longitude = parseDouble(fields.get("lon"));
             double altitude = parseDouble(fields.get("gpsalt"));
             Sentence sentence = new Sentence(callSign, counter, time);
-            sentence.addField(String.format(Locale.ROOT, "%.6f", latitude));
-            sentence.addField(String.format(Locale.ROOT, "%.6f", longitude));
-            sentence.addField(String.format(Locale.ROOT, "%.1f", altitude));
+            sentence.addField("lat", String.format(Locale.ROOT, "%.6f", latitude));
+            sentence.addField("lon", String.format(Locale.ROOT, "%.6f", longitude));
+            sentence.addField("alt", String.format(Locale.ROOT, "%.1f", altitude));
             
             if (fields.containsKey("temp") && fields.containsKey("vcc")) {
                 Double temp = parseDouble(fields.get("temp"));
                 Double vcc = parseDouble(fields.get("vcc"));
-                sentence.addField(String.format(Locale.ROOT, "%.1f", temp));
-                sentence.addField(String.format(Locale.ROOT, "%.3f", vcc));
+                sentence.addField("temp", String.format(Locale.ROOT, "%.1f", temp));
+                sentence.addField("batt", String.format(Locale.ROOT, "%.3f", vcc));
             }
             return sentence;
         } catch (RuntimeException e) {
@@ -167,7 +167,7 @@ public final class PayloadDecoder {
             // add all items, in the order they appear in the cayenne message
             for (CayenneItem item : cayenne.getItems()) {
         		for (String s : item.format()) {
-        			sentence.addField(s);
+        			sentence.addField("", s);
         		}
             }
 			

@@ -6,7 +6,7 @@ import java.util.Locale;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import nl.sikken.bertrik.hab.habitat.HabReceiver;
+import nl.sikken.bertrik.hab.HabReceiver;
 
 /**
  * Listener information doc.

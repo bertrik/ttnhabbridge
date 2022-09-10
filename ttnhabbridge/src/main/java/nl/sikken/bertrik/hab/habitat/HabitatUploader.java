@@ -18,9 +18,11 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import nl.sikken.bertrik.hab.HabReceiver;
+import nl.sikken.bertrik.hab.UploadResult;
 import nl.sikken.bertrik.hab.habitat.docs.ListenerInformationDoc;
 import nl.sikken.bertrik.hab.habitat.docs.ListenerTelemetryDoc;
-import nl.sikken.bertrik.hab.habitat.docs.PayloadTelemetryDoc;
+import nl.sikken.bertrik.hab.habitat.docs.HabitatPayloadTelemetryDoc;
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -107,7 +109,7 @@ public final class HabitatUploader {
 
         for (HabReceiver receiver : receivers) {
             // create Json
-            PayloadTelemetryDoc doc = new PayloadTelemetryDoc(instant, bytes);
+            HabitatPayloadTelemetryDoc doc = new HabitatPayloadTelemetryDoc(instant, bytes);
             doc.addCallSign(receiver.getCallsign());
             String json = doc.format();
 
